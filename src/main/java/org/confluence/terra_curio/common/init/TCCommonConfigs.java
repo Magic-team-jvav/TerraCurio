@@ -12,7 +12,9 @@ import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.common.ModConfigSpec;
 import org.confluence.terra_curio.TerraCurio;
 
+import java.util.regex.*;
 import java.util.List;
+import java.util.ArrayList;
 
 public final class TCCommonConfigs {
     private static ModConfigSpec.ConfigValue<List<? extends String>> RARE_BLOCKS;
@@ -25,6 +27,12 @@ public final class TCCommonConfigs {
     public static ModConfigSpec.DoubleValue RANDOM_ATTACK_DAMAGE_MAX;
 
     public static ModConfigSpec.IntValue MAX_ACCESSORIES;
+
+    public record CoordElement(double key, Pattern restriction, String value, double scaleX, double scaleY, double scaleZ, double offsetX, double offsetY, double offsetZ, int precisionX, int precisionY, int precisionZ) {}
+    private static ModConfigSpec.ConfigValue<List<? extends String>> COORD_VALUES;
+    public static CoordElement[] coordValues = {};
+
+    public static ModConfigSpec.BooleanValue USE_12H_TIME;
 
     public static void onLoad() {
         Object2IntSortedMap<BlockState> blockStates = new Object2IntLinkedOpenHashMap<>();
@@ -46,6 +54,36 @@ public final class TCCommonConfigs {
             );
         });
         rareCreatures = entityTypes;
+
+        ArrayList<CoordElement> enumeratedCoords = new ArrayList<>();
+        COORD_VALUES.get().forEach(s -> {
+            try {
+                String[] fields = s.split(";");
+                if (fields.length != 12) {
+                    TerraCurio.LOGGER.warn("Coord value '{}' is not in the correct format (use '<max_height=-64>;<dimension_restriction=.*>;<translation_key>;<x_scale=1>;<y_scale=1>;<z_scale=1>;<x_offset=0>;<y_offset=0>;<z_offset=0>;<x_precision=2>;<y_precision=2>;<z_precision=2>')", s);
+                } else {
+                    enumeratedCoords.add(new CoordElement(
+                        Double.parseDouble(fields[0]),
+                        Pattern.compile(fields[1]),
+                        fields[2],
+                        Double.parseDouble(fields[3]),
+                        Double.parseDouble(fields[4]),
+                        Double.parseDouble(fields[5]),
+                        Double.parseDouble(fields[6]),
+                        Double.parseDouble(fields[7]),
+                        Double.parseDouble(fields[8]),
+                        Integer.parseInt(fields[9]),
+                        Integer.parseInt(fields[10]),
+                        Integer.parseInt(fields[11])
+                    ));
+                }
+            } catch (NumberFormatException e) {
+                TerraCurio.LOGGER.warn("Could not parse value as a number {}", e.getMessage());
+            } catch (PatternSyntaxException e) {
+                TerraCurio.LOGGER.warn("Invalid syntax ({}) for regex '{}' at index {}", e.getDescription(), e.getPattern(), e.getIndex());
+            }
+        });
+        coordValues = enumeratedCoords.toArray(coordValues);
     }
 
     public static void register(ModContainer container) {
@@ -141,6 +179,11 @@ public final class TCCommonConfigs {
         RANDOM_ATTACK_DAMAGE_MIN = BUILDER.defineInRange("min", 0.8, 0.0, 1.0);
         RANDOM_ATTACK_DAMAGE_MAX = BUILDER.defineInRange("max", 1.2, 1.0, 2.0);
         MAX_ACCESSORIES = BUILDER.pop().defineInRange("Max Accessory Amount", 7, 6, 100);
+        COORD_VALUES = BUILDER.defineList("coordValues", List.of(
+            "63;minecraft:overworld;info.terra_curio.depth_meter.underground;1;1;1;0;0;0;2;2;2",
+            "9999;minecraft:overworld;info.terra_curio.depth_meter.surface;1;1;1;0;0;0;2;2;2"
+        ), () -> "-64;.*;info.terra_curio.depth_meter.unknown;1;1;1;0;0;0;2;2;2", o -> true);
+        USE_12H_TIME = BUILDER.define("use12htime", false);
         container.registerConfig(ModConfig.Type.COMMON, BUILDER.build());
     }
 }
