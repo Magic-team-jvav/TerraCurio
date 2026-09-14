@@ -85,30 +85,36 @@ public class ModLanguageProvider extends LanguageProvider {
             add("tooltip.terra_curio." + ALL_INFO_NAME[i], ALL_INFO_EN[i], ALL_INFO_ZH[i]);
         }
 
-        add("info.terra_curio.time", "Time: [%s:%s]", "时间: [%s:%s]");
-        add("info.terra_curio.radar", "Enemies: %s", "敌人: %s");
-        add("info.terra_curio.compass.east", "East: %s, ", "东: %s, ");
-        add("info.terra_curio.compass.west", "West: %s, ", "西: %s, ");
-        add("info.terra_curio.compass.south", "South: %s", "南: %s");
-        add("info.terra_curio.compass.north", "North: %s", "北: %s");
-        add("info.terra_curio.depth_meter.surface", "Surface: %s", "地表: %s");
-        add("info.terra_curio.depth_meter.underground", "Underground: %s", "地下: %s");
+        add("info.terra_curio.time", "%s:%s", "%s:%s");
+        add("info.terra_curio.time.am", "%s:%s AM", "上午%s：%s");
+        add("info.terra_curio.time.pm", "%s:%s PM", "下午%s：%s");
+        add("info.terra_curio.radar", "%s enemies nearby!", "附近有%s个敌人！");
+        add("info.terra_curio.radar.singular", "%s enemy nearby!", "附近有%s个敌人！");
+        add("info.terra_curio.radar.none", "No enemies nearby!", "附近没有敌人！");
+        add("info.terra_curio.compass.east", "%s East, ", "%s 东, ");
+        add("info.terra_curio.compass.west", "%s West, ", "%s 西, ");
+        add("info.terra_curio.compass.south", "%s South", "%s 南");
+        add("info.terra_curio.compass.north", "%s North", "%s 北");
+        add("info.terra_curio.compass.unknown", "Location Unknown", "位置未知");
+        add("info.terra_curio.depth_meter.unknown", "Depth Unknown", "深度未知");
+        add("info.terra_curio.depth_meter.surface", "%s Surface", "%s 地表");
+        add("info.terra_curio.depth_meter.underground", "%s Underground", "%s 地下");
         add("info.terra_curio.tally_counter.unknown", "Kill count unavailable", "击杀数不可用");
-        add("info.terra_curio.tally_counter", "Killed '", "已杀死 '");
-        add("info.terra_curio.life_form_analyzer.none", "No rare creatures nearby!", "未发现稀有生物");
-        add("info.terra_curio.life_form_analyzer", "%s detected nearby!", "发现稀有生物: %s");
-        add("info.terra_curio.metal_detector.none", "No treasure nearby!", "未发现稀有方块");
-        add("info.terra_curio.metal_detector", "%s detected nearby!", "在附近发现%s!");
-        add("info.terra_curio.stopwatch", "Speed: %s m/s", "速度: %s m/s");
-        add("info.terra_curio.dps_meter", "DPS: %s", "DPS: %s");
-        add("info.terra_curio.sextant.0", "Moon phase: Full Moon", "月相: 满月");
-        add("info.terra_curio.sextant.1", "Moon phase: Waning Gibbous", "月相: 亏凸月");
-        add("info.terra_curio.sextant.2", "Moon phase: Third Quarter", "月相: 下弦月");
-        add("info.terra_curio.sextant.3", "Moon phase: Waning Crescent", "月相: 残月");
-        add("info.terra_curio.sextant.4", "Moon phase: New Moon", "月相: 新月");
-        add("info.terra_curio.sextant.5", "Moon phase: Waxing Crescent", "月相: 峨眉月");
-        add("info.terra_curio.sextant.6", "Moon phase: First Quarter", "月相: 上弦月");
-        add("info.terra_curio.sextant.7", "Moon phase: Waxing Gibbous", "月相: 盈凸月");
+        add("info.terra_curio.tally_counter", "Killed %s %s", "已杀死%s只%s");
+        add("info.terra_curio.life_form_analyzer.none", "No rare creatures nearby!", "未发现稀有生物！");
+        add("info.terra_curio.life_form_analyzer", "%s detected nearby!", "附近发现%s！");
+        add("info.terra_curio.metal_detector.none", "No treasure nearby!", "未发现稀有方块！");
+        add("info.terra_curio.metal_detector", "%s detected nearby!", "在附近发现%s！");
+        add("info.terra_curio.stopwatch", "%s m/s", "%s m/s");
+        add("info.terra_curio.dps_meter", "%s DPS", "%s DPS");
+        add("info.terra_curio.sextant.0", "Full Moon", "满月");
+        add("info.terra_curio.sextant.1", "Waning Gibbous", "亏凸月");
+        add("info.terra_curio.sextant.2", "Third Quarter", "下弦月");
+        add("info.terra_curio.sextant.3", "Waning Crescent", "残月");
+        add("info.terra_curio.sextant.4", "New Moon", "新月");
+        add("info.terra_curio.sextant.5", "Waxing Crescent", "峨眉月");
+        add("info.terra_curio.sextant.6", "First Quarter", "上弦月");
+        add("info.terra_curio.sextant.7", "Waxing Gibbous", "盈凸月");
         add("info.terra_curio.weather_radio.clear", "Weather: Clear", "天气: 晴天");
         add("info.terra_curio.weather_radio.cloudy", "Weather: Cloudy", "天气: 阴天");
         add("info.terra_curio.weather_radio.rain", "Weather: Rain", "天气: 下雨");
@@ -146,12 +152,12 @@ public class ModLanguageProvider extends LanguageProvider {
 
         add("tooltip.item.terra_curio.demon_heart.1", "Remaining Times: %s", "剩余次数: %s");
 
-        add("terra_curio.subtitle.transmission", "Transmission Magic: Activated", "传送魔法：开启");
-        add("terra_curio.subtitle.fart_sound", "Player: Fart Sound", "玩家：放屁声");
-        add("terra_curio.subtitle.double_jump", "Player: Double Jump", "玩家：二段跳");
-        add("terra_curio.subtitle.shoes_walk", "Shoes: Walking", "鞋：跑动");
-        add("terra_curio.subtitle.rocket_boots_boost", "Rocket Boots: Boost", "火箭靴：助推");
-        add("terra_curio.subtitle.rocket_boots_stop", "Rocket Boots: Stop", "火箭靴：关闭");
+        add("terra_curio.subtitle.transmission", "Teleportation magic activates", "传送魔法启动");
+        add("terra_curio.subtitle.fart_sound", "Player farts", "玩家放屁声");
+        add("terra_curio.subtitle.double_jump", "Player double jumps", "玩家二段跳");
+        add("terra_curio.subtitle.shoes_walk", "Shoes walking", "鞋跑动");
+        add("terra_curio.subtitle.rocket_boots_boost", "Rocket Boots boost", "火箭靴助推");
+        add("terra_curio.subtitle.rocket_boots_stop", "Rocket Boots stop", "火箭靴关闭");
 
 
         onlyTooltip(TCItems.BASE_POINT, "基点", "'Can you hear the sound in this silence?'", "“你可听闻这寂静之声？”");
@@ -998,6 +1004,11 @@ public class ModLanguageProvider extends LanguageProvider {
         add("terra_curio.configuration.shoesSoundVolume", "Shoes Sound Volume", "靴子音效音量");
         add("terra_curio.configuration.autoAttack", "Auto Attack", "自动攻击");
         add("terra_curio.configuration.autoAttack.tooltip", "Auto Attack", "启用近战武器自动挥动");
+
+        add("terra_curio.configuration.Coordinate Scale", "Coordinate Scale", "坐标尺度");
+        add("terra_curio.configuration.coordValues", "Coordinate Values", "坐标精度");
+        add("terra_curio.configuration.coordValues.tooltip", "Controls the behaviour of the Depth Meter and Compass. It is recommended to edit these values in the file.", "控制深度计和指南针的行为。建议在文件中编辑这些数值。");
+        add("terra_curio.configuration.use12htime", "Use 12 hour time", "使用12小时时间");
     }
 
     private static String toTitleCase(String raw) {

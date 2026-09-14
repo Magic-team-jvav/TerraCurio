@@ -101,10 +101,16 @@ public final class InformationHandler {
         }
 
         if (!DISABLE[RADAR] && INFO_DATA[RADAR] != 0) {
-            if (tenSec == RADAR) radarInfo = Component.translatable(
-                    "info.terra_curio.radar",
-                    localPlayer.level().getEntities(localPlayer, new AABB(localPlayer.blockPosition()).inflate(63.5), entity -> entity instanceof Enemy).size()
-            );
+            if (tenSec == RADAR) {
+                int numEnemies = localPlayer.level().getEntities(localPlayer, new AABB(localPlayer.blockPosition()).inflate(63.5), entity -> entity instanceof Enemy).size();
+                if (numEnemies == 0) {
+                    radarInfo = Component.translatable("info.terra_curio.radar.none");
+                } else if (numEnemies == 1) {
+                    radarInfo = Component.translatable("info.terra_curio.radar.singular", numEnemies);
+                } else {
+                    radarInfo = Component.translatable("info.terra_curio.radar", numEnemies);
+                }
+            }
             INFORMATION.put(RADAR, radarInfo);
         }
 
@@ -212,15 +218,34 @@ public final class InformationHandler {
     }
 
     private static Component getCompassInfo(Player player) {
-        double x = player.getX();
-        double z = player.getZ();
-        return Component.translatable("info.terra_curio.compass." + (x > 0 ? "east" : "west"), "%.2f".formatted(x))
-                .append(Component.translatable("info.terra_curio.compass." + (z > 0 ? "south" : "north"), "%.2f".formatted(z)));
+        double y = player.getY();
+        TCCommonConfigs.CoordElement level = new TCCommonConfigs.CoordElement(-64.0, null, "info.terra_curio.depth_meter.unknown", 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 2, 2, 2);
+        for (TCCommonConfigs.CoordElement coordElement : TCCommonConfigs.coordValues) {
+            if (y < coordElement.key() && coordElement.restriction().matcher(player.level().dimension().location().toString()).matches()) {
+                level = coordElement;
+                break;
+            }
+        }
+        double x = (player.getX() - level.offsetX()) / level.scaleX();
+        double z = (player.getZ() - level.offsetZ()) / level.scaleZ();
+        if (level.restriction() != null) {
+            return Component.translatable("info.terra_curio.compass." + (x > 0 ? "east" : "west"), ("%." + level.precisionX() + "f").formatted(Math.abs(x)))
+            .append(Component.translatable("info.terra_curio.compass." + (z > 0 ? "south" : "north"), ("%." + level.precisionZ() + "f").formatted(Math.abs(z))));
+        } else {
+            return Component.translatable("info.terra_curio.compass.unknown");
+        }
     }
 
     private static Component getDepthMeterInfo(Player player) {
         double y = player.getY();
-        return Component.translatable("info.terra_curio.depth_meter." + (y > 63 ? "surface" : "underground"), "%.2f".formatted(y));
+        TCCommonConfigs.CoordElement level = new TCCommonConfigs.CoordElement(-64.0, null, "info.terra_curio.depth_meter.unknown", 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 2, 2, 2);
+        for (TCCommonConfigs.CoordElement coordElement : TCCommonConfigs.coordValues) {
+            if (y < coordElement.key() && coordElement.restriction().matcher(player.level().dimension().location().toString()).matches()) {
+                level = coordElement;
+                break;
+            }
+        }
+        return Component.translatable(level.value(), ("%." + level.precisionY() + "f").formatted((y - level.offsetY()) / level.scaleY()));
     }
 
     public static boolean hasMechanicalView() {
@@ -263,7 +288,15 @@ public final class InformationHandler {
     private static Component wrapHour(long dayTime) {
         long hour = (dayTime % 24000) / 1000 + 6;
         if (hour > 23) hour -= 24;
-        return Component.translatable("info.terra_curio.time", format(hour), "00");
+        if (TCCommonConfigs.USE_12H_TIME.get()) {
+            if (hour > 11) {
+                return Component.translatable("info.terra_curio.time.pm", format(hour - 12), "00");
+            } else {
+                return Component.translatable("info.terra_curio.time.am", format(hour), "00");
+            }
+        } else {
+            return Component.translatable("info.terra_curio.time", format(hour), "00");
+        }
     }
 
     private static Component wrapHalfHour(long dayTime) {
@@ -271,7 +304,15 @@ public final class InformationHandler {
         long hour = dayTime / 1000 + 6;
         if (hour > 23) hour -= 24;
         String half = dayTime % 1000 > 499 ? "30" : "00";
-        return Component.translatable("info.terra_curio.time", format(hour), half);
+        if (TCCommonConfigs.USE_12H_TIME.get()) {
+            if (hour > 11) {
+                return Component.translatable("info.terra_curio.time.pm", format(hour - 12), half);
+            } else {
+                return Component.translatable("info.terra_curio.time.am", format(hour), half);
+            }
+        } else {
+            return Component.translatable("info.terra_curio.time", format(hour), half);
+        }
     }
 
     private static Component wrapMinute(long dayTime) {
@@ -279,7 +320,15 @@ public final class InformationHandler {
         long hour = dayTime / 1000 + 6;
         if (hour > 23) hour -= 24;
         long minute = (long) ((dayTime % 1000) * 0.06F);
-        return Component.translatable("info.terra_curio.time", format(hour), format(minute));
+        if (TCCommonConfigs.USE_12H_TIME.get()) {
+            if (hour > 11) {
+                return Component.translatable("info.terra_curio.time.pm", format(hour - 12), format(minute));
+            } else {
+                return Component.translatable("info.terra_curio.time.am", format(hour), format(minute));
+            }
+        } else {
+            return Component.translatable("info.terra_curio.time", format(hour), format(minute));
+        }
     }
 
     private static String format(long time) {
@@ -299,6 +348,6 @@ public final class InformationHandler {
 
     public static void handleEntityKilled(int amount, ResourceLocation entityType) {
         EntityType<?> type = BuiltInRegistries.ENTITY_TYPE.get(entityType);
-        tallyCounterInfo = Component.translatable("info.terra_curio.tally_counter").append(type.getDescription()).append("': " + (amount + 1));
+        tallyCounterInfo = Component.translatable("info.terra_curio.tally_counter", amount + 1, type.getDescription());
     }
 }
