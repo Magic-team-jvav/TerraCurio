@@ -8,6 +8,7 @@ import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import org.confluence.lib.common.LibTags;
 import org.confluence.terra_curio.TerraCurio;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.init.TCTags;
@@ -47,5 +48,32 @@ public class TCItemTagsProvider extends ItemTagsProvider {
         IntrinsicHolderTagsProvider.IntrinsicTagAppender<Item> wings = tag(TCTags.Items.WINGS);
         TCItems.WINGS.getEntries().forEach(holder -> wings.add(holder.get()));
         wings.add(TCItems.CELESTIAL_STARBOARD.get());
+
+        tag(LibTags.Items.WIP).add(
+                TCItems.FROZEN_WINGS.get(),
+                TCItems.JETPACK.get(),
+                TCItems.LEAF_WINGS.get(),
+                TCItems.BAT_WINGS.get(),
+                TCItems.BUTTERFLY_WINGS.get(),
+                TCItems.FLAME_WINGS.get(),
+                TCItems.HOVERBOARD.get(),
+                TCItems.BONE_WINGS.get(),
+                TCItems.MOTHRON_WINGS.get(),
+                TCItems.SPECTRE_WINGS.get(),
+                TCItems.BEETLE_WINGS.get(),
+                TCItems.FESTIVE_WINGS.get(),
+                TCItems.SPOOKY_WINGS.get(),
+                TCItems.TATTERED_WINGS.get(),
+                TCItems.STEAMPUNK_WINGS.get(),
+                TCItems.BETSYS_WINGS.get(),
+                TCItems.EMPRESS_WINGS.get(),
+                TCItems.FISHRON_WINGS.get(),
+                TCItems.NEBULA_WINGS.get(),
+                TCItems.VORTEX_BOOSTER.get(),
+                TCItems.SOLAR_WINGS.get(),
+                TCItems.STARDUST_WINGS.get(),
+                TCItems.EVERLASTING.get(),
+                TCItems.BASE_POINT.get()
+        );
     }
 }

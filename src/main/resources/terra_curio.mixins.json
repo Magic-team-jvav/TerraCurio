@@ -24,6 +24,7 @@
         "client.LocalPlayerMixin",
         "client.MouseHandlerMixin",
         "client.accessor.MinecraftAccessor",
+        "integration.curios.ClientEventHandlerMixin",
         "integration.curios.CuriosClientPacketsMixin"
     ],
     "injectors": {
