@@ -129,12 +129,17 @@ repositories {
 }
 
 boolean slim = true
+boolean subproject = true
 
 dependencies {
     modImplementation "top.theillusivec4.curios:curios-forge:${curios_version}"
     modImplementation("software.bernie.geckolib:geckolib-forge-${minecraft_version}:${geckolib_version}")
     modImplementation project(":PortLib")
-    interfaceInjectionData("org.mesdag:PortLib:${portlib_version}")
+    if (subproject) {
+        interfaceInjectionData(rootProject.files("PortLib/portlib-interfaceinjection.json"))
+    } else {
+        interfaceInjectionData("org.mesdag:PortLib:${portlib_version}")
+    }
     modImplementation("org.mesdag:ParticleStorm-forge-${minecraft_version}:${particlestorm_version}")
     modImplementation(project(":Confluence-Magic-Lib"))
 
