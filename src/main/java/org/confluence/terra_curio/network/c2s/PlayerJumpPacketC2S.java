@@ -9,6 +9,7 @@ import org.confluence.terra_curio.TerraCurio;
 import org.confluence.terra_curio.common.item.curio.combat.RamRune;
 import org.confluence.terra_curio.network.s2c.PlayerJumpTriggeredPacketS2C;
 import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.PortPacketDistributor;
 import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
@@ -56,6 +57,6 @@ public record PlayerJumpPacketC2S(byte jumpState, float motionY, byte jumpType) 
     }
 
     public static void sendToServer(byte jumpState, float motionY, byte jumpType) {
-        TerraCurio.NETWORK_HANDLER.sendToServer(new PlayerJumpPacketC2S(jumpState, motionY, jumpType));
+        PortPacketDistributor.sendToServer(new PlayerJumpPacketC2S(jumpState, motionY, jumpType));
     }
 }

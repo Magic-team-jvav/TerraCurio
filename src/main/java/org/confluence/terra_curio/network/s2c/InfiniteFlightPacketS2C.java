@@ -9,6 +9,7 @@ import org.confluence.terra_curio.client.handler.PlayerJumpHandler;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.util.TCUtils;
 import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.PortPacketDistributor;
 import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
@@ -26,8 +27,8 @@ public record InfiniteFlightPacketS2C(boolean enable) implements IPortPacket.S2C
         PlayerJumpHandler.handleInfiniteFlight(enable);
     }
 
-    public static void sendToClient(ServerPlayer serverPlayer) {
-        boolean enable = TCUtils.hasType(serverPlayer, TCItems.INFINITE$FLIGHT);
-        TerraCurio.NETWORK_HANDLER.sendToPlayer(serverPlayer, new InfiniteFlightPacketS2C(enable));
+    public static void sendToClient(ServerPlayer player) {
+        boolean enable = TCUtils.hasType(player, TCItems.INFINITE$FLIGHT);
+        PortPacketDistributor.sendToPlayer(player, new InfiniteFlightPacketS2C(enable));
     }
 }

@@ -17,6 +17,7 @@ import org.confluence.terra_curio.common.item.IMultiFunctionCouldEnable;
 import org.confluence.terra_curio.util.CuriosUtils;
 import org.confluence.terra_curio.util.TCUtils;
 import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.PortPacketDistributor;
 import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
@@ -55,8 +56,8 @@ public record InfoCurioCheckPacketS2C(int playerId, byte[] enabled) implements I
         return target;
     }
 
-    public static void sendToClient(ServerPlayer serverPlayer, Inventory inventory) {
-        ArrayList<ItemStack> itemStacks = CuriosUtils.getCurios(serverPlayer);
+    public static void sendToClient(ServerPlayer player, Inventory inventory) {
+        ArrayList<ItemStack> itemStacks = CuriosUtils.getCurios(player);
         itemStacks.addAll(inventory.items);
         byte watch = 0;
         byte weatherRadio = 0;
@@ -109,7 +110,7 @@ public record InfoCurioCheckPacketS2C(int playerId, byte[] enabled) implements I
             if (lens == 0 && list.contains(TCItems.MECHANICAL$LENS))
                 lens = checkEnabled(lens, (byte) 1, stack, TCItems.MECHANICAL$LENS);
         }
-        TerraCurio.NETWORK_HANDLER.sendToPlayer(serverPlayer, new InfoCurioCheckPacketS2C(serverPlayer.getId(), new byte[]{
+        PortPacketDistributor.sendToPlayer(player, new InfoCurioCheckPacketS2C(player.getId(), new byte[]{
                 watch, weatherRadio, sextant, guide, detector, analyzer,
                 radar, counter, dpsMeter, stopwatch, compass, depthMeter, lens
         }));
@@ -179,7 +180,7 @@ public record InfoCurioCheckPacketS2C(int playerId, byte[] enabled) implements I
         Object team = LibEntityUtils.getTeam(player);
         for (ServerPlayer sp : player.serverLevel().players()) {
             if (sp != player && LibEntityUtils.getTeam(sp) == team && sp.distanceToSqr(player) < MAX_SHARE_DISTANCE_SQR) {
-                TerraCurio.NETWORK_HANDLER.sendToPlayer(sp, packet);
+                PortPacketDistributor.sendToPlayer(sp, packet);
             }
         }
     }

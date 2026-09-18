@@ -7,6 +7,7 @@ import net.minecraft.world.entity.player.Player;
 import org.confluence.terra_curio.TerraCurio;
 import org.confluence.terra_curio.util.TCUtils;
 import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.PortPacketDistributor;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
 public enum FluidWalkUpdatePacketS2C implements IPortPacket.S2C {
@@ -25,8 +26,8 @@ public enum FluidWalkUpdatePacketS2C implements IPortPacket.S2C {
         TCUtils.updateWalkableFluidStates(player);
     }
 
-    public static void sendToClient(ServerPlayer serverPlayer) {
-        TCUtils.updateWalkableFluidStates(serverPlayer);
-        TerraCurio.NETWORK_HANDLER.sendToPlayer(serverPlayer, INSTANCE);
+    public static void sendToClient(ServerPlayer player) {
+        TCUtils.updateWalkableFluidStates(player);
+        PortPacketDistributor.sendToPlayer(player, INSTANCE);
     }
 }

@@ -8,6 +8,7 @@ import net.minecraft.world.entity.player.Player;
 import org.confluence.terra_curio.TerraCurio;
 import org.confluence.terra_curio.client.handler.StepStoolHandler;
 import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.PortPacketDistributor;
 import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 import top.theillusivec4.curios.api.SlotContext;
@@ -33,14 +34,14 @@ public record StepStoolSteppingPacketS2C(int slot, int maxStep) implements IPort
     }
 
     public static void sendToClient(SlotContext slotContext, int maxStep) {
-        if (slotContext.entity() instanceof ServerPlayer serverPlayer) {
-            TerraCurio.NETWORK_HANDLER.sendToPlayer(serverPlayer, new StepStoolSteppingPacketS2C(slotContext.index(), maxStep));
+        if (slotContext.entity() instanceof ServerPlayer player) {
+            PortPacketDistributor.sendToPlayer(player, new StepStoolSteppingPacketS2C(slotContext.index(), maxStep));
         }
     }
 
     public static void resetStep(Entity entity, int maxStep) {
-        if (entity instanceof ServerPlayer serverPlayer) {
-            TerraCurio.NETWORK_HANDLER.sendToPlayer(serverPlayer, new StepStoolSteppingPacketS2C(RESET_STEP, maxStep));
+        if (entity instanceof ServerPlayer player) {
+            PortPacketDistributor.sendToPlayer(player, new StepStoolSteppingPacketS2C(RESET_STEP, maxStep));
         }
     }
 }

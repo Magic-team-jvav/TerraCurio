@@ -7,6 +7,7 @@ import net.minecraft.world.entity.player.Player;
 import org.confluence.terra_curio.TerraCurio;
 import org.confluence.terra_curio.client.handler.PlayerJumpHandler;
 import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.PortPacketDistributor;
 import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
@@ -33,6 +34,6 @@ public record PlayerJumpTriggeredPacketS2C(int entityId, byte jumpType) implemen
     }
 
     public static void sendToTrackingPlayers(ServerPlayer player, byte jumpType) {
-        TerraCurio.NETWORK_HANDLER.sendToPlayersTrackingEntity(player, new PlayerJumpTriggeredPacketS2C(player.getId(), jumpType));
+        PortPacketDistributor.sendToPlayersTrackingEntity(player, new PlayerJumpTriggeredPacketS2C(player.getId(), jumpType));
     }
 }

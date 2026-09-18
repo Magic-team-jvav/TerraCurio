@@ -12,6 +12,7 @@ import org.confluence.terra_curio.client.handler.PlayerJumpHandler;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.util.TCUtils;
 import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.PortPacketDistributor;
 import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
 import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
@@ -39,7 +40,7 @@ public record PlayerFlyPacketS2C(
         PlayerJumpHandler.handleFlyPacket(flyStacks);
     }
 
-    public static void sendToClient(ServerPlayer serverPlayer) {
-        TerraCurio.NETWORK_HANDLER.sendToPlayer(serverPlayer, new PlayerFlyPacketS2C(TCUtils.getValue(serverPlayer, TCItems.MAY$FLY)));
+    public static void sendToClient(ServerPlayer player) {
+        PortPacketDistributor.sendToPlayer(player, new PlayerFlyPacketS2C(TCUtils.getValue(player, TCItems.MAY$FLY)));
     }
 }

@@ -6,6 +6,7 @@ import net.minecraft.server.level.ServerPlayer;
 import org.confluence.terra_curio.TerraCurio;
 import org.confluence.terra_curio.common.item.curio.combat.RamRune;
 import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.PortPacketDistributor;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
 public record RamRuneFallPacketC2S() implements IPortPacket.C2S {
@@ -24,6 +25,6 @@ public record RamRuneFallPacketC2S() implements IPortPacket.C2S {
     }
 
     public static void sendToServer() {
-        TerraCurio.NETWORK_HANDLER.sendToServer(INSTANCE);
+        PortPacketDistributor.sendToServer(INSTANCE);
     }
 }

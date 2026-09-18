@@ -7,6 +7,7 @@ import net.minecraftforge.server.ServerLifecycleHooks;
 import org.confluence.terra_curio.TerraCurio;
 import org.confluence.terra_curio.client.handler.TCClientPacketHandler;
 import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.PortPacketDistributor;
 import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
@@ -30,7 +31,7 @@ public record SetItemEntityPickupDelayPacketS2C(int id, int delay) implements IP
 
     public static void sendToAll(int id, int delay) {
         if (ServerLifecycleHooks.getCurrentServer() != null) {
-            TerraCurio.NETWORK_HANDLER.sendToAllPlayers(new SetItemEntityPickupDelayPacketS2C(id, delay));
+            PortPacketDistributor.sendToAllPlayers(new SetItemEntityPickupDelayPacketS2C(id, delay));
         } else {
             TerraCurio.LOGGER.warn("Trying send a packet with no server!");
         }

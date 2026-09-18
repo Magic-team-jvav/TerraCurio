@@ -12,6 +12,7 @@ import org.confluence.lib.util.LibStreamCodecUtils;
 import org.confluence.terra_curio.TerraCurio;
 import org.confluence.terra_curio.client.handler.InformationHandler;
 import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.PortPacketDistributor;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -52,10 +53,10 @@ public record InfoDisablePacket(boolean[] disables) implements IPortPacket {
         for (int i = 0; i < ARRAY_LENGTH; i++) {
             disables[i] = bytes[i] != 0;
         }
-        TerraCurio.NETWORK_HANDLER.sendToPlayer(player, new InfoDisablePacket(disables));
+        PortPacketDistributor.sendToPlayer(player, new InfoDisablePacket(disables));
     }
 
     public static void sendToServer(boolean[] disables) {
-        TerraCurio.NETWORK_HANDLER.sendToServer(new InfoDisablePacket(disables));
+        PortPacketDistributor.sendToServer(new InfoDisablePacket(disables));
     }
 }

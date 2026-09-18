@@ -19,6 +19,7 @@ import org.confluence.terra_curio.util.CuriosUtils;
 import org.confluence.terra_curio.util.TCUtils;
 import org.mesdag.portlib.event.PortEventHandler;
 import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.PortPacketDistributor;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
 import java.util.ArrayList;
@@ -74,6 +75,6 @@ public record CurioExistsPacketS2C(boolean[] exists) implements IPortPacket.S2C 
                 }
             }
         }
-        TerraCurio.NETWORK_HANDLER.sendToPlayer(player, new CurioExistsPacketS2C(arr));
+        PortPacketDistributor.sendToPlayer(player, new CurioExistsPacketS2C(arr));
     }
 }

@@ -9,6 +9,7 @@ import org.confluence.terra_curio.client.handler.PlayerClimbHandler;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.util.TCUtils;
 import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.PortPacketDistributor;
 import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
@@ -26,7 +27,7 @@ public record PlayerClimbPacketS2C(byte climberAmount) implements IPortPacket.S2
         PlayerClimbHandler.handlePacket(climberAmount);
     }
 
-    public static void sendToClient(ServerPlayer serverPlayer) {
-        TerraCurio.NETWORK_HANDLER.sendToPlayer(serverPlayer, new PlayerClimbPacketS2C(TCUtils.getValue(serverPlayer, TCItems.WALL$CLIMB)));
+    public static void sendToClient(ServerPlayer player) {
+        PortPacketDistributor.sendToPlayer(player, new PlayerClimbPacketS2C(TCUtils.getValue(player, TCItems.WALL$CLIMB)));
     }
 }

@@ -9,6 +9,7 @@ import org.confluence.terra_curio.client.handler.TCClientPacketHandler;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.util.TCUtils;
 import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.PortPacketDistributor;
 import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
@@ -26,7 +27,7 @@ public record RightClickSubtractorPacketS2C(byte amount) implements IPortPacket.
         TCClientPacketHandler.handleSubstractor(amount);
     }
 
-    public static void sendToClient(ServerPlayer serverPlayer) {
-        TerraCurio.NETWORK_HANDLER.sendToPlayer(serverPlayer, new RightClickSubtractorPacketS2C(TCUtils.getValue(serverPlayer, TCItems.RIGHT$CLICK$DELAY$SUBSTRACTOR)));
+    public static void sendToClient(ServerPlayer player) {
+        PortPacketDistributor.sendToPlayer(player, new RightClickSubtractorPacketS2C(TCUtils.getValue(player, TCItems.RIGHT$CLICK$DELAY$SUBSTRACTOR)));
     }
 }

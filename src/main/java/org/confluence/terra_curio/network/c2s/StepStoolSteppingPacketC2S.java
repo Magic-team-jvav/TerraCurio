@@ -10,6 +10,7 @@ import org.confluence.terra_curio.common.entity.StepStoolEntity;
 import org.confluence.terra_curio.common.item.curio.movement.StepStool;
 import org.confluence.terra_curio.util.CuriosUtils;
 import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.PortPacketDistributor;
 import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
@@ -61,6 +62,6 @@ public record StepStoolSteppingPacketC2S(int slot, byte step) implements IPortPa
     }
 
     public static void sendToServer(int slot, byte step) {
-        TerraCurio.NETWORK_HANDLER.sendToServer(new StepStoolSteppingPacketC2S(slot, step));
+        PortPacketDistributor.sendToServer(new StepStoolSteppingPacketC2S(slot, step));
     }
 }

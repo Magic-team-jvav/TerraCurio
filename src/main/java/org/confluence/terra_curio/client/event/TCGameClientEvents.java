@@ -10,7 +10,6 @@ import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.MovementInputUpdateEvent;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.event.TickEvent;
-import org.confluence.terra_curio.TerraCurio;
 import org.confluence.terra_curio.client.TCClientConfigs;
 import org.confluence.terra_curio.client.TCKeyBindings;
 import org.confluence.terra_curio.client.handler.*;
@@ -21,6 +20,7 @@ import org.confluence.terra_curio.util.TCUtils;
 import org.mesdag.portlib.event.PortEventHandler;
 import org.mesdag.portlib.event.client.PortInputEvent;
 import org.mesdag.portlib.event.client.PortScreenEvent;
+import org.mesdag.portlib.network.PortPacketDistributor;
 
 public final class TCGameClientEvents {
     public static void init() {
@@ -84,7 +84,7 @@ public final class TCGameClientEvents {
             instance.setRightClickDelay(Math.max(0, delay));
         }
         if (TCClientPacketHandler.isBoneGlove() && player.getMainHandItem().is(Tags.Items.TOOLS)) {
-            TerraCurio.NETWORK_HANDLER.sendToServer(ShootXBonePacketC2S.INSTANCE);
+            PortPacketDistributor.sendToServer(ShootXBonePacketC2S.INSTANCE);
         }
     }
 

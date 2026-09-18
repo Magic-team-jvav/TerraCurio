@@ -9,6 +9,7 @@ import org.confluence.terra_curio.TerraCurio;
 import org.confluence.terra_curio.common.item.curio.movement.BaseSpeedBoots;
 import org.confluence.terra_curio.util.CuriosUtils;
 import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.PortPacketDistributor;
 import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
@@ -37,6 +38,6 @@ public record SpeedBootsNBTPacketC2S(int slot, int value) implements IPortPacket
     }
 
     public static void sendToServer(int slot, int value) {
-        TerraCurio.NETWORK_HANDLER.sendToServer(new SpeedBootsNBTPacketC2S(slot, value));
+        PortPacketDistributor.sendToServer(new SpeedBootsNBTPacketC2S(slot, value));
     }
 }

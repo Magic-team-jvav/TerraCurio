@@ -11,6 +11,7 @@ import org.confluence.terra_curio.client.handler.PlayerJumpHandler;
 import org.confluence.terra_curio.common.attachment.AccessoriesAttachment;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.PortPacketDistributor;
 import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
@@ -53,11 +54,11 @@ public record PlayerJumpPacketS2C(
         );
     }
 
-    public static void sendToClient(ServerPlayer serverPlayer) {
-        AccessoriesAttachment attachment = AccessoriesAttachment.of(serverPlayer);
+    public static void sendToClient(ServerPlayer player) {
+        AccessoriesAttachment attachment = AccessoriesAttachment.of(player);
         Tuple<Float, Integer> sandStorm = attachment.getValue(TCItems.SAND$STORM);
         Tuple<Float, Integer> blizzard = attachment.getValue(TCItems.BLIZZARD);
-        TerraCurio.NETWORK_HANDLER.sendToPlayer(serverPlayer, new PlayerJumpPacketS2C(
+        PortPacketDistributor.sendToPlayer(player, new PlayerJumpPacketS2C(
                 attachment.getValue(TCItems.FART),
                 sandStorm.getA(), sandStorm.getB(),
                 blizzard.getA(), blizzard.getB(),

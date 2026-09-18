@@ -9,6 +9,7 @@ import org.confluence.terra_curio.mixed.ITCLivingEntity;
 import org.mesdag.particlestorm.particle.ParticleEmitter;
 import org.mesdag.portlib.diff.Diff;
 import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.PortPacketDistributor;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
 @Diff
@@ -33,6 +34,6 @@ public record RemoveCurioParticleEmitterPacketS2C(
     }
 
     public static void sendToClient(ServerPlayer player, ResourceLocation particle) {
-        TerraCurio.NETWORK_HANDLER.sendToPlayer(player, new RemoveCurioParticleEmitterPacketS2C(particle));
+        PortPacketDistributor.sendToPlayer(player, new RemoveCurioParticleEmitterPacketS2C(particle));
     }
 }

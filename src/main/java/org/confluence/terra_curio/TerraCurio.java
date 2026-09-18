@@ -16,8 +16,6 @@ import org.confluence.terra_curio.common.attachment.AccessoriesValueCommand;
 import org.confluence.terra_curio.common.event.TCGameEvents;
 import org.confluence.terra_curio.common.event.TCModEvents;
 import org.confluence.terra_curio.common.init.*;
-import org.mesdag.portlib.diff.Diff;
-import org.mesdag.portlib.network.PortNetworkHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,8 +24,6 @@ public class TerraCurio {
     public static final String MODID = "terra_curio";
     public static final Logger LOGGER = LoggerFactory.getLogger("Terra Curio");
     public static final String CURIO_SLOT = "accessory";
-    @Diff
-    public static final PortNetworkHandler NETWORK_HANDLER = new PortNetworkHandler(MODID, "1");
 
     public TerraCurio(FMLJavaModLoadingContext context) {
         IEventBus eventBus = context.getModEventBus();
