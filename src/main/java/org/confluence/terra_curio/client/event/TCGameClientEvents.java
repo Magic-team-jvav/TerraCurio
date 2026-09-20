@@ -27,8 +27,8 @@ public final class TCGameClientEvents {
         PortEventHandler.addListener(TCGameClientEvents::clientTick$Post);
         PortEventHandler.addListener(TCGameClientEvents::clientPlayerNetwork$LoggingOut);
         PortEventHandler.addListener(TCGameClientEvents::movementInputUpdate);
-        PortEventHandler.addListener(TCGameClientEvents::fov);
-        PortEventHandler.addListener(TCGameClientEvents::interactionKeyMappingTriggered);
+        PortEventHandler.addListener(TCGameClientEvents::computeFovModifier);
+        PortEventHandler.addListener(TCGameClientEvents::input$InteractionKeyMappingTriggered);
         PortEventHandler.addListener(TCGameClientEvents::input$MouseScrolling);
         PortEventHandler.addListener(TCGameClientEvents::screen$MouseScrolled$Pre);
     }
@@ -64,18 +64,18 @@ public final class TCGameClientEvents {
         PlayerJumpHandler.handle(player, jumping);
         PlayerClimbHandler.handle(player, input.getMoveVector(), jumping);
 
-        if (TCClientPacketHandler.isHasTabi() /* confluence mixin here */) {
+        if (TCClientPacketHandler.isHasTabi()) {
             PlayerSprintingHandler.handle(player, input);
         }
     }
 
-    private static void fov(ComputeFovModifierEvent event) {
+    private static void computeFovModifier(ComputeFovModifierEvent event) {
         if (ScopeFovHandler.isScoping()) {
             event.setNewFovModifier(ScopeFovHandler.getFovModifier());
         }
     }
 
-    private static void interactionKeyMappingTriggered(InputEvent.InteractionKeyMappingTriggered event) {
+    private static void input$InteractionKeyMappingTriggered(InputEvent.InteractionKeyMappingTriggered event) {
         LocalPlayer player = Minecraft.getInstance().player;
         if (player == null) return;
         if (TCClientConfigs.rightClickDelay && event.isUseItem() && player.getItemInHand(event.getHand()).getItem() instanceof BlockItem) {

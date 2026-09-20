@@ -1,5 +1,6 @@
 package org.confluence.terra_curio.network.s2c;
 
+import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -18,7 +19,6 @@ import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 import org.mesdag.portlib.wrapper.common.extensions.IPortResourceKeyExtension;
 
-import java.util.IdentityHashMap;
 import java.util.Map;
 import java.util.function.IntFunction;
 
@@ -26,7 +26,7 @@ public record PlayerFlyPacketS2C(
         Map<ResourceKey<Item>, MayFlyAbilityValue.FlyStack> flyStacks) implements IPortPacket.S2C {
     public static final ResourceLocation ID = TerraCurio.asResource("player_fly");
     public static final PortStreamCodec<PortRegistryFriendlyByteBuf, PlayerFlyPacketS2C> STREAM_CODEC = PortByteBufCodecs.map(
-            (IntFunction<Map<ResourceKey<Item>, MayFlyAbilityValue.FlyStack>>) IdentityHashMap::new,
+            (IntFunction<Map<ResourceKey<Item>, MayFlyAbilityValue.FlyStack>>) Reference2ObjectOpenHashMap::new,
             IPortResourceKeyExtension.streamCodec(Registries.ITEM), MayFlyAbilityValue.FlyStack.STREAM_CODEC
     ).map(PlayerFlyPacketS2C::new, PlayerFlyPacketS2C::flyStacks);
 
