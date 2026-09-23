@@ -2,6 +2,7 @@ package org.confluence.terra_curio.common.item.curio.movement;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -40,17 +41,23 @@ public class BaseSpeedBoots extends BaseCurioItem {
     }
 
     @Override
+    protected void particleTick(SlotContext slotContext, LivingEntity living) {
+        if (TCClientConfigs.showShoesParticle) {
+            super.particleTick(slotContext, living);
+        }
+    }
+
+    @Override
     public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
         super.onUnequip(slotContext, newStack, stack);
         LibUtils.updateItemStackNbt(stack, tag -> tag.putInt(KEY, 0));
     }
 
     protected void speedUp(SlotContext slotContext, ItemStack stack, int acceleration, int maxSpeed) {
-        LibUtils.forMixin$Inject();
         if (TCClientConfigs.speedUp && slotContext.entity() instanceof Player player && player.isLocalPlayer()) {
             int speed = LibUtils.getItemStackNbtNoCopy(stack).getInt(KEY);
             if (player.zza > 0 && !player.horizontalCollision && !player.isCrouching()) {
-                if (player.onGround()) {
+                if (player.onGround() && !player.swinging) {
                     if (TCClientPacketHandler.isHasMagiluminescence() || PlayerJumpHandler.isInfiniteFlight()) {
                         acceleration *= 2;
                     }
@@ -63,9 +70,6 @@ public class BaseSpeedBoots extends BaseCurioItem {
                     if (TCClientConfigs.playShoesSound && player.level().getGameTime() % (ratio < 0.5F ? 6L : 4L) == 0) {
                         player.playSound(TCSoundEvents.SHOES_WALK.get(), TCClientConfigs.shoesSoundVolume, 1.0F);
                     }
-                }
-                if (TCClientConfigs.showShoesParticle) {
-                    // todo particle
                 }
             } else if (speed != 0) {
                 SpeedBootsNBTPacketC2S.sendToServer(slotContext.index(), 0);

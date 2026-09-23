@@ -81,43 +81,40 @@ public class BaseCurioItem extends Item implements ICurioItem {
         if (builder == null || builder.particleTriggers.isEmpty()) return;
         LivingEntity living = slotContext.entity();
         if (living.level().isClientSide) {
-            Map<ResourceLocation, ParticleEmitter> emitters = ITCLivingEntity.of(living).terra_curio$getOrCreateParticleEmitters();
-            for (Map.Entry<ResourceLocation, Builder.ParticleData> entry : builder.particleTriggers.entrySet()) {
-                ResourceLocation particle = entry.getKey();
-                Builder.ParticleData data = entry.getValue();
-                ParticleEmitter emitter = emitters.get(particle);
-                if (emitter == null || emitter.isRemoved()) {
-                    if (emitter != null) {
-                        emitters.remove(particle);
-                    }
-                    emitter = new ParticleEmitter(living.level(), living.position(), particle);
-                    emitter.attachEntity(living);
-                    emitter.hideOutline = true;
-                    MolangParticleEngine.INSTANCE.addEmitter(emitter);
-                    emitters.put(particle, emitter);
-                }
-                boolean active = data.trigger().shouldActivate(living);
-                emitter.active = active && slotContext.visible();
-                if (active && builder.positionParticle) {
-                    positionEmitter(living, emitter, data.placement());
-                }
-            }
+            particleTick(slotContext, living);
         }
     }
 
-    /// 把 emitter 放到实体本地空间的目标位置。
-    ///
-    /// @param placement 自定义的本地空间矩阵变换；为 null 时使用默认行为（shouldRot 时抬到 (0, bbHeight, 0)，否则留在 (0,0,0)）。自定义实现直接操作矩阵（旋转 + 平移），如嘴部气泡用[ParticlePlacements#MOUTH] 那样随头部朝向旋转。
-    private void positionEmitter(LivingEntity living, ParticleEmitter emitter, @Nullable BiConsumer<LivingEntity, Matrix4x3f> placement) {
-        if (!emitter.isLocalSpace()) {
-            emitter.setLocalSpace(new Matrix4x3f(), false);
-        }
-        Matrix4x3f space = emitter.getLocalSpace();
-        if (placement == null) {
-            float baseY = ILibEntity.of(living).confluence$isShouldRot() ? living.getBbHeight() : 0.0F;
-            space.identity().translate(0, baseY, 0);
-        } else {
-            placement.accept(living, space);
+    protected void particleTick(SlotContext slotContext, LivingEntity living) {
+        Map<ResourceLocation, ParticleEmitter> emitters = ITCLivingEntity.of(living).terra_curio$getOrCreateParticleEmitters();
+        for (Map.Entry<ResourceLocation, Builder.ParticleData> entry : builder.particleTriggers.entrySet()) {
+            ResourceLocation particle = entry.getKey();
+            Builder.ParticleData data = entry.getValue();
+            ParticleEmitter emitter = emitters.get(particle);
+            if (emitter == null || emitter.isRemoved()) {
+                if (emitter != null) {
+                    emitters.remove(particle);
+                }
+                emitter = new ParticleEmitter(living.level(), living.position(), particle);
+                emitter.attachEntity(living);
+                emitter.hideOutline = true;
+                MolangParticleEngine.INSTANCE.addEmitter(emitter);
+                emitters.put(particle, emitter);
+            }
+            boolean active = data.trigger().shouldActivate(living);
+            emitter.active = active && slotContext.visible();
+            if (active && builder.positionParticle) {
+                if (!emitter.isLocalSpace()) {
+                    emitter.setLocalSpace(new Matrix4x3f(), false);
+                }
+                Matrix4x3f space = emitter.getLocalSpace();
+                if (data.placement == null) {
+                    float baseY = ILibEntity.of(living).confluence$isShouldRot() ? living.getBbHeight() : 0.0F;
+                    space.identity().translate(0, baseY, 0);
+                } else {
+                    data.placement.accept(living, space);
+                }
+            }
         }
     }
 
