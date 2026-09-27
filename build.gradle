@@ -102,7 +102,13 @@ repositories {
         url = "https://www.cursemaven.com"
     }
     maven {
+        // MixinSquared 等 bawnorton 制品所在仓库
         url = "https://maven.bawnorton.com/releases"
+        content {
+            // 该仓库当前持续返回 530(Cloudflare 源站错误), 若不限定组, Gradle 解析
+            // 任何制品时都会问到它, 拿到 530 后直接把仓库标记为失败并中断解析
+            includeGroupByRegex "com\\.bawnorton.*"
+        }
     }
     maven {
         name = "Curios"
