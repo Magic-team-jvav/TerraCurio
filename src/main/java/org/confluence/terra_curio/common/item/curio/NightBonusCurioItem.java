@@ -7,8 +7,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.ItemStack;
+import org.confluence.lib.common.LibEffects;
 import org.confluence.lib.util.LibDateUtils;
-import org.confluence.terra_curio.common.init.TCEffects;
 import top.theillusivec4.curios.api.SlotContext;
 
 public class NightBonusCurioItem extends BaseCurioItem {
@@ -29,7 +29,7 @@ public class NightBonusCurioItem extends BaseCurioItem {
     public void curioTick(SlotContext slotContext, ItemStack stack) {
         LivingEntity living = slotContext.entity();
         if (LibDateUtils.isNight(living.level())) {
-            TCEffects.healPerSecond(living, healPerSecond);
+            LibEffects.healPerSecond(living, healPerSecond);
         }
     }
 }

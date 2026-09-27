@@ -15,8 +15,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.common.LibEffects;
 import org.confluence.lib.mixed.SelfGetter;
-import org.confluence.terra_curio.common.init.TCEffects;
 import org.confluence.terra_curio.mixed.IEntity;
 import org.confluence.terra_curio.mixed.ILivingEntity;
 import org.confluence.terra_curio.util.TCUtils;
@@ -111,7 +111,7 @@ public abstract class LivingEntityMixin implements ILivingEntity, SelfGetter<Liv
 
     @ModifyVariable(method = "travel", at = @At("HEAD"), argsOnly = true)
     private Vec3 confused(Vec3 vec3) {
-        if (hasEffect(TCEffects.CONFUSED)) {
+        if (hasEffect(LibEffects.CONFUSED)) {
             vec3 = vec3.reverse();
         }
         if (IEntity.of(confluence$self()).terra_curio$isShouldRot()) {

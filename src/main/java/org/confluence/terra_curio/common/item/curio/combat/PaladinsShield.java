@@ -8,7 +8,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import org.apache.commons.lang3.mutable.MutableFloat;
-import org.confluence.terra_curio.common.init.TCEffects;
+import org.confluence.lib.common.LibEffects;
 import org.confluence.terra_curio.common.item.curio.BaseCurioItem;
 import org.confluence.terra_curio.util.CuriosUtils;
 import org.confluence.terra_curio.util.TCUtils;
@@ -25,7 +25,7 @@ public class PaladinsShield extends BaseCurioItem {
             Object team = TCUtils.getTeam(serverPlayer);
             for (Player player : serverPlayer.level().players()) {
                 if (TCUtils.getTeam(player) != team) continue;
-                player.addEffect(new MobEffectInstance(TCEffects.PALADINS_SHIELD, 600, player == serverPlayer ? 1 : 0));
+                player.addEffect(new MobEffectInstance(LibEffects.PALADINS_SHIELD, 600, player == serverPlayer ? 1 : 0));
             }
         }
     }
@@ -56,7 +56,7 @@ public class PaladinsShield extends BaseCurioItem {
     }
 
     public static boolean isOwner(LivingEntity living) {
-        MobEffectInstance effect = living.getEffect(TCEffects.PALADINS_SHIELD);
+        MobEffectInstance effect = living.getEffect(LibEffects.PALADINS_SHIELD);
         return effect != null && effect.getAmplifier() != 0;
     }
 }

@@ -12,13 +12,13 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.network.PacketDistributor;
+import org.confluence.lib.common.LibEffects;
 import org.confluence.terra_curio.TerraCurio;
 import org.confluence.terra_curio.client.TCClientConfigs;
 import org.confluence.terra_curio.client.TCKeyBindings;
 import org.confluence.terra_curio.client.handler.*;
 import org.confluence.terra_curio.client.renderer.accessory.BalloonPhysicsGroup;
 import org.confluence.terra_curio.client.renderer.tooltip.MultiFunctionTooltip;
-import org.confluence.terra_curio.common.init.TCEffects;
 import org.confluence.terra_curio.mixin.client.accessor.MinecraftAccessor;
 import org.confluence.terra_curio.network.c2s.ShootXBonePacketC2S;
 import org.confluence.terra_curio.util.TCUtils;
@@ -58,7 +58,7 @@ public final class GameClientEvents {
         Input input = event.getInput();
         boolean jumping = input.jumping;
 
-        MobEffectInstance effect = player.getEffect(TCEffects.GRAVITATION);
+        MobEffectInstance effect = player.getEffect(LibEffects.GRAVITATION);
         if (effect != null) {
             if (effect.getAmplifier() > 0) {
                 GravitationHandler.force(player);

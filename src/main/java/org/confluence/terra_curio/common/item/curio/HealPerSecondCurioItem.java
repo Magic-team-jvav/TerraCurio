@@ -1,7 +1,7 @@
 package org.confluence.terra_curio.common.item.curio;
 
 import net.minecraft.world.item.ItemStack;
-import org.confluence.terra_curio.common.init.TCEffects;
+import org.confluence.lib.common.LibEffects;
 import top.theillusivec4.curios.api.SlotContext;
 
 public class HealPerSecondCurioItem extends BaseCurioItem {
@@ -14,6 +14,6 @@ public class HealPerSecondCurioItem extends BaseCurioItem {
 
     @Override
     public void curioTick(SlotContext slotContext, ItemStack stack) {
-        TCEffects.healPerSecond(slotContext.entity(), amount);
+        LibEffects.healPerSecond(slotContext.entity(), amount);
     }
 }

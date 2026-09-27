@@ -33,6 +33,7 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.EffectCures;
 import net.neoforged.neoforge.common.NeoForgeMod;
 import net.neoforged.neoforge.network.PacketDistributor;
+import org.confluence.lib.common.LibEffects;
 import org.confluence.lib.common.LibTags;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.lib.util.VectorUtils;
@@ -137,7 +138,7 @@ public final class TCUtils {
                 projectile.setPos(living.position().add(random.nextInt(3) - 1.0, 2.0, random.nextInt(3) - 1.0));
                 living.level().addFreshEntity(projectile);
             }
-            living.addEffect(new MobEffectInstance(TCEffects.HONEY, 100));
+            living.addEffect(new MobEffectInstance(LibEffects.HONEY, 100));
         }
     }
 
@@ -179,12 +180,12 @@ public final class TCUtils {
             AABB aabb = new AABB(living.blockPosition()).inflate(range);
             for (Entity enemy : living.level().getEntities(living, aabb, entity -> entity instanceof Enemy)) {
                 if (enemy instanceof LivingEntity living1) {
-                    living1.addEffect(new MobEffectInstance(TCEffects.CONFUSED, duration));
+                    living1.addEffect(new MobEffectInstance(LibEffects.CONFUSED, duration));
                 }
             }
         }
-        if (randomSource.nextFloat() < 0.1667F && !living.hasEffect(TCEffects.CEREBRAL_MINDTRICK)) {
-            living.addEffect(new MobEffectInstance(TCEffects.CEREBRAL_MINDTRICK, 80));
+        if (randomSource.nextFloat() < 0.1667F && !living.hasEffect(LibEffects.CEREBRAL_MINDTRICK)) {
+            living.addEffect(new MobEffectInstance(LibEffects.CEREBRAL_MINDTRICK, 80));
             return 0.0F;
         }
         return amount;

@@ -27,7 +27,6 @@ public class TerraCurio {
             modContainer.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
         }
         TCSoundEvents.SOUNDS.register(eventBus);
-        TCEffects.EFFECTS.register(eventBus);
         TCEntities.ENTITIES.register(eventBus);
         TCDataComponentTypes.TYPES.register(eventBus);
         TCItems.register(eventBus);

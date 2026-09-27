@@ -4,10 +4,10 @@ import com.google.common.collect.Iterables;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.common.data.LanguageProvider;
+import org.confluence.lib.common.LibEffects;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.terra_curio.TerraCurio;
 import org.confluence.terra_curio.common.init.TCBlocks;
-import org.confluence.terra_curio.common.init.TCEffects;
 import org.confluence.terra_curio.common.init.TCEntities;
 import org.confluence.terra_curio.common.init.TCItems;
 
@@ -949,13 +949,7 @@ public class TCLanguageProvider extends LanguageProvider {
                 add(holder.get().getDescriptionId(), LibUtils.toTitleCase(holder.getId().getPath()));
             });
             TCEntities.ENTITIES.getEntries().forEach(entity -> add(entity.get().getDescriptionId(), LibUtils.toTitleCase(entity.getId().getPath())));
-            TCEffects.EFFECTS.getEntries().forEach(effect -> add(effect.get().getDescriptionId(), LibUtils.toTitleCase(effect.getId().getPath())));
         } else {
-            add(TCEffects.CONFUSED.get().getDescriptionId(), "困惑");
-            add(TCEffects.CEREBRAL_MINDTRICK.get().getDescriptionId(), "控脑术");
-            add(TCEffects.HONEY.get().getDescriptionId(), "蜂蜜");
-            add(TCEffects.PALADINS_SHIELD.get().getDescriptionId(), "圣骑士护盾");
-            add(TCEffects.GRAVITATION.get().getDescriptionId(), "重力");
             add(TCEntities.BEE_PROJECTILE.get().getDescriptionId(), "蜜蜂射弹");
             add(TCEntities.STAR_CLOAK.get().getDescriptionId(), "星星斗篷");
             add(TCEntities.STEP_STOOL.get().getDescriptionId(), "梯凳");

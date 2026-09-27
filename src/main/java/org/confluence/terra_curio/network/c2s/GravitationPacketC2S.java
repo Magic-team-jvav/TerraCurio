@@ -8,9 +8,9 @@ import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.neoforged.neoforge.network.PacketDistributor;
+import org.confluence.lib.common.effect.GravitationEffect;
 import org.confluence.lib.network.IPacketC2S;
 import org.confluence.terra_curio.TerraCurio;
-import org.confluence.terra_curio.common.effect.GravitationEffect;
 import org.confluence.terra_curio.mixed.IEntity;
 import org.confluence.terra_curio.network.s2c.BroadcastGravitationRotPacketS2C;
 
