@@ -11,6 +11,10 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.apache.commons.lang3.mutable.MutableBoolean;
 import org.apache.commons.lang3.mutable.MutableFloat;
+// WP6c：`GravitationHandler` 已按 1.20 的归属搬到 Magic-Lib。本类与该类原本**同包**
+// （`org.confluence.terra_curio.client.handler`），所以原来没有 import、直接裸引用；
+// 这里补一条显式 import 改指到 Lib 那份（单类型导入会遮蔽同包同名类型，JLS 6.4.1），逻辑一行未动。
+import org.confluence.lib.client.handler.GravitationHandler;
 import org.confluence.terra_curio.api.primitive.MayFlyAbilityValue;
 import org.confluence.terra_curio.client.sound.RocketBootsBoostSoundInstance;
 import org.confluence.terra_curio.client.sound.RocketBootsStopSoundInstance;

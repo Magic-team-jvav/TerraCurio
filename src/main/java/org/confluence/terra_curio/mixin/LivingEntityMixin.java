@@ -17,7 +17,6 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.LibEffects;
 import org.confluence.lib.mixed.SelfGetter;
-import org.confluence.terra_curio.mixed.IEntity;
 import org.confluence.terra_curio.mixed.ILivingEntity;
 import org.confluence.terra_curio.util.TCUtils;
 import org.jetbrains.annotations.NotNull;
@@ -28,7 +27,6 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -95,27 +93,27 @@ public abstract class LivingEntityMixin implements ILivingEntity, SelfGetter<Liv
     @Shadow
     public abstract boolean hasEffect(Holder<MobEffect> effect);
 
-    @ModifyArg(method = "checkFallDamage", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerLevel;sendParticles(Lnet/minecraft/core/particles/ParticleOptions;DDDIDDDD)I"), index = 2)
-    private double modifyParticlePosY(double posY) {
-        IEntity self = IEntity.of(confluence$self());
-        if (self.terra_curio$isShouldRot()) {
-            return posY + self.terra_curio$getDimensionHeight() - 0.15;
-        }
-        return posY;
-    }
-
     @ModifyReturnValue(method = "canFreeze", at = @At(value = "RETURN", ordinal = 1))
     private boolean checkFreeze(boolean original) {
         return TCUtils.applyFrozenImmune(confluence$self(), original);
     }
 
+    /// `travel` 的 `@ModifyVariable(HEAD, argsOnly)`：**只保留 `confused` 那半**。
+    ///
+    /// WP6c 第二步处置（逐 hook 比对）：
+    /// - 重力那半（`isShouldRot()` → `new Vec3(-vec3.x, vec3.y, vec3.z)`）**已删** ——
+    ///   1.20 归属 Lib，1.21 的 Lib 里已经有它
+    ///   （`Confluence-Magic-Lib/.../mixin/LivingEntityMixin.java:61 reversed`），留着会重复变换；
+    /// - `confused` 那半**保留**：1.21 的 Lib `LivingEntityMixin` 目前只有
+    ///   `armorPenetration` / `modifyParticlePosY` / `reversed` **三个** hook，
+    ///   **没有** 1.20 Lib 的 `confused`（1.20 Lib `LivingEntityMixin:39-45`）——
+    ///   删掉就会丢「迷乱效果反转移动」的行为，所以先留在 TC 侧。
+    ///   ⚠️ 若之后 Lib 按 1.20 补上 `confused`，这两处会对同一注入点各命中一次
+    ///   （`reverse()` 执行两遍 = 等于不反转），**届时必须删掉本 hook**（已回报）。
     @ModifyVariable(method = "travel", at = @At("HEAD"), argsOnly = true)
     private Vec3 confused(Vec3 vec3) {
         if (hasEffect(LibEffects.CONFUSED)) {
-            vec3 = vec3.reverse();
-        }
-        if (IEntity.of(confluence$self()).terra_curio$isShouldRot()) {
-            vec3 = new Vec3(-vec3.x, vec3.y, vec3.z);
+            return vec3.reverse();
         }
         return vec3;
     }

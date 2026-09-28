@@ -37,7 +37,8 @@ public final class TCModEvents {
     @SubscribeEvent
     public static void registerPayloadHandlers(RegisterPayloadHandlersEvent event) {
         event.registrar("1")
-                .playToServer(GravitationPacketC2S.TYPE, GravitationPacketC2S.STREAM_CODEC, GravitationPacketC2S::handle)
+                // WP6c 第二步：`GravitationPacketC2S` 与 `BroadcastGravitationRotPacketS2C` 两个包
+                // 已随重力整条特性搬到 Lib（1.20 归属），TC 侧不再注册它们的 handler。
                 .playToServer(StepStoolSteppingPacketC2S.TYPE, StepStoolSteppingPacketC2S.STREAM_CODEC, StepStoolSteppingPacketC2S::handle)
                 .playToServer(PlayerJumpPacketC2S.TYPE, PlayerJumpPacketC2S.STREAM_CODEC, PlayerJumpPacketC2S::handle)
                 .playToServer(SpeedBootsNBTPacketC2S.TYPE, SpeedBootsNBTPacketC2S.STREAM_CODEC, SpeedBootsNBTPacketC2S::handle)
@@ -45,7 +46,6 @@ public final class TCModEvents {
                 .playToServer(ShootXBonePacketC2S.TYPE, ShootXBonePacketC2S.STREAM_CODEC, ShootXBonePacketC2S::handle)
                 .playToServer(RamRuneFallPacketC2S.TYPE, RamRuneFallPacketC2S.STREAM_CODEC, RamRuneFallPacketC2S::handle)
 
-                .playToClient(BroadcastGravitationRotPacketS2C.TYPE, BroadcastGravitationRotPacketS2C.STREAM_CODEC, BroadcastGravitationRotPacketS2C::handle)
                 .playToClient(CurioExistsPacketS2C.TYPE, CurioExistsPacketS2C.STREAM_CODEC, CurioExistsPacketS2C::handle)
                 .playToClient(EntityKilledPacketS2C.TYPE, EntityKilledPacketS2C.STREAM_CODEC, EntityKilledPacketS2C::handle)
                 .playToClient(InfoCurioCheckPacketS2C.TYPE, InfoCurioCheckPacketS2C.STREAM_CODEC, InfoCurioCheckPacketS2C::handle)

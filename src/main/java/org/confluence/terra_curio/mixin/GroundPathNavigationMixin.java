@@ -8,13 +8,16 @@ import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.pathfinder.Path;
-import org.confluence.terra_curio.mixed.IEntity;
+import org.confluence.lib.mixed.ILibEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 // todo 反转AI
+// ⚠️ 1.21 独有：1.20 侧没有对应物（1.20 `mixin/EntityMixin` 里只留了 `// todo 反转AI`）。
+// 本类**保留**，只把判据从 1.21 的 `IEntity`（`terra_curio$` 前缀的重力成员）改指到 Lib 的
+// `ILibEntity`（`confluence$` 前缀）—— 1.20 的重力成员宿主。
 @Mixin(GroundPathNavigation.class)
 public abstract class GroundPathNavigationMixin extends PathNavigation {
     public GroundPathNavigationMixin(Mob mob, Level level) {
@@ -23,7 +26,7 @@ public abstract class GroundPathNavigationMixin extends PathNavigation {
 
     @Inject(method = "createPath(Lnet/minecraft/core/BlockPos;I)Lnet/minecraft/world/level/pathfinder/Path;", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/chunk/LevelChunk;getBlockState(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/state/BlockState;", ordinal = 0), cancellable = true)
     private void modifyBlockPos(BlockPos pos, int accuracy, CallbackInfoReturnable<Path> cir, @Local LevelChunk levelchunk) {
-        if (!IEntity.of(mob).terra_curio$isShouldRot()) return;
+        if (!ILibEntity.of(mob).confluence$isShouldRot()) return;
         if (levelchunk.getBlockState(pos).isAir()) {
             BlockPos blockpos = pos.above();
             while (blockpos.getY() < this.level.getMaxBuildHeight() && levelchunk.getBlockState(blockpos).isAir()) {

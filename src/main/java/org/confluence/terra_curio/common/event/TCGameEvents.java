@@ -27,7 +27,6 @@ import net.neoforged.neoforge.event.entity.living.*;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import org.confluence.terra_curio.TerraCurio;
-import org.confluence.terra_curio.client.handler.GravitationHandler;
 import org.confluence.terra_curio.client.handler.TCClientPacketHandler;
 import org.confluence.terra_curio.common.attachment.AccessoriesAttachment;
 import org.confluence.terra_curio.common.attachment.AccessoriesValueCommand;
@@ -167,9 +166,9 @@ public final class TCGameEvents {
 
     @SubscribeEvent
     public static void playerTick$Pre(PlayerTickEvent.Pre event) {
-        if (event.getEntity().isLocalPlayer()) {
-            GravitationHandler.unCrouching(event.getEntity());
-        }
+        // WP6c 第二步：原来这里是 `GravitationHandler.unCrouching(event.getEntity())`
+        // —— 1.20 的归属在 Lib（由 Lib 的 `playerTick$Pre` 驱动），TC 不再驱动重力，
+        // 故监听体清空（注解与签名保留，不动事件注册形态）。
     }
 
     @SubscribeEvent

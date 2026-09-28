@@ -1,57 +1,43 @@
 package org.confluence.terra_curio.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import com.llamalad7.mixinextras.sugar.Local;
-import net.minecraft.core.BlockPos;
-import net.minecraft.util.Mth;
-import net.minecraft.world.damagesource.DamageSources;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.Vec3;
-import org.confluence.terra_curio.mixed.IEntity;
+import org.confluence.terra_curio.mixed.ITCEntity;
 import org.confluence.terra_curio.util.TCUtils;
-import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+/// 目标类 `Entity` 的 TC 侧扩展（WP6c 第二步：**换成 1.20 TC 的形态**）。
+///
+/// 1.21 侧此前这一个类里混了**两条线**：
+/// - 克苏鲁冲刺计时（TC 归属）—— 保留；
+/// - 重力（`terra_curio$isShouldRot` / `setShouldRot` / `getDimensionHeight` 三个 `@Unique` 字段
+///   + 读它们的 6 个 hook：`getOnPosAbove` / `getBoundingBox`(checkSupportingBlock) /
+///   `updateFallDistance` / `modifyParticlePosY` / `modifyParticleSpeedY` / `flip`）—— **已全部删掉**：
+///   1.20 的归属在 Lib，而 1.21 的 `Confluence-Magic-Lib` 里
+///   `org.confluence.lib.mixin.EntityMixin`（`:96 cacheDimensionHeight`、`:101 getOnPosAbove`、
+///   `:108 getBoundingBox`、`:117 updateFallDistance`、`:128 modifyParticlePosY`、
+///   `:136 modifyParticleSpeedY`、`:141 flip`）**已经带着这 7 个 hook 在树里**，
+///   留着就会对同一条注入点**各命中一次**。
+/// - 同时去掉 `terra_curio$isPlayer`（1.20 没有这个成员，一律直接 `instanceof Player`）。
+///
+/// 基准：1.20 `TerraCurio/.../mixin/EntityMixin.java`（51 行）逐字，
+/// 只把 `IEntity` 换成 `ITCEntity`。`resetLavaImmune` 的两个细节已核实：
+/// 1.21 的 `TCUtils.applyLavaImmune(boolean, Entity)` 第 2 参是 **`Entity`**（1.20 是 `LivingEntity`），
+/// 而 1.20 这份传的是 `living`（`LivingEntity`）—— 它是 `Entity` 的子类型，**逐字即可编译**，
+/// 所以这里**保留 1.20 原样**（含 `instanceof LivingEntity` 守卫）：守卫本身就带着 1.20 的语义
+/// （只有生物才走免疫结算），去掉它会把行为放宽到所有实体。
+/// 另外 1.21 那份把「缓存 `dimensionHeight`」塞在了 `resetLavaImmune` 里 —— 那一行属于重力，
+/// 已随重力一起消失（缓存改由 Lib 的 `EntityMixin#cacheDimensionHeight` 负责）。
 @Mixin(Entity.class)
-public abstract class EntityMixin implements IEntity {
-    @Shadow
-    public abstract DamageSources damageSources();
-
-    @Shadow
-    protected abstract BlockPos getOnPos(float yOffset);
-
-    @Shadow
-    public abstract EntityDimensions getDimensions(Pose pose);
-
-    @Shadow
-    public abstract Pose getPose();
-
-    @Shadow
-    public float fallDistance;
-    @Shadow
-    public boolean verticalCollisionBelow;
-
-    @Shadow
-    public boolean verticalCollision;
+public abstract class EntityMixin implements ITCEntity {
     @Unique
     private int terra_curio$cthulhuSprintingTime = 0;
-    @Unique
-    private boolean terra_curio$isShouldRot = false;
-    @Unique
-    private float terra_curio$dimensionHeight = 0.0F;
-    @Unique
-    private final boolean terra_curio$isPlayer = confluence$self() instanceof Player;
 
     @Override
     public int terra_curio$getCthulhuSprintingTime() {
@@ -63,32 +49,10 @@ public abstract class EntityMixin implements IEntity {
         this.terra_curio$cthulhuSprintingTime = amount;
     }
 
-    @Override
-    public void terra_curio$setShouldRot(boolean bool) {
-        this.terra_curio$isShouldRot = bool;
-    }
-
-    @Override
-    public boolean terra_curio$isShouldRot() {
-        return terra_curio$isShouldRot;
-    }
-
-    @Override
-    public float terra_curio$getDimensionHeight() {
-        return terra_curio$dimensionHeight;
-    }
-
-    @Override
-    public boolean terra_curio$isPlayer() {
-        return terra_curio$isPlayer;
-    }
-
     @ModifyExpressionValue(method = "baseTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;isInLava()Z", ordinal = 1))
     private boolean resetLavaImmune(boolean original) {
-        Entity self = confluence$self();
-        if (self instanceof LivingEntity) {
-            original = TCUtils.applyLavaImmune(original, self);
-            this.terra_curio$dimensionHeight = terra_curio$isShouldRot ? getDimensions(getPose()).height() : 0.0F;
+        if (confluence$self() instanceof LivingEntity living) {
+            return TCUtils.applyLavaImmune(original, living);
         }
         return original;
     }
@@ -100,74 +64,10 @@ public abstract class EntityMixin implements IEntity {
 
     @Inject(method = "push(Lnet/minecraft/world/entity/Entity;)V", at = @At("TAIL"))
     private void collidingCheck(Entity entity, CallbackInfo ci) {
-        if (terra_curio$isPlayer) {
-            TCUtils.applyCthulhuTouch((Player) confluence$self(), entity);
-        } else if (IEntity.of(entity).terra_curio$isPlayer()) {
-            TCUtils.applyCthulhuTouch((Player) entity, confluence$self());
+        if (confluence$self() instanceof Player player) {
+            TCUtils.applyCthulhuTouch(player, entity);
+        } else if (entity instanceof Player player) {
+            TCUtils.applyCthulhuTouch(player, confluence$self());
         }
     }
-
-    @Inject(method = "getOnPosLegacy", at = @At("RETURN"), cancellable = true)
-    private void getOnPosAbove(CallbackInfoReturnable<BlockPos> cir) {
-        if (terra_curio$isShouldRot) {
-            cir.setReturnValue(getOnPos(-(terra_curio$dimensionHeight + 0.2F)));
-        }
-    }
-
-    @WrapOperation(method = "checkSupportingBlock", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;getBoundingBox()Lnet/minecraft/world/phys/AABB;"))
-    private AABB getBoundingBox(Entity instance, Operation<AABB> original) {
-        AABB aabb = original.call(instance);
-        if (terra_curio$isShouldRot) {
-            return new AABB(aabb.minX, aabb.maxY + Mth.EPSILON, aabb.minZ, aabb.maxX, aabb.maxY, aabb.maxZ);
-        }
-        return aabb;
-    }
-
-    @Inject(method = "checkFallDamage", at = @At("TAIL"))
-    private void updateFallDistance(CallbackInfo ci, @Local(argsOnly = true) double y, @Local(argsOnly = true) boolean onGround) {
-        if (terra_curio$isShouldRot && !onGround) {
-            if (y > 0.0) {
-                this.fallDistance += (float) y;
-            } else {
-                this.fallDistance = 0.0F;
-            }
-        }
-    }
-
-    @ModifyArg(method = "spawnSprintParticle", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;addParticle(Lnet/minecraft/core/particles/ParticleOptions;DDDDDD)V"), index = 2)
-    private double modifyParticlePosY(double y) {
-        if (terra_curio$isShouldRot) {
-            return y - 0.2 + terra_curio$dimensionHeight;
-        }
-        return y;
-    }
-
-    @ModifyArg(method = "spawnSprintParticle", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;addParticle(Lnet/minecraft/core/particles/ParticleOptions;DDDDDD)V"), index = 5)
-    private double modifyParticleSpeedY(double y) {
-        return terra_curio$isShouldRot ? -y : y;
-    }
-
-    @Inject(method = "move", at = @At(value = "FIELD", target = "Lnet/minecraft/world/entity/Entity;verticalCollisionBelow:Z", opcode = Opcodes.PUTFIELD, shift = At.Shift.AFTER))
-    private void flip(MoverType type, Vec3 pos, CallbackInfo ci) {
-        if (IEntity.of(confluence$self()).terra_curio$isShouldRot()) {
-            this.verticalCollisionBelow = verticalCollision && pos.y > 0.0;
-        }
-    }
-// todo 反转AI
-
-//    @ModifyReturnValue(method = "blockPosition", at = @At("RETURN"))
-//    private BlockPos recalBlockPosition(BlockPos original) {
-//        if (terra_curio$isShouldRot) {
-//            return original.above(Mth.ceil(terra_curio$dimensionHeight) - 1);
-//        }
-//        return original;
-//    }
-//
-//    @ModifyVariable(method = "getOnPos(F)Lnet/minecraft/core/BlockPos;", at = @At("HEAD"), argsOnly = true)
-//    private float modifyYOffset(float yOffset) {
-//        if (terra_curio$isShouldRot) {
-//            return yOffset - terra_curio$dimensionHeight - 1;
-//        }
-//        return yOffset;
-//    }
 }

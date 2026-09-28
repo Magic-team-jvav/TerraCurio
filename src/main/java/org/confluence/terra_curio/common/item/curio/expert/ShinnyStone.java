@@ -7,7 +7,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.terra_curio.common.item.curio.BaseCurioItem;
-import org.confluence.terra_curio.mixed.IEntity;
 import top.theillusivec4.curios.api.SlotContext;
 
 public class ShinnyStone extends BaseCurioItem {
@@ -24,7 +23,7 @@ public class ShinnyStone extends BaseCurioItem {
         if (living.level().isClientSide) return;
         Vec3 motion = living.getKnownMovement();
         if (motion.x == 0.0 && motion.z == 0.0) {
-            if (IEntity.of(living).terra_curio$isPlayer() && ((Player) living).isCreative()) return;
+            if (living instanceof Player player && player.isCreative()) return;
             CustomData data = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).update(tag -> {
                 int tick = tag.getInt("tick");
                 float ratio = (float) tick / FULL_HEALING_TICKS;

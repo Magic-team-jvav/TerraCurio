@@ -109,7 +109,13 @@ public class TCLanguageProvider extends LanguageProvider {
         add("key.terra_curio.gameplay", "Terra Curio", "泰拉饰品");
         add("key.terra_curio.metal_detector", "Detect Metal", "检测矿物");
         add("key.terra_curio.step_stool", "Step Stool", "上梯凳");
-        add("key.terra_curio.flip_gravitation", "Flip Gravitation", "反转重力");
+        // WP6c：`key.*.flip_gravitation` 这一条**已删除**（Fork 的初版是「改名」，本批定为「删除」）。
+        // 归属依据（1.20）：这条键的宿主是 Lib 的 `LibKeyBindings.FLIP_GRAVITATION`
+        // （键名 `key.confluence_magic_lib.flip_gravitation`），1.20 把它写在
+        // **`Confluence-Magic-Lib` 自己的 `LibLanguageProvider:67/68`**（连同分类键
+        // `key.confluence_magic_lib.gameplay`），而 1.20 的 TerraCurio provider 里**没有**这条
+        // （已 grep 核实）。两边都写会让生成的 `en_us`/`zh_cn` JSON 出现**重复键**。
+        // 与 WP6a 同一口径：内容迁进 Lib 后，TC 的语言提供者不再提 Lib 的键。
         add("key.terra_curio.cthulhu_sprinting", "Cthulhu Sprinting", "克苏鲁冲刺");
 
         add("curios.identifier.accessory", "Accessory", "配饰");

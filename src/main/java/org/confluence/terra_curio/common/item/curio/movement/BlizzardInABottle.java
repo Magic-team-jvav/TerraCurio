@@ -2,9 +2,9 @@ package org.confluence.terra_curio.common.item.curio.movement;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
+import org.confluence.lib.mixed.ILibEntity;
 import org.confluence.terra_curio.client.handler.PlayerJumpHandler;
 import org.confluence.terra_curio.common.item.curio.BaseCurioItem;
-import org.confluence.terra_curio.mixed.IEntity;
 import org.joml.Matrix4x3f;
 import org.mesdag.particlestorm.particle.ParticleEmitter;
 
@@ -22,7 +22,7 @@ public class BlizzardInABottle extends BaseCurioItem {
             if (!emitter.isLocalSpace()) {
                 emitter.setLocalSpace(new Matrix4x3f(), false);
             }
-            if (IEntity.of(living).terra_curio$isShouldRot()) {
+            if (ILibEntity.of(living).confluence$isShouldRot()) {
                 emitter.getLocalSpace().setTranslation(0, living.getBbHeight(), 0);
             } else {
                 emitter.getLocalSpace().setTranslation(0, 0, 0);

@@ -4,7 +4,6 @@ package org.confluence.terra_curio.client.event;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.Input;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.item.BlockItem;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -12,7 +11,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.network.PacketDistributor;
-import org.confluence.lib.common.LibEffects;
+import org.confluence.lib.client.handler.GravitationHandler;
 import org.confluence.terra_curio.TerraCurio;
 import org.confluence.terra_curio.client.TCClientConfigs;
 import org.confluence.terra_curio.client.TCKeyBindings;
@@ -30,7 +29,8 @@ public final class GameClientEvents {
         Minecraft minecraft = Minecraft.getInstance();
         LocalPlayer player = minecraft.player;
         if (player != null) {
-            GravitationHandler.tryExpire(player);
+            // WP6c 第二步：`GravitationHandler.tryExpire(player)` 已归 Lib 的
+            // `LibClientGameEvents`（1.20 的驱动点在 Lib 那一侧），TC 不再驱动重力。
             StepStoolHandler.handle(player);
             TCClientPacketHandler.handle(minecraft, player);
             InformationHandler.handle(player);
@@ -41,7 +41,7 @@ public final class GameClientEvents {
 
     @SubscribeEvent
     public static void clientPlayerNetwork$LoggingOut(ClientPlayerNetworkEvent.LoggingOut event) {
-        GravitationHandler.reset();
+        // WP6c 第二步：`GravitationHandler.reset()` 已归 Lib（1.20 的 `LibClientGameEvents`）。
         StepStoolHandler.reset();
         TCClientPacketHandler.reset();
         InformationHandler.reset();
@@ -58,18 +58,10 @@ public final class GameClientEvents {
         Input input = event.getInput();
         boolean jumping = input.jumping;
 
-        MobEffectInstance effect = player.getEffect(LibEffects.GRAVITATION);
-        if (effect != null) {
-            if (effect.getAmplifier() > 0) {
-                GravitationHandler.force(player);
-            } else {
-                GravitationHandler.handle(player);
-            }
-        } else if (GravitationHandler.isHasGlobe()) {
-            GravitationHandler.handle(player);
-        } else {
-            GravitationHandler.expire();
-        }
+        // WP6c 第二步：原来这里有一整段重力驱动
+        // （`GravitationHandler.force/handle/expire` + `isHasGlobe` 三分支，判 `LibEffects.GRAVITATION`）
+        // —— 1.20 的归属在 Lib，1.21 侧已由 Lib 的 `LibClientGameEvents` 驱动，
+        // 故按任务书整段删除（`LibEffects` import 一并移除，已成未用）。
 
         PlayerJumpHandler.handle(player, jumping);
         PlayerClimbHandler.handle(player, input.getMoveVector(), jumping);
@@ -81,6 +73,8 @@ public final class GameClientEvents {
 
     @SubscribeEvent
     public static void cameraSetup(ViewportEvent.ComputeCameraAngles event) {
+        // **读状态**的调用保留（1.20 的 `cameraSetup` 也读 Lib 的 `isShouldRot()`），
+        // 只把 import 换成 Lib 的 `GravitationHandler`。
         if (GravitationHandler.isShouldRot()) {
             event.setRoll(180.0F);
         }

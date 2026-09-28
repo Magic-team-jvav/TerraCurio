@@ -11,6 +11,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
+import org.confluence.lib.mixed.ILibEntity;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.terra_curio.TerraCurio;
 import org.confluence.terra_curio.client.TCClientConfigs;
@@ -18,7 +19,6 @@ import org.confluence.terra_curio.client.handler.PlayerJumpHandler;
 import org.confluence.terra_curio.client.handler.TCClientPacketHandler;
 import org.confluence.terra_curio.common.init.TCSoundEvents;
 import org.confluence.terra_curio.common.item.curio.BaseCurioItem;
-import org.confluence.terra_curio.mixed.IEntity;
 import org.confluence.terra_curio.network.c2s.SpeedBootsNBTPacketC2S;
 import org.confluence.terra_curio.util.CuriosUtils;
 import org.joml.Matrix4x3f;
@@ -52,7 +52,7 @@ public class BaseSpeedBoots extends BaseCurioItem {
             if (!emitter.isLocalSpace()) {
                 emitter.setLocalSpace(new Matrix4x3f(), false);
             }
-            if (IEntity.of(living).terra_curio$isShouldRot()) {
+            if (ILibEntity.of(living).confluence$isShouldRot()) {
                 emitter.getLocalSpace().setTranslation(0, living.getBbHeight(), 0);
             } else {
                 emitter.getLocalSpace().setTranslation(0, 0, 0);
