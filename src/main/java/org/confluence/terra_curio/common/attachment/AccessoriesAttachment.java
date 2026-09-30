@@ -3,7 +3,6 @@ package org.confluence.terra_curio.common.attachment;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.tags.TagKey;
-import net.minecraft.util.Unit;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -14,9 +13,6 @@ import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.common.NeoForge;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.terra_curio.api.event.AfterAccessoryAbilitiesFlushedEvent;
-import org.confluence.terra_curio.api.primitive.PrimitiveValue;
-import org.confluence.terra_curio.api.primitive.UnitValue;
-import org.confluence.terra_curio.api.primitive.ValueType;
 import org.confluence.terra_curio.common.component.PrimitiveValueComponent;
 import org.confluence.terra_curio.common.init.TCAttachments;
 import org.confluence.terra_curio.common.init.TCItems;
@@ -24,21 +20,11 @@ import org.confluence.terra_curio.common.init.TCTags;
 import org.confluence.terra_curio.common.item.curio.combat.PanicNecklace;
 import org.confluence.terra_curio.network.s2c.FlushRenderLayerPacketS2C;
 import org.confluence.terra_curio.util.TCUtils;
-import org.jetbrains.annotations.ApiStatus;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
 import top.theillusivec4.curios.api.type.inventory.IDynamicStackHandler;
 
-import java.util.Set;
-
 public class AccessoriesAttachment extends PrimitiveValueHolder {
-    @Deprecated(since = "1.3.0", forRemoval = true)
-    @ApiStatus.ScheduledForRemoval(inVersion = "1.4.0")
-    public static final Set<ValueType<Unit, UnitValue>> UNITS_REQUIRE_UPDATE = Set.of();
-    @Deprecated(since = "1.3.0", forRemoval = true)
-    @ApiStatus.ScheduledForRemoval(inVersion = "1.4.0")
-    public static final Set<ValueType<?, ? extends PrimitiveValue<?>>> OTHER_REQUIRE_UPDATE = Set.of();
-
     protected boolean panicNecklace;
     protected transient int remainLavaImmuneTicks;
 

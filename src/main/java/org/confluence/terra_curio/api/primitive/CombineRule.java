@@ -29,11 +29,6 @@ public abstract class CombineRule<T, V extends PrimitiveValue<T>> {
 
     public abstract ResourceLocation id();
 
-    @Deprecated(forRemoval = true)
-    public String name() {
-        return id().toString();
-    }
-
     @Override
     public String toString() {
         return id().toString();

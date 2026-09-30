@@ -65,12 +65,6 @@ public abstract class PrimitiveValueHolder implements INBTSerializable<CompoundT
         valueMap.put(type, UnitValue.INSTANCE);
     }
 
-    @Deprecated(since = "1.3.0", forRemoval = true)
-    @ApiStatus.ScheduledForRemoval(inVersion = "1.4.0")
-    protected <T, V extends PrimitiveValue<T>> void putUnitIfPresent(ValueType<T, V> type) {
-        putUnit(type);
-    }
-
     public <T, V extends PrimitiveValue<T>> void combineValue(ValueType<T, V> type, V value) {
         V other = (V) valueMap.get(type);
         if (other == null) {

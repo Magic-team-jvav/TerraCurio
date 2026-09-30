@@ -122,12 +122,6 @@ public class BaseCurioItem extends Item implements ICurioItem {
         }
     }
 
-    @Deprecated(forRemoval = true, since = "1.3.0")
-    @ApiStatus.ScheduledForRemoval(inVersion = "1.4.0")
-    public int getJeiInformationCount() {
-        return builder == null ? 0 : builder.infoTooltipCount;
-    }
-
     @Override
     public boolean canEquipFromUse(SlotContext slotContext, ItemStack stack) {
         return canEquip(slotContext, stack);
@@ -266,12 +260,6 @@ public class BaseCurioItem extends Item implements ICurioItem {
         public Builder infos(int count) {
             this.infoTooltipCount = count;
             return this;
-        }
-
-        @Deprecated(forRemoval = true, since = "1.3.0")
-        @ApiStatus.ScheduledForRemoval(inVersion = "1.4.0")
-        public Builder jeiInfos(int count) {
-            return infos(count);
         }
 
         public Builder noTooltip() {

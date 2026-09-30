@@ -11,9 +11,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
-import org.confluence.lib.common.LibTags;
 import org.confluence.terra_curio.TerraCurio;
-import org.jetbrains.annotations.ApiStatus;
 import top.theillusivec4.curios.CuriosConstants;
 
 public final class TCTags {
@@ -30,32 +28,9 @@ public final class TCTags {
         }
     }
 
-    @Deprecated(since = "1.3.0", forRemoval = true)
-    @ApiStatus.ScheduledForRemoval(inVersion = "1.4.0")
-    public static final TagKey<Item> ACCESSORY = Items.ACCESSORY;
-    @Deprecated(since = "1.3.0", forRemoval = true)
-    @ApiStatus.ScheduledForRemoval(inVersion = "1.4.0")
-    public static final TagKey<Item> DIVING = Items.DIVING;
-    @Deprecated(since = "1.3.0", forRemoval = true)
-    @ApiStatus.ScheduledForRemoval(inVersion = "1.4.0")
-    public static final TagKey<Item> ANY_SANDSTORM_BALLOONS = Items.ANY_SANDSTORM_BALLOONS;
-    @Deprecated(since = "1.3.0", forRemoval = true)
-    @ApiStatus.ScheduledForRemoval(inVersion = "1.4.0")
-    public static final TagKey<Item> ANY_BLIZZARD_BALLOONS = Items.ANY_BLIZZARD_BALLOONS;
-    @Deprecated(since = "1.3.0", forRemoval = true)
-    @ApiStatus.ScheduledForRemoval(inVersion = "1.4.0")
-    public static final TagKey<Item> ANY_CLOUD_BALLOONS = Items.ANY_CLOUD_BALLOONS;
-    @Deprecated(since = "1.3.0", forRemoval = true)
-    @ApiStatus.ScheduledForRemoval(inVersion = "1.4.0")
-    public static final TagKey<Item> WINGS = Items.WINGS;
-
     public static final TagKey<Block> FLOWER_BOOTS_AVAILABLE = BlockTags.create(TerraCurio.asResource("flower_boots_available"));
     public static final TagKey<Fluid> WATER_LIKE_WALK = FluidTags.create(TerraCurio.asResource("water_like_walk"));
     public static final TagKey<Fluid> LAVA_LIKE_WALK = FluidTags.create(TerraCurio.asResource("lava_like_walk"));
     public static final TagKey<DamageType> HARMFUL_EFFECT = TagKey.create(Registries.DAMAGE_TYPE, TerraCurio.asResource("harmful_effect"));
     public static final TagKey<EntityType<?>> NOTHING = TagKey.create(Registries.ENTITY_TYPE, TerraCurio.asResource("nothing"));
-
-    @Deprecated(since = "1.3.0", forRemoval = true)
-    @ApiStatus.ScheduledForRemoval(inVersion = "1.4.0")
-    public static final TagKey<EntityType<?>> SLIME = LibTags.EntityTypes.SLIME;
 }
