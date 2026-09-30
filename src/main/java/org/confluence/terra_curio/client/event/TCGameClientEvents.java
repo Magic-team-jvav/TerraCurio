@@ -23,7 +23,7 @@ import org.confluence.terra_curio.network.c2s.ShootXBonePacketC2S;
 import org.confluence.terra_curio.util.TCUtils;
 
 @EventBusSubscriber(modid = TerraCurio.MODID, value = Dist.CLIENT)
-public final class GameClientEvents {
+public final class TCGameClientEvents {
     @SubscribeEvent
     public static void clientTick$Post(ClientTickEvent.Pre event) {
         Minecraft minecraft = Minecraft.getInstance();

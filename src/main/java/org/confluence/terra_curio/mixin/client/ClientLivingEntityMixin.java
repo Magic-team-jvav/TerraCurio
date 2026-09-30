@@ -9,7 +9,7 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.mixed.SelfGetter;
 import org.confluence.terra_curio.client.handler.StepStoolHandler;
 import org.confluence.terra_curio.client.handler.TCClientPacketHandler;
-import org.confluence.terra_curio.mixed.IClientLivingEntity;
+import org.confluence.terra_curio.mixed.ITCClientLivingEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -29,7 +29,7 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 ///   —— `terra_curio$isPlayer` 是 1.21 的发明，1.20 **不存在**这个成员
 ///   （1.20 `ClientLivingEntityMixin:35/44/53` 全是 `confluence$self() instanceof Player ...`）。
 @Mixin(LivingEntity.class)
-public abstract class LivingEntityClientMixin implements IClientLivingEntity, SelfGetter<LivingEntity> {
+public abstract class ClientLivingEntityMixin implements ITCClientLivingEntity, SelfGetter<LivingEntity> {
     @Unique
     private boolean terra_curio$showingCosmetic = false;
 

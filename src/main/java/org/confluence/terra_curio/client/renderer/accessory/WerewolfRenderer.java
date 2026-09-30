@@ -13,7 +13,7 @@ import org.confluence.lib.util.LibDateUtils;
 import org.confluence.terra_curio.TerraCurio;
 import org.confluence.terra_curio.client.handler.TCClientPacketHandler;
 import org.confluence.terra_curio.client.model.accessory.WerewolfModel;
-import org.confluence.terra_curio.mixed.IClientLivingEntity;
+import org.confluence.terra_curio.mixed.ITCClientLivingEntity;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.client.ICurioRenderer;
 
@@ -33,7 +33,7 @@ public class WerewolfRenderer implements ICurioRenderer {
             ICurioRenderer.followBodyRotations(living, model);
             ICurioRenderer.followHeadRotations(living, model.head);
             model.renderToBuffer(poseStack, multiBufferSource.getBuffer(CUTOUT), light, OverlayTexture.NO_OVERLAY);
-            ((IClientLivingEntity) living).terra_curio$setShowingCosmetic(true);
+            ((ITCClientLivingEntity) living).terra_curio$setShowingCosmetic(true);
         }
     }
 }

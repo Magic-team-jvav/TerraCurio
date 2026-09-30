@@ -11,7 +11,7 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import org.confluence.lib.util.LibUtils;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.terra_curio.TerraCurio;
 import org.confluence.terra_curio.common.attachment.AccessoriesAttachment;
 import org.confluence.terra_curio.common.item.curio.BaseCurioItem;
@@ -28,7 +28,7 @@ public class PanicNecklace extends BaseCurioItem {
     @Override
     public void curioTick(SlotContext slotContext, ItemStack stack) {
         if (!(slotContext.entity() instanceof ServerPlayer player)) return;
-        CompoundTag nbt = LibUtils.getOrCreatePersistedData(player);
+        CompoundTag nbt = LibEntityUtils.getOrCreatePersistedData(player);
         long lastHurt = nbt.getLong(KEY);
         if (lastHurt == 0) return;
         if (player.level().getGameTime() - lastHurt > 160) {
@@ -39,7 +39,7 @@ public class PanicNecklace extends BaseCurioItem {
     @Override
     public Multimap<Holder<Attribute>, AttributeModifier> getAttributeModifiers(SlotContext slotContext, ResourceLocation id, ItemStack stack) {
         if (!(slotContext.entity() instanceof Player player)) return EMPTY_ATTRIBUTE;
-        return LibUtils.getOrCreatePersistedData(player).getLong(KEY) == 0 ? EMPTY_ATTRIBUTE : super.getAttributeModifiers(slotContext, id, stack);
+        return LibEntityUtils.getOrCreatePersistedData(player).getLong(KEY) == 0 ? EMPTY_ATTRIBUTE : super.getAttributeModifiers(slotContext, id, stack);
     }
 
     @Override
@@ -49,7 +49,7 @@ public class PanicNecklace extends BaseCurioItem {
 
     public static void apply(LivingEntity living) {
         if (living instanceof Player player && AccessoriesAttachment.of(player).hasPanicNecklace()) {
-            LibUtils.getOrCreatePersistedData(player).putLong(KEY, player.level().getGameTime());
+            LibEntityUtils.getOrCreatePersistedData(player).putLong(KEY, player.level().getGameTime());
         }
     }
 }

@@ -11,7 +11,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.terra_curio.TerraCurio;
 import org.confluence.terra_curio.client.model.accessory.MermanModel;
-import org.confluence.terra_curio.mixed.IClientLivingEntity;
+import org.confluence.terra_curio.mixed.ITCClientLivingEntity;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.client.ICurioRenderer;
 
@@ -31,7 +31,7 @@ public class MermanRenderer implements ICurioRenderer {
             ICurioRenderer.followBodyRotations(living, model);
             ICurioRenderer.followHeadRotations(living, model.head);
             model.renderToBuffer(poseStack, multiBufferSource.getBuffer(CUTOUT), light, OverlayTexture.NO_OVERLAY);
-            ((IClientLivingEntity) living).terra_curio$setShowingCosmetic(true);
+            ((ITCClientLivingEntity) living).terra_curio$setShowingCosmetic(true);
         }
     }
 }

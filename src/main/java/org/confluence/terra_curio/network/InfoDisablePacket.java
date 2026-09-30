@@ -10,7 +10,7 @@ import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.lib.network.IPacket;
 import org.confluence.lib.util.LibStreamCodecUtils;
-import org.confluence.lib.util.LibUtils;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.terra_curio.TerraCurio;
 import org.confluence.terra_curio.client.handler.InformationHandler;
 
@@ -36,7 +36,7 @@ public record InfoDisablePacket(boolean[] disables) implements IPacket {
         for (int i = 0; i < ARRAY_LENGTH; i++) {
             arrayTag.set(i, ByteTag.valueOf(disables[i]));
         }
-        LibUtils.getOrCreatePersistedData(player).put("terra_curio:info_disable", arrayTag);
+        LibEntityUtils.getOrCreatePersistedData(player).put("terra_curio:info_disable", arrayTag);
     }
 
     @Override
@@ -45,7 +45,7 @@ public record InfoDisablePacket(boolean[] disables) implements IPacket {
     }
 
     public static void sendToClient(ServerPlayer player) {
-        byte[] bytes = LibUtils.getOrCreatePersistedData(player).getByteArray("terra_curio:info_disable");
+        byte[] bytes = LibEntityUtils.getOrCreatePersistedData(player).getByteArray("terra_curio:info_disable");
         if (bytes.length != ARRAY_LENGTH) return;
         boolean[] disables = new boolean[ARRAY_LENGTH];
         for (int i = 0; i < ARRAY_LENGTH; i++) {

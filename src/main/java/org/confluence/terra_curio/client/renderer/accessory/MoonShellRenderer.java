@@ -11,7 +11,7 @@ import net.minecraft.world.item.ItemStack;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.terra_curio.client.model.accessory.MermanModel;
 import org.confluence.terra_curio.client.model.accessory.WerewolfModel;
-import org.confluence.terra_curio.mixed.IClientLivingEntity;
+import org.confluence.terra_curio.mixed.ITCClientLivingEntity;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.client.ICurioRenderer;
 
@@ -31,12 +31,12 @@ public class MoonShellRenderer implements ICurioRenderer {
             ICurioRenderer.followBodyRotations(living, mermanModel);
             ICurioRenderer.followHeadRotations(living, mermanModel.head);
             mermanModel.renderToBuffer(poseStack, multiBufferSource.getBuffer(MermanRenderer.CUTOUT), light, OverlayTexture.NO_OVERLAY);
-            ((IClientLivingEntity) living).terra_curio$setShowingCosmetic(true);
+            ((ITCClientLivingEntity) living).terra_curio$setShowingCosmetic(true);
         } else if (LibDateUtils.isNight(living.level())) {
             ICurioRenderer.followBodyRotations(living, werewolfModel);
             ICurioRenderer.followHeadRotations(living, werewolfModel.head);
             werewolfModel.renderToBuffer(poseStack, multiBufferSource.getBuffer(WerewolfRenderer.CUTOUT), light, OverlayTexture.NO_OVERLAY);
-            ((IClientLivingEntity) living).terra_curio$setShowingCosmetic(true);
+            ((ITCClientLivingEntity) living).terra_curio$setShowingCosmetic(true);
         }
     }
 }

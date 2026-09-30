@@ -10,7 +10,7 @@ import org.mesdag.particlestorm.particle.ParticleEmitter;
 import java.util.Map;
 import java.util.Set;
 
-public interface ILivingEntity {
+public interface ITCLivingEntity {
     void terra_curio$setLastWalkedFluidState(FluidState fluidState);
 
     @Nullable FluidState terra_curio$getLastWalkedFluidState();
@@ -27,7 +27,7 @@ public interface ILivingEntity {
 
     @NotNull Map<ResourceLocation, ParticleEmitter> terra_curio$getOrCreateParticleEmitters();
 
-    static ILivingEntity of(LivingEntity living) {
-        return (ILivingEntity) living;
+    static ITCLivingEntity of(LivingEntity living) {
+        return (ITCLivingEntity) living;
     }
 }

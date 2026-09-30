@@ -28,7 +28,7 @@ import org.confluence.terra_curio.common.init.TCMenus;
 import org.confluence.terra_curio.common.init.TCRecipes;
 
 @EventBusSubscriber(modid = TerraCurio.MODID, value = Dist.CLIENT)
-public final class ModClientEvent {
+public final class TCModClientEvent {
     @SubscribeEvent
     public static void clientSetup(FMLClientSetupEvent event) {
         event.enqueueWork(() -> {

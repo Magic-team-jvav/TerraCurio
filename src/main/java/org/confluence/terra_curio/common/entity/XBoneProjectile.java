@@ -13,7 +13,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.entitiy.IAxisZRotate;
-import org.confluence.lib.util.LibUtils;
+import org.confluence.lib.util.LibEntityUtils;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -76,7 +76,7 @@ public class XBoneProjectile extends Projectile implements IAxisZRotate {
 
     @Override
     protected boolean canHitEntity(Entity target) {
-        return LibUtils.canHitEntity(target, getOwner());
+        return LibEntityUtils.canHitEntity(target, getOwner());
     }
 
     @Override

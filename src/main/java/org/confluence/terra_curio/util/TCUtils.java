@@ -35,7 +35,7 @@ import net.neoforged.neoforge.common.NeoForgeMod;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.lib.common.LibEffects;
 import org.confluence.lib.common.LibTags;
-import org.confluence.lib.util.LibUtils;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.VectorUtils;
 import org.confluence.terra_curio.TerraCurio;
 import org.confluence.terra_curio.api.primitive.PrimitiveValue;
@@ -48,7 +48,7 @@ import org.confluence.terra_curio.common.entity.BeeProjectile;
 import org.confluence.terra_curio.common.entity.StarCloakEntity;
 import org.confluence.terra_curio.common.init.*;
 import org.confluence.terra_curio.mixed.ITCEntity;
-import org.confluence.terra_curio.mixed.ILivingEntity;
+import org.confluence.terra_curio.mixed.ITCLivingEntity;
 import org.confluence.terra_curio.network.InfoDisablePacket;
 import org.confluence.terra_curio.network.c2s.PlayerSprintPacketC2S;
 import org.confluence.terra_curio.network.s2c.*;
@@ -256,7 +256,7 @@ public final class TCUtils {
                 walkableFluidStates.add(state);
             }
         });
-        ILivingEntity.of(player).terra_curio$resetLastWalkedFluidState(walkableFluidStates);
+        ITCLivingEntity.of(player).terra_curio$resetLastWalkedFluidState(walkableFluidStates);
     }
 
     public static void applyFluidWalk(Player player) {
@@ -286,17 +286,17 @@ public final class TCUtils {
         if (fluidState.isEmpty() || living.isCrouching() || !(living instanceof Player)) {
             return false;
         }
-        if (ILivingEntity.of(living).terra_curio$getLastWalkedFluidState() == fluidState) {
+        if (ITCLivingEntity.of(living).terra_curio$getLastWalkedFluidState() == fluidState) {
             return true;
-        } else if (ILivingEntity.of(living).terra_curio$isFluidWalkable(fluidState)) {
-            ILivingEntity.of(living).terra_curio$setLastWalkedFluidState(fluidState);
+        } else if (ITCLivingEntity.of(living).terra_curio$isFluidWalkable(fluidState)) {
+            ITCLivingEntity.of(living).terra_curio$setLastWalkedFluidState(fluidState);
             return true;
         }
         return false; // confluence mixin here
     }
 
     public static boolean applyTotemAbility(LivingEntity living) {
-        if (ILivingEntity.of(living).terra_curio$getTotemCooldown() == 0) {
+        if (ITCLivingEntity.of(living).terra_curio$getTotemCooldown() == 0) {
             int cooldown = getValue(living, TCItems.TOTEM$WITH$COOLDOWN);
             if (cooldown > 0) {
                 living.setHealth(1.0F);
@@ -305,10 +305,10 @@ public final class TCUtils {
                 living.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, 100, 1));
                 living.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 800, 0));
                 living.level().broadcastEntityEvent(living, EntityEvent.TALISMAN_ACTIVATE);
-                ILivingEntity.of(living).terra_curio$setTotemCooldown(cooldown);
+                ITCLivingEntity.of(living).terra_curio$setTotemCooldown(cooldown);
                 return true;
             } else {
-                ILivingEntity.of(living).terra_curio$setTotemCooldown(-1);
+                ITCLivingEntity.of(living).terra_curio$setTotemCooldown(-1);
             }
         }
         return false;
@@ -317,7 +317,7 @@ public final class TCUtils {
     public static void applyCthulhuTouch(Player player, Entity touched) {
         if (player == touched || ITCEntity.of(player).terra_curio$getCthulhuSprintingTime() <= 20)
             return;
-        if (LibUtils.getOwner(touched) instanceof LivingEntity target && player != target) {
+        if (LibEntityUtils.getOwner(touched) instanceof LivingEntity target && player != target) {
             Vec3 vector = player.getDeltaMovement();
             VectorUtils.knockBack(player, touched, new Vec3(vector.x * 1.2, 0.2, vector.z * 1.2));
             touched.hurt(player.damageSources().playerAttack(player), 7.8F);

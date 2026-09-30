@@ -13,6 +13,7 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.LibDamageTypes;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.terra_curio.common.init.TCEntities;
 
@@ -98,7 +99,7 @@ public class StarCloakEntity extends Projectile {
         } else if (isManaState()) {
             return target == getOwner();
         } else {
-            return LibUtils.canHitEntity(target, getOwner());
+            return LibEntityUtils.canHitEntity(target, getOwner());
         }
     }
 

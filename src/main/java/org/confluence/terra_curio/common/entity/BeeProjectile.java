@@ -12,7 +12,7 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.*;
-import org.confluence.lib.util.LibUtils;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.terra_curio.common.init.TCEntities;
 import org.jetbrains.annotations.Nullable;
 
@@ -148,7 +148,7 @@ public class BeeProjectile extends Projectile {
 
     @Override
     protected boolean canHitEntity(Entity target) {
-        return LibUtils.canHitEntity(target, getOwner());
+        return LibEntityUtils.canHitEntity(target, getOwner());
     }
 
     @Override

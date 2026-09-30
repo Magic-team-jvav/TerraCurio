@@ -17,7 +17,7 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.LibEffects;
 import org.confluence.lib.mixed.SelfGetter;
-import org.confluence.terra_curio.mixed.ILivingEntity;
+import org.confluence.terra_curio.mixed.ITCLivingEntity;
 import org.confluence.terra_curio.util.TCUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -36,7 +36,7 @@ import java.util.Map;
 import java.util.Set;
 
 @Mixin(LivingEntity.class)
-public abstract class LivingEntityMixin implements ILivingEntity, SelfGetter<LivingEntity> {
+public abstract class LivingEntityMixin implements ITCLivingEntity, SelfGetter<LivingEntity> {
     @Unique
     private int terra_curio$totem_cooldown = -1;
     @Unique
