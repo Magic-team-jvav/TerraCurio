@@ -35,7 +35,6 @@ import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.init.TCTags;
 import org.confluence.terra_curio.common.init.TCTriggers;
 import org.confluence.terra_curio.common.item.DivingHelmet;
-import org.confluence.terra_curio.common.item.curio.combat.PaladinsShield;
 import org.confluence.terra_curio.common.item.curio.combat.PanicNecklace;
 import org.confluence.terra_curio.common.item.curio.combat.RamRune;
 import org.confluence.terra_curio.mixin.accessor.ItemEntityAccessor;
@@ -106,7 +105,6 @@ public final class TCGameEvents {
         PanicNecklace.apply(living);
 
         amount = DivingHelmet.apply(living, damageSource, amount);
-        amount = PaladinsShield.apply(living, damageSource, amount);
         amount = TCUtils.applyFrozenTurtleShell(living, amount);
         amount = TCUtils.applyLavaHurtReduce(living, damageSource, amount);
         amount = TCUtils.applyInjuryFree(living, amount);
