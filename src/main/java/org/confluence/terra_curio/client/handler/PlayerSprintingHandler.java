@@ -3,6 +3,7 @@ package org.confluence.terra_curio.client.handler;
 import net.minecraft.client.player.Input;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.util.Mth;
+import org.confluence.terra_curio.mixed.ITCLivingEntity;
 
 public final class PlayerSprintingHandler {
     private static Movement xxa = Movement.NONE;
@@ -69,6 +70,7 @@ public final class PlayerSprintingHandler {
             double mz = x * sin + z * cos;
             double factor = localPlayer.onGround() ? 1.5 : 1.1;
             localPlayer.setDeltaMovement(localPlayer.getDeltaMovement().add(factor * mx, 0.0, factor * mz));
+            ITCLivingEntity.of(localPlayer).terra_curio$getJumpParticleState().sprintDashTicks = 3;
             xxa = Movement.NONE;
             zza = Movement.NONE;
             coolDown = 32;

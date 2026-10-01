@@ -7,6 +7,7 @@ import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.lib.client.handler.GravitationHandler;
+import org.confluence.terra_curio.mixed.ITCLivingEntity;
 import org.confluence.terra_curio.mixin.accessor.LivingEntityAccessor;
 import org.confluence.terra_curio.network.c2s.PlayerJumpPacketC2S;
 
@@ -60,6 +61,7 @@ public final class PlayerClimbHandler {
             localPlayer.hasImpulse = true;
             localPlayer.fallDistance = 0.0F;
             localPlayer.setDeltaMovement(motion.x * 0.93, motionY, motion.z * 0.93);
+            ITCLivingEntity.of(localPlayer).terra_curio$getJumpParticleState().climbingTicks = 1;
             PlayerJumpHandler.reset(true);
             PacketDistributor.sendToServer(new PlayerJumpPacketC2S(RESET_FALL_DISTANCE, (float) motionY, JUMP_NONE));
         }
