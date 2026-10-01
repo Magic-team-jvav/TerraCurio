@@ -18,6 +18,7 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.LibEffects;
 import org.confluence.lib.mixed.SelfGetter;
 import org.confluence.terra_curio.mixed.ITCLivingEntity;
+import org.confluence.terra_curio.util.JumpParticleState;
 import org.confluence.terra_curio.util.TCUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -41,6 +42,8 @@ public abstract class LivingEntityMixin implements ITCLivingEntity, SelfGetter<L
     private int terra_curio$totem_cooldown = -1;
     @Unique
     private Map<ResourceLocation, ParticleEmitter> terra_curio$emitters;
+    @Unique
+    private JumpParticleState terra_curio$jumpParticleState;
     @Unique
     private FluidState terra_curio$lastWalkedFluidState = null;
     @Unique
@@ -88,6 +91,14 @@ public abstract class LivingEntityMixin implements ITCLivingEntity, SelfGetter<L
             this.terra_curio$emitters = new Hashtable<>();
         }
         return terra_curio$emitters;
+    }
+
+    @Override
+    public @NotNull JumpParticleState terra_curio$getJumpParticleState() {
+        if (terra_curio$jumpParticleState == null) {
+            this.terra_curio$jumpParticleState = new JumpParticleState();
+        }
+        return terra_curio$jumpParticleState;
     }
 
     @Shadow

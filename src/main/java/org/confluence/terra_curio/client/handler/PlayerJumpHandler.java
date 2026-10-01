@@ -6,6 +6,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.network.PacketDistributor;
@@ -22,18 +24,19 @@ import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.init.TCSoundEvents;
 import org.confluence.terra_curio.common.item.curio.combat.RamRune;
 import org.confluence.terra_curio.integration.airhop.AirHopHelper;
+import org.confluence.terra_curio.mixed.ITCLivingEntity;
 import org.confluence.terra_curio.mixin.accessor.LivingEntityAccessor;
 import org.confluence.terra_curio.network.c2s.PlayerJumpPacketC2S;
 import org.confluence.terra_curio.network.c2s.RamRuneFallPacketC2S;
 import org.confluence.terra_curio.util.CuriosUtils;
+import org.confluence.terra_curio.util.JumpParticleState;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import static org.confluence.terra_curio.network.c2s.PlayerJumpPacketC2S.JUMP_BY_SELF;
-import static org.confluence.terra_curio.network.c2s.PlayerJumpPacketC2S.RESET_FALL_DISTANCE;
+import static org.confluence.terra_curio.network.c2s.PlayerJumpPacketC2S.*;
 
 public final class PlayerJumpHandler {
     private static boolean jumpKeyDown = true;
@@ -183,6 +186,31 @@ public final class PlayerJumpHandler {
         }
     }
 
+    /// 服务端广播"某玩家触发了跳跃"后，在客户端为对应的远程实体写入粒子状态。
+    /// 本地玩家由 [#handle] 直接驱动，无需此路径。
+    public static void handleJumpTriggered(int entityId, byte jumpType) {
+        Minecraft minecraft = Minecraft.getInstance();
+        if (minecraft.level == null) return;
+        Entity entity = minecraft.level.getEntity(entityId);
+        if (!(entity instanceof LivingEntity living) || entity == minecraft.player) return;
+        JumpParticleState jumpState = ITCLivingEntity.of(living).terra_curio$getJumpParticleState();
+        if ((jumpType & PlayerJumpPacketC2S.JUMP_SANDSTORM) != 0) {
+            jumpState.sandstormTicks = 3;
+        }
+        if ((jumpType & PlayerJumpPacketC2S.JUMP_BLIZZARD) != 0) {
+            jumpState.blizzardTicks = 3;
+        }
+        if ((jumpType & PlayerJumpPacketC2S.JUMP_TSUNAMI) != 0) {
+            jumpState.tsunamiPending = true;
+        }
+        if ((jumpType & PlayerJumpPacketC2S.JUMP_CLOUD) != 0) {
+            jumpState.cloudPending = true;
+        }
+        if ((jumpType & PlayerJumpPacketC2S.JUMP_FART) != 0) {
+            jumpState.fartPending = true;
+        }
+    }
+
     public static @Nullable ResourceKey<Item> getCurrentFlight() {
         return currentFlight;
     }
@@ -220,7 +248,7 @@ public final class PlayerJumpHandler {
         }
         localPlayer.hasImpulse = true;
         localPlayer.resetFallDistance();
-        PacketDistributor.sendToServer(new PlayerJumpPacketC2S((byte) (JUMP_BY_SELF | RESET_FALL_DISTANCE), speed));
+        PacketDistributor.sendToServer(new PlayerJumpPacketC2S((byte) (JUMP_BY_SELF | RESET_FALL_DISTANCE), speed, JUMP_NONE));
     }
 
     private static void oneTimeJump(LocalPlayer localPlayer, float speed) {
@@ -229,7 +257,7 @@ public final class PlayerJumpHandler {
         localPlayer.setDeltaMovement(vec3.x, speed, vec3.z);
         localPlayer.hasImpulse = true;
         localPlayer.resetFallDistance();
-        PacketDistributor.sendToServer(new PlayerJumpPacketC2S(RESET_FALL_DISTANCE, speed));
+        PacketDistributor.sendToServer(new PlayerJumpPacketC2S(RESET_FALL_DISTANCE, speed, JUMP_NONE));
     }
 
     private static void fly(LocalPlayer localPlayer, float speed) {
@@ -266,7 +294,7 @@ public final class PlayerJumpHandler {
         localPlayer.setDeltaMovement(motion.x + mx, y, motion.z + mz);
         localPlayer.hasImpulse = true;
         localPlayer.resetFallDistance();
-        PacketDistributor.sendToServer(new PlayerJumpPacketC2S(RESET_FALL_DISTANCE, y));
+        PacketDistributor.sendToServer(new PlayerJumpPacketC2S(RESET_FALL_DISTANCE, y, JUMP_NONE));
     }
 
     public static void handleJumpPacket(

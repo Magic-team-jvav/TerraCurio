@@ -10,8 +10,7 @@ import org.confluence.lib.client.handler.GravitationHandler;
 import org.confluence.terra_curio.mixin.accessor.LivingEntityAccessor;
 import org.confluence.terra_curio.network.c2s.PlayerJumpPacketC2S;
 
-import static org.confluence.terra_curio.network.c2s.PlayerJumpPacketC2S.JUMP_BY_SELF;
-import static org.confluence.terra_curio.network.c2s.PlayerJumpPacketC2S.RESET_FALL_DISTANCE;
+import static org.confluence.terra_curio.network.c2s.PlayerJumpPacketC2S.*;
 
 /// 攀爬（壁跳）客户端处理。
 ///
@@ -62,7 +61,7 @@ public final class PlayerClimbHandler {
             localPlayer.fallDistance = 0.0F;
             localPlayer.setDeltaMovement(motion.x * 0.93, motionY, motion.z * 0.93);
             PlayerJumpHandler.reset(true);
-            PacketDistributor.sendToServer(new PlayerJumpPacketC2S(RESET_FALL_DISTANCE, (float) motionY));
+            PacketDistributor.sendToServer(new PlayerJumpPacketC2S(RESET_FALL_DISTANCE, (float) motionY, JUMP_NONE));
         }
     }
 
@@ -90,7 +89,7 @@ public final class PlayerClimbHandler {
         Vec3 vec3 = localPlayer.getDeltaMovement();
         localPlayer.setDeltaMovement(vec3.add(vec3.x - x * 0.11, motionY, vec3.z - z * 0.11));
         localPlayer.hasImpulse = true;
-        PacketDistributor.sendToServer(new PlayerJumpPacketC2S(JUMP_BY_SELF, (float) motionY));
+        PacketDistributor.sendToServer(new PlayerJumpPacketC2S(JUMP_BY_SELF, (float) motionY, JUMP_NONE));
     }
 
     public static void handlePacket(byte climberAmount) {

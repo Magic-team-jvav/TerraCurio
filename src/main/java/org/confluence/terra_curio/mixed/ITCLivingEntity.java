@@ -3,6 +3,7 @@ package org.confluence.terra_curio.mixed;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.material.FluidState;
+import org.confluence.terra_curio.util.JumpParticleState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.mesdag.particlestorm.particle.ParticleEmitter;
@@ -26,6 +27,8 @@ public interface ITCLivingEntity {
     @Nullable Map<ResourceLocation, ParticleEmitter> terra_curio$getParticleEmitters();
 
     @NotNull Map<ResourceLocation, ParticleEmitter> terra_curio$getOrCreateParticleEmitters();
+
+    @NotNull JumpParticleState terra_curio$getJumpParticleState();
 
     static ITCLivingEntity of(LivingEntity living) {
         return (ITCLivingEntity) living;

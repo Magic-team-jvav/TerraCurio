@@ -57,7 +57,9 @@ public final class TCModEvents {
                 .playToClient(SetItemEntityPickupDelayPacketS2C.TYPE, SetItemEntityPickupDelayPacketS2C.STREAM_CODEC, SetItemEntityPickupDelayPacketS2C::handle)
                 .playToClient(BroadcastRenderPacketS2C.TYPE, BroadcastRenderPacketS2C.STREAM_CODEC, BroadcastRenderPacketS2C::handle)
                 .playToClient(InfiniteFlightPacketS2C.TYPE, InfiniteFlightPacketS2C.STREAM_CODEC, InfiniteFlightPacketS2C::handle)
+                .playToClient(PlayerJumpTriggeredPacketS2C.TYPE, PlayerJumpTriggeredPacketS2C.STREAM_CODEC, PlayerJumpTriggeredPacketS2C::handle)
                 .playToClient(FluidWalkUpdatePacketS2C.TYPE, FluidWalkUpdatePacketS2C.STREAM_CODEC, FluidWalkUpdatePacketS2C::handle)
+                .playToClient(RemoveCurioParticleEmitterPacketS2C.TYPE, RemoveCurioParticleEmitterPacketS2C.STREAM_CODEC, RemoveCurioParticleEmitterPacketS2C::handle)
                 .playToClient(FlushRenderLayerPacketS2C.TYPE, FlushRenderLayerPacketS2C.STREAM_CODEC, FlushRenderLayerPacketS2C::handle)
 
                 .playBidirectional(InfoDisablePacket.TYPE, InfoDisablePacket.STREAM_CODEC, InfoDisablePacket::handle);
