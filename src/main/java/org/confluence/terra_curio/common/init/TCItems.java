@@ -30,6 +30,8 @@ import org.confluence.terra_curio.api.primitive.*;
 import org.confluence.terra_curio.common.item.*;
 import org.confluence.terra_curio.common.item.curio.BaseCurioItem;
 import org.confluence.terra_curio.common.item.curio.NightBonusCurioItem;
+import org.confluence.terra_curio.common.item.curio.ParticlePlacements;
+import org.confluence.terra_curio.common.item.curio.ParticleTriggers;
 import org.confluence.terra_curio.common.item.curio.RequiresModLoadedCurioItem;
 import org.confluence.terra_curio.common.item.curio.combat.*;
 import org.confluence.terra_curio.common.item.curio.expert.GravityGlobe;
@@ -290,7 +292,7 @@ public final class TCItems {
                     .attribute(Attributes.ARMOR, 5.0, ADD_VALUE)
                     .attribute(Attributes.KNOCKBACK_RESISTANCE, 1.0, ADD_VALUE)
                     .attribute(ConfluenceMagicLib.AGGRO, 400, ADD_VALUE))), // 英雄护盾
-            FROZEN_TURTLE_SHELL = registerDirectly("frozen_turtle_shell", name -> new FrozenTurtleShell(BaseCurioItem.builder(name).rarity(PINK).particle(TerraCurio.asResource("frozen_turtle_shell")).accessories(units(FROZEN$TURTLE$SHELL)))), // 冰冻海龟壳
+            FROZEN_TURTLE_SHELL = registerCurio("frozen_turtle_shell", builder -> builder.rarity(PINK).noParticlePosition().particle(TerraCurio.asResource("frozen_turtle_shell"), ParticleTriggers.LOW_HEALTH).accessories(units(FROZEN$TURTLE$SHELL))), // 冰冻海龟壳
             FROZEN_SHIELD = registerDirectly("frozen_shield", name -> new PaladinsShield(BaseCurioItem.builder(name).infos(0).rarity(PINK).tooltips(1)
                     .accessories(units(FROZEN$TURTLE$SHELL)).attribute(Attributes.ARMOR, 3.0, ADD_VALUE)
                     .attribute(Attributes.KNOCKBACK_RESISTANCE, 1.0, ADD_VALUE))), // 冰冻护盾
@@ -376,56 +378,62 @@ public final class TCItems {
             PDA = registerDirectly("pda", (name, builder) -> new MultiInfoCurioItem(builder.rarity(PINK).infos(0).tooltips(11).accessories(of(INFORMATION, FULL_INFO)))); // 个人数字助手
 
     public static final DeferredItem<BaseCurioItem> STEP_STOOL = registerDirectly("step_stool", name -> new StepStool(BaseCurioItem.builder(name))), // 梯凳
-            FLYING_CARPET = registerCurio("flying_carpet", builder -> builder.rarity(GREEN).accessories(of(MAY$FLY, MayFlyAbilityValue.of("flying_carpet", 1200, 0.5625F, 100, false, true)))), // 飞毯
+            FLYING_CARPET = registerCurio("flying_carpet", builder -> builder.rarity(GREEN).particle(TerraCurio.asResource("carpet_dust"), ParticleTriggers.CARPET_FLYING).accessories(of(MAY$FLY, MayFlyAbilityValue.of("flying_carpet", 1200, 0.5625F, 100, false, true)))), // 飞毯
             AGLET = registerCurio("aglet", builder -> builder.noTooltip().attribute(Attributes.MOVEMENT_SPEED, 0.05, ADD_MULTIPLIED_TOTAL)), // 金属带扣
             ANKLET_OF_THE_WIND = registerCurio("anklet_of_the_wind", builder -> builder.infos(0).noTooltip().attribute(Attributes.MOVEMENT_SPEED, 0.1, ADD_MULTIPLIED_TOTAL)), // 疾风脚镯
             MAGILUMINESCENCE = registerDirectly("magiluminescence", name -> new RequiresModLoadedCurioItem(BaseCurioItem.builder(name).tooltips(1)
                     .accessories(units($MAGILUMINESCENCE), of(LUMINANCE, 14))
                     .attribute(Attributes.MOVEMENT_SPEED, 0.15, ADD_MULTIPLIED_TOTAL), "sodiumdynamiclights")), // 魔光护符
             LAVA_CHARM = registerCurio("lava_charm", builder -> builder.rarity(ORANGE).accessories(of(LAVA$IMMUNE$TICKS, 140))), // 熔岩护身符
-            MAGMA_SKULL = registerCurio("magma_skull", builder -> builder.infos(0).tooltips(1).rarity(PINK).accessories(
+            MAGMA_SKULL = registerCurio("magma_skull", builder -> builder.infos(0).tooltips(1).rarity(PINK).particle(TerraCurio.asResource("magma_ember"), ParticleTriggers.ALWAYS).accessories(
                     units(FIRE$IMMUNE),
                     of(LAVA$IMMUNE$TICKS, 140))), // 岩浆骷髅头
-            MOLTEN_CHARM = registerCurio("molten_charm", builder -> builder.tooltips(1).infos(0).rarity(PINK).accessories(
+            MOLTEN_CHARM = registerCurio("molten_charm", builder -> builder.tooltips(1).infos(0).rarity(PINK).particle(TerraCurio.asResource("magma_ember"), ParticleTriggers.ALWAYS).accessories(
                     units(FIRE$IMMUNE),
                     of(LAVA$IMMUNE$TICKS, 140))), // 熔火护身符
-            CLIMBING_CLAWS = registerCurio("climbing_claws", builder -> builder.tooltips(1).accessories(of(WALL$CLIMB, (byte) 1))), // 攀爬爪
-            SHOE_SPIKES = registerCurio("shoe_spikes", builder -> builder.tooltips(1).accessories(of(WALL$CLIMB, (byte) 1))), // 鞋钉
-            TIGER_CLIMBING_GEAR = registerCurio("tiger_climbing_gear", builder -> builder.infos(0).rarity(GREEN).accessories(of(WALL$CLIMB, (byte) 2))), // 猛虎攀爬装备
-            TABI = registerCurio("tabi", builder -> builder.rarity(LIME).accessories(units(SPRINTING))), // 分趾厚底袜
-            MASTER_NINJA_GEAR = registerCurio("master_ninja_gear", builder -> builder.tooltips(2).infos(0).rarity(YELLOW)
+            CLIMBING_CLAWS = registerCurio("climbing_claws", builder -> builder.tooltips(1).particle(TerraCurio.asResource("wall_dust"), ParticleTriggers.WALL_CLIMBING).accessories(of(WALL$CLIMB, (byte) 1))), // 攀爬爪
+            SHOE_SPIKES = registerCurio("shoe_spikes", builder -> builder.tooltips(1).particle(TerraCurio.asResource("wall_dust"), ParticleTriggers.WALL_CLIMBING).accessories(of(WALL$CLIMB, (byte) 1))), // 鞋钉
+            TIGER_CLIMBING_GEAR = registerCurio("tiger_climbing_gear", builder -> builder.infos(0).rarity(GREEN).particle(TerraCurio.asResource("wall_dust"), ParticleTriggers.WALL_CLIMBING).accessories(of(WALL$CLIMB, (byte) 2))), // 猛虎攀爬装备
+            TABI = registerCurio("tabi", builder -> builder.rarity(LIME).particle(TerraCurio.asResource("sprint_dash"), ParticleTriggers.SPRINT_DASH).accessories(units(SPRINTING))), // 分趾厚底袜
+            MASTER_NINJA_GEAR = registerCurio("master_ninja_gear", builder -> builder.tooltips(2).infos(0).rarity(YELLOW).particle(TerraCurio.asResource("wall_dust"), ParticleTriggers.WALL_CLIMBING).particle(TerraCurio.asResource("sprint_dash"), ParticleTriggers.SPRINT_DASH)
                     .accessories(units(SPRINTING), of(WALL$CLIMB, (byte) 2))
                     .attribute(LibAttributes.getDodgeChance(), 0.1, ADD_VALUE)), // 忍者大师装备
-            ICE_SKATES = registerCurio("ice_skates", BLUE), // 溜冰鞋
+            ICE_SKATES = registerCurio("ice_skates", builder -> builder.rarity(BLUE).particle(TerraCurio.asResource("ice_shards"), ParticleTriggers.ON_ICE)), // 溜冰鞋
             HERMES_BOOTS = registerDirectly("hermes_boots", name -> new BaseSpeedBoots(1, 40, BaseCurioItem.builder(name).stepHeight())), // 赫尔墨斯靴
             FLURRY_BOOTS = registerDirectly("flurry_boots", name -> new BaseSpeedBoots(1, 40, BaseCurioItem.builder(name).infos(1).stepHeight())), // 疾风雪靴
             SAILFISH_BOOTS = registerDirectly("sailfish_boots", name -> new BaseSpeedBoots(1, 40, BaseCurioItem.builder(name).stepHeight())), // 旗鱼靴
             DUNERIDER_BOOTS = registerDirectly("dunerider_boots", DuneriderBoots::new), // 沙丘行者靴
-            ROCKET_BOOTS = registerCurio("rocket_boots", builder -> builder.infos(0).accessories(of(MAY$FLY, MayFlyAbilityValue.of("rocket_boots", 0.3F, 36, false, false)))), // 火箭靴
+            ROCKET_BOOTS = registerCurio("rocket_boots", builder -> builder.infos(0).particle(TerraCurio.asResource("rocket_flame"), ParticleTriggers.ROCKET_FLYING).particle(TerraCurio.asResource("rocket_boost_burst"), ParticleTriggers.ROCKET_BOOST).accessories(of(MAY$FLY, MayFlyAbilityValue.of("rocket_boots", 0.3F, 36, false, false)))), // 火箭靴
             SPECTRE_BOOTS = registerDirectly("spectre_boots", name -> new BaseSpeedBoots(1, 40, BaseCurioItem.builder(name).rarity(LIGHT_RED).infos(0)
                     .accessories(of(MAY$FLY, MayFlyAbilityValue.of("spectre_boots", 0.3F, 36, false, false)))
+                    .particle(TerraCurio.asResource("spectre_flight"), ParticleTriggers.SPECTRE_FLYING)
                     .stepHeight())), // 幽灵靴
             FAIRY_BOOTS = registerDirectly("fairy_boots", name -> new BaseSpeedBoots(1, 40, BaseCurioItem.builder(name).infos(0).tooltips(1).rarity(PINK)
                     .accessories(units(FLOWER$BOOTS), of(MAY$FLY, MayFlyAbilityValue.of("fairy_boots", 0.3F, 36, false, false)))
+                    .particle(TerraCurio.asResource("flower_growth"), ParticleTriggers.WALKING_ON_GRASS, ParticlePlacements.FEET)
+                    .particle(TerraCurio.asResource("fairy_flight"), ParticleTriggers.FAIRY_FLYING)
                     .stepHeight())), // 仙灵靴
             LIGHTNING_BOOTS = registerDirectly("lightning_boots", name -> new BaseSpeedBoots(1, 40, BaseCurioItem.builder(name).infos(0).rarity(PINK)
                     .accessories(of(MAY$FLY, MayFlyAbilityValue.of("lightning_boots", 0.3F, 36, false, false)))
+                    .particle(TerraCurio.asResource("lightning_flight"), ParticleTriggers.LIGHTNING_FLYING)
                     .attribute(Attributes.MOVEMENT_SPEED, 0.08, ADD_MULTIPLIED_TOTAL)
                     .stepHeight())), // 闪电靴
             FROSTSPARK_BOOTS = registerDirectly("frostspark_boots", name -> new BaseSpeedBoots(1, 40, BaseCurioItem.builder(name).infos(0).rarity(LIME)
                     .accessories(units(ICE$SPEED, ICE$SAFE), of(MAY$FLY, MayFlyAbilityValue.of("frostspark_boots", 0.3F, 40, false, false)))
+                    .particle(TerraCurio.asResource("frostspark_flight"), ParticleTriggers.FROSTSPARK_FLYING)
+                    .particle(TerraCurio.asResource("ice_shards"), ParticleTriggers.ON_ICE)
                     .attribute(Attributes.MOVEMENT_SPEED, 0.08, ADD_MULTIPLIED_TOTAL)
                     .stepHeight())), // 霜花靴
-            WATER_WALKING_BOOTS = registerCurio("water_walking_boots", builder -> builder.rarity(LIGHT_RED).accessories(of(FLUID$WALK, Set.of(TCTags.WATER_LIKE_WALK)))), // 水上漂靴
-            OBSIDIAN_WATER_WALKING_BOOTS = registerCurio("obsidian_water_walking_boots", builder -> builder.infos(0).rarity(LIGHT_RED).tooltips(1).accessories(
+            WATER_WALKING_BOOTS = registerCurio("water_walking_boots", builder -> builder.rarity(LIGHT_RED).particle(TerraCurio.asResource("water_ripple"), ParticleTriggers.WATER_WALKING, ParticlePlacements.FEET).accessories(of(FLUID$WALK, Set.of(TCTags.WATER_LIKE_WALK)))), // 水上漂靴
+            OBSIDIAN_WATER_WALKING_BOOTS = registerCurio("obsidian_water_walking_boots", builder -> builder.infos(0).rarity(LIGHT_RED).tooltips(1).particle(TerraCurio.asResource("lava_fizz"), ParticleTriggers.IN_LAVA).particle(TerraCurio.asResource("water_ripple"), ParticleTriggers.WATER_WALKING, ParticlePlacements.FEET).accessories(
                     units(FIRE$IMMUNE),
                     of(FLUID$WALK, Set.of(TCTags.WATER_LIKE_WALK, TCTags.LAVA_LIKE_WALK)))), // 黑曜石水上漂靴
-            LAVA_WADERS = registerCurio("lava_waders", builder -> builder.rarity(LIME).tooltips(1).infos(0).accessories(
+            LAVA_WADERS = registerCurio("lava_waders", builder -> builder.rarity(LIME).tooltips(1).infos(0).particle(TerraCurio.asResource("lava_fizz"), ParticleTriggers.IN_LAVA).particle(TerraCurio.asResource("water_ripple"), ParticleTriggers.WATER_WALKING, ParticlePlacements.FEET).accessories(
                     units(FIRE$IMMUNE),
                     of(FLUID$WALK, Set.of(TCTags.WATER_LIKE_WALK, TCTags.LAVA_LIKE_WALK)),
                     of(LAVA$IMMUNE$TICKS, 140),
                     of(LAVA$HURT$REDUCE, 0.5F))), // 熔岩靴
-            TERRASPARK_BOOTS = registerDirectly("terraspark_boots", name -> new BaseSpeedBoots(1, 40, BaseCurioItem.builder(name).rarity(LIME).tooltips(3).infos(0).particle(TerraCurio.asResource("terraspark"))
+            TERRASPARK_BOOTS = registerDirectly("terraspark_boots", name -> new BaseSpeedBoots(1, 40, BaseCurioItem.builder(name).rarity(LIME).tooltips(3).infos(0).particle(TerraCurio.asResource("terraspark"), ParticleTriggers.RUNNING)
                     .accessories(
                             units(ICE$SPEED, ICE$SAFE, FIRE$IMMUNE),
                             of(MAY$FLY, MayFlyAbilityValue.of("terraspark_boots", 0.3F, 40, false, false)),
@@ -433,23 +441,27 @@ public final class TCItems {
                             of(LAVA$IMMUNE$TICKS, 140),
                             of(LAVA$HURT$REDUCE, 0.5F)
                     )
+                    .particle(TerraCurio.asResource("terraspark_flight"), ParticleTriggers.TERRASPARK_FLYING)
+                    .particle(TerraCurio.asResource("ice_shards"), ParticleTriggers.ON_ICE)
+                    .particle(TerraCurio.asResource("lava_fizz"), ParticleTriggers.IN_LAVA)
+                    .particle(TerraCurio.asResource("water_ripple"), ParticleTriggers.WATER_WALKING, ParticlePlacements.FEET)
                     .attribute(Attributes.MOVEMENT_SPEED, 0.08, ADD_MULTIPLIED_TOTAL)
                     .stepHeight())), // 泰拉闪耀靴
-            CLOUD_IN_A_BOTTLE = registerDirectly("cloud_in_a_bottle", (name, builder) -> new CloudInABottle(builder.particle(TerraCurio.asResource("cloud"))
+            CLOUD_IN_A_BOTTLE = registerCurio("cloud_in_a_bottle", builder -> builder.particle(TerraCurio.asResource("cloud"), ParticleTriggers.CLOUD_JUMP)
                     .accessories(of(CLOUD, 1.3F))
-                    .attribute(Attributes.SAFE_FALL_DISTANCE, 3, ADD_VALUE))), // 云朵瓶
-            BLIZZARD_IN_A_BOTTLE = registerDirectly("blizzard_in_a_bottle", (name, builder) -> new BlizzardInABottle(builder.infos(0).particle(TerraCurio.asResource("blizzard"))
+                    .attribute(Attributes.SAFE_FALL_DISTANCE, 3, ADD_VALUE)), // 云朵瓶
+            BLIZZARD_IN_A_BOTTLE = registerCurio("blizzard_in_a_bottle", builder -> builder.infos(0).particle(TerraCurio.asResource("blizzard"), ParticleTriggers.BLIZZARD_JUMP)
                     .accessories(of(BLIZZARD, new Tuple<>(0.4F, 14)))
-                    .attribute(Attributes.SAFE_FALL_DISTANCE, 3, ADD_VALUE))), // 暴雪瓶
-            SANDSTORM_IN_A_BOTTLE = registerDirectly("sandstorm_in_a_bottle", (name, builder) -> new SandstormInABottle(builder.rarity(GREEN).particle(TerraCurio.asResource("sandstorm"))
+                    .attribute(Attributes.SAFE_FALL_DISTANCE, 3, ADD_VALUE)), // 暴雪瓶
+            SANDSTORM_IN_A_BOTTLE = registerCurio("sandstorm_in_a_bottle", builder -> builder.rarity(GREEN).particle(TerraCurio.asResource("sandstorm"), ParticleTriggers.SANDSTORM_JUMP)
                     .accessories(of(SAND$STORM, new Tuple<>(0.45F, 17)))
-                    .attribute(Attributes.SAFE_FALL_DISTANCE, 3, ADD_VALUE))), // 沙暴瓶
-            FART_IN_A_JAR = registerCurio("fart_in_a_jar", builder -> builder.rarity(GREEN)
+                    .attribute(Attributes.SAFE_FALL_DISTANCE, 3, ADD_VALUE)), // 沙暴瓶
+            FART_IN_A_JAR = registerCurio("fart_in_a_jar", builder -> builder.rarity(GREEN).particle(TerraCurio.asResource("fart_cloud"), ParticleTriggers.FART_JUMP)
                     .accessories(of(FART, 1.7F))
                     .attribute(Attributes.SAFE_FALL_DISTANCE, 3, ADD_VALUE)), // 罐中臭屁
-            TSUNAMI_IN_A_BOTTLE = registerDirectly("tsunami_in_a_bottle", (name, builder) -> new TsunamiInABottle(builder.particle(TerraCurio.asResource("tsunami"))
+            TSUNAMI_IN_A_BOTTLE = registerCurio("tsunami_in_a_bottle", builder -> builder.particle(TerraCurio.asResource("tsunami"), ParticleTriggers.TSUNAMI_JUMP)
                     .accessories(of(TSUNAMI, 1.5F))
-                    .attribute(Attributes.SAFE_FALL_DISTANCE, 3, ADD_VALUE))), // 海啸瓶
+                    .attribute(Attributes.SAFE_FALL_DISTANCE, 3, ADD_VALUE)), // 海啸瓶
             SHINY_RED_BALLOON = registerCurio("shiny_red_balloon", builder -> builder
                     .attribute(Attributes.JUMP_STRENGTH, 0.43, ADD_MULTIPLIED_TOTAL)
                     .attribute(Attributes.SAFE_FALL_DISTANCE, 2, ADD_VALUE)), // 闪亮红气球
@@ -458,27 +470,32 @@ public final class TCItems {
                     .attribute(Attributes.JUMP_STRENGTH, 0.43, ADD_MULTIPLIED_TOTAL)
                     .attribute(Attributes.SAFE_FALL_DISTANCE, 2, ADD_VALUE)), // 气球河豚鱼
             CLOUD_IN_A_BALLOON = registerCurio("cloud_in_a_balloon", builder -> builder
+                    .particle(TerraCurio.asResource("cloud"), ParticleTriggers.CLOUD_JUMP)
                     .rarity(LIGHT_RED).tooltips(1).infos(0)
                     .accessories(of(CLOUD, 1.3F))
                     .attribute(Attributes.JUMP_STRENGTH, 0.43, ADD_MULTIPLIED_TOTAL)
                     .attribute(Attributes.SAFE_FALL_DISTANCE, 4, ADD_VALUE)), // 云朵气球
             BLIZZARD_IN_A_BALLOON = registerCurio("blizzard_in_a_balloon", builder -> builder
+                    .particle(TerraCurio.asResource("blizzard"), ParticleTriggers.BLIZZARD_JUMP)
                     .infos(0).rarity(LIGHT_RED).tooltips(1).infos(0)
                     .accessories(of(BLIZZARD, new Tuple<>(0.4F, 14)))
                     .attribute(Attributes.JUMP_STRENGTH, 0.43, ADD_MULTIPLIED_TOTAL)
                     .attribute(Attributes.SAFE_FALL_DISTANCE, 4, ADD_VALUE)), // 暴雪气球
             SANDSTORM_IN_A_BALLOON = registerCurio("sandstorm_in_a_balloon", builder -> builder
+                    .particle(TerraCurio.asResource("sandstorm"), ParticleTriggers.SANDSTORM_JUMP)
                     .rarity(LIGHT_RED).tooltips(1).infos(0)
                     .accessories(of(SAND$STORM, new Tuple<>(0.45F, 17)))
                     .attribute(Attributes.JUMP_STRENGTH, 0.43, ADD_MULTIPLIED_TOTAL)
                     .attribute(Attributes.SAFE_FALL_DISTANCE, 4, ADD_VALUE)), // 沙暴气球
             FART_IN_A_BALLOON = registerCurio("fart_in_a_balloon", builder -> builder
+                    .particle(TerraCurio.asResource("fart_cloud"), ParticleTriggers.FART_JUMP)
                     .rarity(LIGHT_RED).tooltips(1).infos(0)
                     .accessories(of(FART, 1.1F))
                     .attribute(Attributes.JUMP_STRENGTH, 0.43, ADD_MULTIPLIED_TOTAL)
                     .attribute(Attributes.SAFE_FALL_DISTANCE, 4, ADD_VALUE)), // 臭屁气球
             SHARKRON_BALLOON = registerCurio("sharkron_balloon", builder -> builder
                     .infos(0)
+                    .particle(TerraCurio.asResource("tsunami"), ParticleTriggers.TSUNAMI_JUMP)
                     .accessories(of(TSUNAMI, 1.3F))
                     .attribute(Attributes.JUMP_STRENGTH, 0.43, ADD_MULTIPLIED_TOTAL)
                     .attribute(Attributes.SAFE_FALL_DISTANCE, 4, ADD_VALUE)), // 鲨鱼龙气球
@@ -494,8 +511,11 @@ public final class TCItems {
                             of(BLIZZARD, new Tuple<>(0.4F, 14)),
                             of(CLOUD, 1.3F)
                     )
+                    .particle(TerraCurio.asResource("cloud"), ParticleTriggers.CLOUD_JUMP)
+                    .particle(TerraCurio.asResource("sandstorm"), ParticleTriggers.SANDSTORM_JUMP)
+                    .particle(TerraCurio.asResource("blizzard"), ParticleTriggers.BLIZZARD_JUMP)
                     .attribute(Attributes.JUMP_STRENGTH, 0.43, ADD_MULTIPLIED_TOTAL)
-                    .attribute(Attributes.SAFE_FALL_DISTANCE, 7, ADD_VALUE)), // 气球束
+                    .attribute(Attributes.SAFE_FALL_DISTANCE, 7, ADD_VALUE)), // 气球束（按跳跃能力分段播放）
             LUCKY_HORSESHOE = registerCurio("lucky_horseshoe", builder -> builder
                     .tooltips(1)
                     .attribute(Attributes.LUCK, 0.05, ADD_VALUE)
@@ -507,24 +527,28 @@ public final class TCItems {
                     .attribute(Attributes.FALL_DAMAGE_MULTIPLIER, -100.0, ADD_VALUE)), // 黑曜石马掌
             BLUE_HORSESHOE_BALLOON = registerCurio("blue_horseshoe_balloon", builder -> builder
                     .rarity(LIGHT_RED).tooltips(2).infos(0)
+                    .particle(TerraCurio.asResource("cloud"), ParticleTriggers.CLOUD_JUMP)
                     .accessories(of(CLOUD, 1.3F))
                     .attribute(Attributes.JUMP_STRENGTH, 0.75, ADD_MULTIPLIED_TOTAL)
                     .attribute(Attributes.LUCK, 0.05, ADD_VALUE)
                     .attribute(Attributes.FALL_DAMAGE_MULTIPLIER, -100.0, ADD_VALUE)), // 蓝马掌气球
             WHITE_HORSESHOE_BALLOON = registerCurio("white_horseshoe_balloon", builder -> builder
                     .rarity(LIGHT_RED).tooltips(2).infos(0)
+                    .particle(TerraCurio.asResource("blizzard"), ParticleTriggers.BLIZZARD_JUMP)
                     .accessories(of(BLIZZARD, new Tuple<>(0.4F, 14)))
                     .attribute(Attributes.JUMP_STRENGTH, 0.43, ADD_MULTIPLIED_TOTAL)
                     .attribute(Attributes.LUCK, 0.05, ADD_VALUE)
                     .attribute(Attributes.FALL_DAMAGE_MULTIPLIER, -100.0, ADD_VALUE)), // 白马掌气球
             YELLOW_HORSESHOE_BALLOON = registerCurio("yellow_horseshoe_balloon", builder -> builder
                     .rarity(LIGHT_RED).tooltips(2).infos(0)
+                    .particle(TerraCurio.asResource("sandstorm"), ParticleTriggers.SANDSTORM_JUMP)
                     .accessories(of(SAND$STORM, new Tuple<>(0.45F, 17)))
                     .attribute(Attributes.JUMP_STRENGTH, 0.75, ADD_MULTIPLIED_TOTAL)
                     .attribute(Attributes.LUCK, 0.05, ADD_VALUE)
                     .attribute(Attributes.FALL_DAMAGE_MULTIPLIER, -100.0, ADD_VALUE)), // 黄马掌气球
             GREEN_HORSESHOE_BALLOON = registerCurio("green_horseshoe_balloon", builder -> builder
                     .rarity(LIGHT_RED).tooltips(2).infos(0)
+                    .particle(TerraCurio.asResource("fart_cloud"), ParticleTriggers.FART_JUMP)
                     .accessories(of(FART, 1.1F))
                     .attribute(Attributes.JUMP_STRENGTH, 0.75, ADD_MULTIPLIED_TOTAL)
                     .attribute(Attributes.LUCK, 0.05, ADD_VALUE)
@@ -547,17 +571,22 @@ public final class TCItems {
                             of(SAND$STORM, new Tuple<>(0.45F, 17)),
                             of(BLIZZARD, new Tuple<>(0.4F, 14)),
                             of(CLOUD, 1.3F)
-                    ).attribute(Attributes.JUMP_STRENGTH, 0.43, ADD_MULTIPLIED_TOTAL)
+                    ).particle(TerraCurio.asResource("cloud"), ParticleTriggers.CLOUD_JUMP)
+                    .particle(TerraCurio.asResource("sandstorm"), ParticleTriggers.SANDSTORM_JUMP)
+                    .particle(TerraCurio.asResource("blizzard"), ParticleTriggers.BLIZZARD_JUMP)
+                    .attribute(Attributes.JUMP_STRENGTH, 0.43, ADD_MULTIPLIED_TOTAL)
                     .attribute(Attributes.LUCK, 0.05, ADD_VALUE)
-                    .attribute(Attributes.FALL_DAMAGE_MULTIPLIER, -100.0, ADD_VALUE)), // 马掌气球束
-            INNER_TUBE = registerCurio("inner_tube", builder -> builder.rarity(WHITE).accessories(units(FLOAT$ON$LIQUID$SURFACE))),
-            FLIPPER = registerCurio("flipper", builder -> builder.noTooltip().attribute(NeoForgeMod.SWIM_SPEED, 0.5, ADD_VALUE)), // 脚蹼
-            DIVING_GEAR = registerCurio("diving_gear", builder -> builder.infos(0).rarity(LIGHT_RED).equipable(EquipmentSlot.HEAD).accessories(units(DIVING)).attribute(NeoForgeMod.SWIM_SPEED, 0.5, ADD_VALUE)), // 潜水装备
-            JELLYFISH_NECKLACE = registerDirectly("jellyfish_necklace", name -> new RequiresModLoadedCurioItem(BaseCurioItem.builder(name).rarity(GREEN).accessories(of(LUMINANCE, -12)), "sodiumdynamiclights")), // 水母项链
+                    .attribute(Attributes.FALL_DAMAGE_MULTIPLIER, -100.0, ADD_VALUE)), // 马掌气球束（按跳跃能力分段播放）
+            INNER_TUBE = registerCurio("inner_tube", builder -> builder.rarity(WHITE).particle(TerraCurio.asResource("water_ripple"), ParticleTriggers.FLOATING_ON_WATER, ParticlePlacements.WATER_SURFACE).accessories(units(FLOAT$ON$LIQUID$SURFACE))),
+            FLIPPER = registerCurio("flipper", builder -> builder.noTooltip().particle(TerraCurio.asResource("swim_foam"), ParticleTriggers.SWIMMING).attribute(NeoForgeMod.SWIM_SPEED, 0.5, ADD_VALUE)), // 脚蹼
+            DIVING_GEAR = registerCurio("diving_gear", builder -> builder.infos(0).rarity(LIGHT_RED).equipable(EquipmentSlot.HEAD).particle(TerraCurio.asResource("bubble"), ParticleTriggers.UNDERWATER, ParticlePlacements.MOUTH).accessories(units(DIVING)).attribute(NeoForgeMod.SWIM_SPEED, 0.5, ADD_VALUE)), // 潜水装备
+            JELLYFISH_NECKLACE = registerDirectly("jellyfish_necklace", name -> new RequiresModLoadedCurioItem(BaseCurioItem.builder(name).rarity(GREEN).particle(TerraCurio.asResource("bubble"), ParticleTriggers.UNDERWATER, ParticlePlacements.MOUTH).accessories(of(LUMINANCE, -12)), "sodiumdynamiclights")), // 水母项链
             JELLYFISH_DIVING_GEAR = registerDirectly("jellyfish_diving_gear", name -> new RequiresModLoadedCurioItem(BaseCurioItem.builder(name).rarity(PINK).tooltips(1).infos(0)
+                    .particle(TerraCurio.asResource("bubble"), ParticleTriggers.UNDERWATER, ParticlePlacements.MOUTH)
                     .accessories(units(DIVING), of(LUMINANCE, -12), of(EFFECT$IMMUNITIES, Set.of()))
                     .attribute(NeoForgeMod.SWIM_SPEED, 0.5, ADD_VALUE), "sodiumdynamiclights")), // 水母潜水装备
             ARCTIC_DIVING_GEAR = registerDirectly("arctic_diving_gear", name -> new RequiresModLoadedCurioItem(BaseCurioItem.builder(name).rarity(LIGHT_PURPLE).tooltips(2)
+                    .particle(TerraCurio.asResource("bubble"), ParticleTriggers.UNDERWATER, ParticlePlacements.MOUTH)
                     .accessories(units(DIVING, ICE$SPEED, FROZEN$IMMUNE), of(LUMINANCE, -12))
                     .attribute(NeoForgeMod.SWIM_SPEED, 0.5, ADD_VALUE), "sodiumdynamiclights")), // 北极潜水装备
             FROG_LEG = registerCurio("frog_leg", builder -> builder
@@ -567,18 +596,22 @@ public final class TCItems {
             FROG_FLIPPER = registerCurio("frog_flipper", builder -> builder
                     .tooltips(1)
                     .infos(0)
+                    .particle(TerraCurio.asResource("swim_foam"), ParticleTriggers.SWIMMING)
                     .attribute(NeoForgeMod.SWIM_SPEED, 0.5, ADD_VALUE)
                     .attribute(Attributes.SAFE_FALL_DISTANCE, 7.0, ADD_VALUE)
                     .attribute(Attributes.JUMP_STRENGTH, 0.6, ADD_MULTIPLIED_TOTAL)), // 青蛙脚蹼
             FROG_WEBBING = registerCurio("frog_webbing", builder -> builder.rarity(PINK)
                     .tooltips(2)
                     .infos(0)
+                    .particle(TerraCurio.asResource("wall_dust"), ParticleTriggers.WALL_CLIMBING)
                     .accessories(of(WALL$CLIMB, (byte) 2))
                     .attribute(Attributes.SAFE_FALL_DISTANCE, 7.0, ADD_VALUE)
                     .attribute(Attributes.JUMP_STRENGTH, 0.6, ADD_MULTIPLIED_TOTAL)), // 青蛙蹼
             FROG_GEAR = registerCurio("frog_gear", builder -> builder.rarity(PINK)
                     .tooltips(3)
                     .infos(0)
+                    .particle(TerraCurio.asResource("wall_dust"), ParticleTriggers.WALL_CLIMBING)
+                    .particle(TerraCurio.asResource("swim_foam"), ParticleTriggers.SWIMMING)
                     .accessories(of(WALL$CLIMB, (byte) 2))
                     .attribute(NeoForgeMod.SWIM_SPEED, 0.5, ADD_VALUE)
                     .attribute(Attributes.SAFE_FALL_DISTANCE, 7.0, ADD_VALUE)
@@ -590,15 +623,15 @@ public final class TCItems {
                     .stepHeight())); // 水陆两用靴
 
     public static final DeferredItem<BaseCurioItem> TREASURE_MAGNET = registerCurio("treasure_magnet", builder -> builder.attribute(ConfluenceMagicLib.PICKUP_RANGE, 6.25, ADD_VALUE)), // 宝藏磁石
-            FLOWER_BOOTS = registerCurio("flower_boots", builder -> builder.rarity(LIME).accessories(units(FLOWER$BOOTS))); // 花靴
+            FLOWER_BOOTS = registerCurio("flower_boots", builder -> builder.rarity(LIME).particle(TerraCurio.asResource("flower_growth"), ParticleTriggers.WALKING_ON_GRASS, ParticlePlacements.FEET).accessories(units(FLOWER$BOOTS))); // 花靴
 
     public static final DeferredItem<BaseCurioItem> ANGLER_EARRING = registerCurio("angler_earring", builder -> builder.noTooltip()); // 渔夫耳环
 
     public static final DeferredItem<BaseCurioItem> ROYAL_GEL = registerCurio("royal_gel", builder -> builder.rarity(EXPERT).accessories(of(MOB$IGNORE, LibTags.EntityTypes.SLIME))), // 皇家凝胶
-            SHIELD_OF_CTHULHU = registerDirectly("shield_of_cthulhu", (name, builder) -> new ShieldOfCthulhu(builder.rarity(EXPERT).noTooltip()
+            SHIELD_OF_CTHULHU = registerDirectly("shield_of_cthulhu", (name, builder) -> new ShieldOfCthulhu(builder.rarity(EXPERT).noTooltip().particle(TerraCurio.asResource("cthulhu_dash"), ParticleTriggers.DASHING)
                     .accessories(units(SHIELD$OF$CTHULHU))
                     .attribute(Attributes.ARMOR, 2, ADD_VALUE))), // 克苏鲁护盾
-            WORM_SCARF = registerCurio("worm_scarf", builder -> builder.rarity(EXPERT).accessories(of(INJURY$FREE, 0.17F))), // 蠕虫围巾
+            WORM_SCARF = registerCurio("worm_scarf", builder -> builder.rarity(EXPERT).particle(TerraCurio.asResource("scarf_mist"), ParticleTriggers.ALWAYS).accessories(of(INJURY$FREE, 0.17F))), // 蠕虫围巾
             BRAIN_OF_CONFUSION = registerCurio("brain_of_confusion", builder -> builder.rarity(EXPERT).accessories(units(BRAIN$OF$CONFUSION)).tooltips(2)), // 混乱之脑
             HIVE_PACK = registerCurio("hive_pack", builder -> builder.rarity(EXPERT).accessories(units(HIVE$PACK))), // 蜂巢背包
             BONE_GLOVE = registerCurio("bone_glove", builder -> builder.rarity(EXPERT).accessories(units(BONE$GLOVE))), // 骨头手套
@@ -607,11 +640,12 @@ public final class TCItems {
     /* 孢子囊 */
     SHINY_STONE = registerDirectly("shiny_stone", name -> new ShinnyStone(BaseCurioItem.builder(name).rarity(EXPERT))), // 闪亮石
             SOARING_INSIGNIA = registerCurio("soaring_insignia", builder -> builder.rarity(EXPERT)
+                    .particle(TerraCurio.asResource("infinite_glow"), ParticleTriggers.INFINITE_FLYING)
                     .accessories(units(INFINITE$FLIGHT))
                     .attribute(Attributes.MOVEMENT_SPEED, 0.075, ADD_MULTIPLIED_TOTAL)
                     .attribute(Attributes.JUMP_STRENGTH, 0.8, ADD_MULTIPLIED_TOTAL)), // 翱翔徽章
             GRAVITY_GLOBE = registerDirectly("gravity_globe", (name, builder) -> new GravityGlobe(builder.rarity(EXPERT).accessories(units(GRAVITY$GLOBE)))), // 重力球
-            CELESTIAL_STARBOARD = registerCurio("celestial_starboard", builder -> builder.rarity(EXPERT).tooltips(2)
+            CELESTIAL_STARBOARD = registerCurio("celestial_starboard", builder -> builder.rarity(EXPERT).tooltips(2).particle(TerraCurio.asResource("flying_sparkle"), ParticleTriggers.FLYING)
                     .accessories(of(MAY$FLY, MayFlyAbilityValue.of("celestial_starboard", 1100, 1.0F, 60, true, true)))
                     .attribute(Attributes.FALL_DAMAGE_MULTIPLIER, -100.0, ADD_VALUE)); // 天界星盘
 
@@ -680,7 +714,7 @@ public final class TCItems {
     }
 
     private static DeferredItem<BaseCurioItem> registerWings(String name, ModRarity rarity, float flySpeed, int flyTicks, boolean couldGlide, boolean horizontalFlight) {
-        return registerCurio(name, builder -> builder.rarity(rarity)
+        return registerCurio(name, builder -> builder.rarity(rarity).particle(TerraCurio.asResource("flying_sparkle"), ParticleTriggers.FLYING)
                 .accessories(of(MAY$FLY, MayFlyAbilityValue.of(name, 1100, flySpeed, flyTicks, couldGlide, horizontalFlight)))
                 .attribute(Attributes.FALL_DAMAGE_MULTIPLIER, -100, ADD_VALUE));
     }

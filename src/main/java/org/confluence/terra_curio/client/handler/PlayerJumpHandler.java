@@ -48,21 +48,17 @@ public final class PlayerJumpHandler {
     private static int maxSandstormTicks = 0;
     private static int remainSandstormTicks = 0;
     private static boolean sandstormFinished = false;
-    public static boolean isOnSandstormJump = false;
 
     private static float blizzardSpeed = 0.0F;
     private static int maxBlizzardTicks = 0;
     private static int remainBlizzardTicks = 0;
     private static boolean blizzardFinished = false;
-    public static boolean isOnBlizzardJump = false;
 
     private static float tsunamiSpeed = 0.0F;
     private static boolean tsunamiFinished = false;
-    public static boolean isOnTsunamiJump = false;
 
     private static float cloudSpeed = 0.0F;
     private static boolean cloudFinished = false;
-    public static boolean isOnCloudJump = false;
 
     private static Map<ResourceKey<Item>, ObjectIntPair<MayFlyAbilityValue.FlyStack>> wingsFlyStacks = Map.of();
     private static Map<ResourceKey<Item>, ObjectIntPair<MayFlyAbilityValue.FlyStack>> otherFlyStacks = Map.of();
@@ -138,34 +134,28 @@ public final class PlayerJumpHandler {
                 JumpParticleState jumpState = ITCLivingEntity.of(localPlayer).terra_curio$getJumpParticleState();
                 if (remainSandstormTicks-- > 0) {
                     oneTimeJump(localPlayer, sandstormSpeed, PlayerJumpPacketC2S.JUMP_SANDSTORM);
-                    isOnSandstormJump = true;
                     jumpState.sandstormTicks = 1;
                 } else {
                     jumpKeyDown = true;
-                    isOnSandstormJump = false;
                     jumpState.sandstormTicks = 0;
                 }
             } else if (!blizzardFinished && blizzardSpeed > 0.0) {
                 JumpParticleState jumpState = ITCLivingEntity.of(localPlayer).terra_curio$getJumpParticleState();
                 if (remainBlizzardTicks-- > 0) {
                     oneTimeJump(localPlayer, blizzardSpeed, PlayerJumpPacketC2S.JUMP_BLIZZARD);
-                    isOnBlizzardJump = true;
                     jumpState.blizzardTicks = 1;
                 } else {
                     jumpKeyDown = true;
-                    isOnBlizzardJump = false;
                     jumpState.blizzardTicks = 0;
                 }
             } else if (!tsunamiFinished && tsunamiSpeed > 0.0) {
                 tsunamiFinished = true;
-                isOnTsunamiJump = true;
                 ITCLivingEntity.of(localPlayer).terra_curio$getJumpParticleState().tsunamiPending = true;
                 jumpKeyDown = true;
                 multiJump(localPlayer, tsunamiSpeed, PlayerJumpPacketC2S.JUMP_TSUNAMI);
                 localPlayer.playSound(TCSoundEvents.DOUBLE_JUMP.get());
             } else if (!cloudFinished && cloudSpeed > 0.0) {
                 cloudFinished = true;
-                isOnCloudJump = true;
                 ITCLivingEntity.of(localPlayer).terra_curio$getJumpParticleState().cloudPending = true;
                 jumpKeyDown = true;
                 multiJump(localPlayer, cloudSpeed, PlayerJumpPacketC2S.JUMP_CLOUD);
@@ -189,8 +179,6 @@ public final class PlayerJumpHandler {
             jumpKeyDown = false;
             sandstormFinished = remainSandstormTicks < maxSandstormTicks;
             blizzardFinished = remainBlizzardTicks < maxBlizzardTicks;
-            isOnSandstormJump = false;
-            isOnBlizzardJump = false;
             JumpParticleState jumpState = ITCLivingEntity.of(localPlayer).terra_curio$getJumpParticleState();
             jumpState.sandstormTicks = 0;
             jumpState.blizzardTicks = 0;
