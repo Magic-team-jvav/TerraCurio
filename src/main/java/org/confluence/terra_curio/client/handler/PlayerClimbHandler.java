@@ -13,13 +13,7 @@ import org.confluence.terra_curio.network.c2s.PlayerJumpPacketC2S;
 
 import static org.confluence.terra_curio.network.c2s.PlayerJumpPacketC2S.*;
 
-/// 攀爬（壁跳）客户端处理。
 ///
-/// ⚠️ WP6c：`GravitationHandler` 已按 1.20 的归属搬到 **Magic-Lib**
-/// （`org.confluence.lib.client.handler.GravitationHandler`）。
-/// 本类与该类原本**同包**（`org.confluence.terra_curio.client.handler`），所以原来没有 import、
-/// 直接裸引用；这里补一条**显式 import** 把它改指到 Lib 那份
-/// （同名类型的单类型导入会遮蔽同包类型，JLS 6.4.1），逻辑一行未动。
 public final class PlayerClimbHandler {
     private static boolean wallJumped = false;
     private static byte climberAmount = 0;

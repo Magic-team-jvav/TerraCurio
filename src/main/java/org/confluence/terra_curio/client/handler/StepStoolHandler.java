@@ -18,9 +18,6 @@ public final class StepStoolHandler {
 
     public static void handle(LocalPlayer player) {
         if (slot == StepStoolSteppingPacketS2C.NO_CURIO || (actualStep == 0 && !player.onGround())) {
-            // 1.20 这里写的是 `setActualStep((byte) 0)`（从而带上 `setForceCancel` 同步）；
-            // 1.21 此前直接写字段，本次按 1.20 走 setter（只改这一处**写入**；
-            // 函数内其余 `actualStep` 都是**读**，与 1.20 的 `getActualStep()` 等价，未动）。
             setActualStep((byte) 0);
             return;
         }
@@ -80,14 +77,7 @@ public final class StepStoolHandler {
         return actualStep > 0;
     }
 
-    /// WP6c 第二步：按 1.20 恢复「台阶凳 → 重力反转强制取消」的耦合通道。
     ///
-    /// 1.20 `client/handler/StepStoolHandler.java:80-83` 有一个私有 `setActualStep(byte)`，
-    /// 赋值后立刻 `GravitationHandler.setForceCancel(onStool())`；
-    /// 1.21 侧把这个赋值**内联**到了三个调用点（`reset` / `setStep` / `handlePacket`），
-    /// 于是耦合只剩「mixin 里直接读 `StepStoolHandler.onStool()`」这一条。
-    /// 现在改回 1.20 的通道：所有写入都走本方法，`GravitationHandler` 用 Lib 的
-    /// （`setForceCancel` 在 1.20/1.21 的 Lib 里都在）。
     private static void setActualStep(byte step) {
         actualStep = step;
         GravitationHandler.setForceCancel(onStool());

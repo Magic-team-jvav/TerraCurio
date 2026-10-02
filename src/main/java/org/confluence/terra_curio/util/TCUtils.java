@@ -280,8 +280,6 @@ public final class TCUtils {
     }
 
     public static boolean isFluidWalkable(LivingEntity living, FluidState fluidState) {
-        // WP6c 第二步：`terra_curio$isPlayer()` 是 1.21 的发明，1.20 **没有**这个成员，
-        // 1.20 `TCUtils.java:294` 就是直接 `!(living instanceof Player)` —— 逐字改回。
         if (fluidState.isEmpty() || living.isCrouching() || !(living instanceof Player)) {
             return false;
         }
@@ -387,8 +385,6 @@ public final class TCUtils {
     }
 
     public static boolean isIceSafe(LivingEntity self) {
-        // WP6c 第二步：1.20 `TCUtils.java:401` 的写法
-        // （原来是 `ITCEntity.of(self).terra_curio$isPlayer() && ((Player) self).isLocalPlayer()`）。
         if (self instanceof Player player && player.isLocalPlayer()) {
             return TCClientPacketHandler.isIceSafe();
         }

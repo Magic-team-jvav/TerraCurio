@@ -17,8 +17,6 @@ public final class TCKeyBindings {
     public static void keyBinding(RegisterKeyMappingsEvent event) {
         event.register(METAL_DETECTOR.get());
         event.register(STEP_STOOL.get());
-        // WP6c 第二步：`FLIP_GRAVITATION` 已归 Lib（`LibKeyBindings.FLIP_GRAVITATION`，1.20 归属），
-        // 本模组不再注册该按键。
         event.register(CTHULHU_SPRINTING.get());
     }
 

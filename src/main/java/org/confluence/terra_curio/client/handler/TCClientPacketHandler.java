@@ -117,9 +117,6 @@ public final class TCClientPacketHandler {
         hasCthulhu = isCuriosExists(SHIELD_OF_CTHULHU);
         hasTabi = isCuriosExists(TABI);
         ScopeFovHandler.hasScope = isCuriosExists(SCOPE);
-        // WP6c 第二步：1.21 的 TC 版 `GravitationHandler` 有个可变静态字段 `hasGlobe`，
-        // 1.20 没有那个字段 —— 走的是 Lib 的 `setForceEnable(...)` 通道
-        // （1.20 `client/handler/TCClientPacketHandler.java:119` 逐字如此）。
         GravitationHandler.setForceEnable(isCuriosExists(GRAVITY_GLOBE));
         hasMagiluminescence = isCuriosExists(MAGILUMINESCENCE);
         canFloating = isCuriosExists(FLOAT_ON_LIQUID_SURFACE);

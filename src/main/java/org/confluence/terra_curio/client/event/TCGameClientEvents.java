@@ -29,8 +29,6 @@ public final class TCGameClientEvents {
         Minecraft minecraft = Minecraft.getInstance();
         LocalPlayer player = minecraft.player;
         if (player != null) {
-            // WP6c 第二步：`GravitationHandler.tryExpire(player)` 已归 Lib 的
-            // `LibClientGameEvents`（1.20 的驱动点在 Lib 那一侧），TC 不再驱动重力。
             StepStoolHandler.handle(player);
             TCClientPacketHandler.handle(minecraft, player);
             InformationHandler.handle(player);
@@ -41,7 +39,6 @@ public final class TCGameClientEvents {
 
     @SubscribeEvent
     public static void clientPlayerNetwork$LoggingOut(ClientPlayerNetworkEvent.LoggingOut event) {
-        // WP6c 第二步：`GravitationHandler.reset()` 已归 Lib（1.20 的 `LibClientGameEvents`）。
         StepStoolHandler.reset();
         TCClientPacketHandler.reset();
         InformationHandler.reset();
@@ -58,10 +55,6 @@ public final class TCGameClientEvents {
         Input input = event.getInput();
         boolean jumping = input.jumping;
 
-        // WP6c 第二步：原来这里有一整段重力驱动
-        // （`GravitationHandler.force/handle/expire` + `isHasGlobe` 三分支，判 `LibEffects.GRAVITATION`）
-        // —— 1.20 的归属在 Lib，1.21 侧已由 Lib 的 `LibClientGameEvents` 驱动，
-        // 故按任务书整段删除（`LibEffects` import 一并移除，已成未用）。
 
         PlayerJumpHandler.handle(player, jumping);
         PlayerClimbHandler.handle(player, input.getMoveVector(), jumping);
@@ -73,8 +66,6 @@ public final class TCGameClientEvents {
 
     @SubscribeEvent
     public static void cameraSetup(ViewportEvent.ComputeCameraAngles event) {
-        // **读状态**的调用保留（1.20 的 `cameraSetup` 也读 Lib 的 `isShouldRot()`），
-        // 只把 import 换成 Lib 的 `GravitationHandler`。
         if (GravitationHandler.isShouldRot()) {
             event.setRoll(180.0F);
         }

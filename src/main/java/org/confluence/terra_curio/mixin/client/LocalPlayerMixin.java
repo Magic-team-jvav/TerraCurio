@@ -20,18 +20,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-/// ⚠️ 任务书说本类「1.20 Lib 无对应物 → 保留」，但实测**1.20 Lib 有对应物**
-/// （`Confluence-Magic-Lib/.../mixin/client/LocalPlayerMixin.java`，且其中
-/// `sinkUpFluid` + `flip` 两个重力 hook 与这里的同名同目标）。
-/// 按任务书的「保留 + `GravitationHandler` 改指 Lib」处置：
-/// - 保留 `notCheckOnGround`（`TCClientPacketHandler.isHasCthulhu()`，TC 克苏鲁线）与
-///   `floating`（TC 漂浮线）—— 这两个是 1.21 独有，1.20 Lib 无；
-/// - `sinkUpFluid` / `flip` 的重力那半改指 Lib 的 `GravitationHandler`
-///   （`isShouldRot` / `getJumpDir`，Lib 侧同名同义）。
 ///
-/// ⚠️ 1.21 的 Lib `LocalPlayerMixin` 目前**只有** `skipSlowdown`，没有这两个重力 hook。
-/// 若 Lib 侧按 1.20 补上，两边会对 `sinkInFluid` / `getFlyingSpeed` 各命中一次
-/// （`flip` 会乘两次 `getJumpDir()`），届时应删掉本类的这两半（已回报）。
 @Mixin(LocalPlayer.class)
 public abstract class LocalPlayerMixin implements SelfGetter<Player> {
     @Shadow

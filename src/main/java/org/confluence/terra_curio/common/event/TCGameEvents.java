@@ -164,9 +164,6 @@ public final class TCGameEvents {
 
     @SubscribeEvent
     public static void playerTick$Pre(PlayerTickEvent.Pre event) {
-        // WP6c 第二步：原来这里是 `GravitationHandler.unCrouching(event.getEntity())`
-        // —— 1.20 的归属在 Lib（由 Lib 的 `playerTick$Pre` 驱动），TC 不再驱动重力，
-        // 故监听体清空（注解与签名保留，不动事件注册形态）。
     }
 
     @SubscribeEvent

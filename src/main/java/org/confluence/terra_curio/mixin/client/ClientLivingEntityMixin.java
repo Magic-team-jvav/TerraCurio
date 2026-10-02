@@ -15,19 +15,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
-/// 客户端 `LivingEntity` 的 TC 扩展（WP6c 第二步：按 1.20 的 TC 形态收敛）。
 ///
-/// 逐 hook 处置：
-/// - **删** `fall`（`checkFallDamage` HEAD，读 `isShouldRot()` 加 `fallDistance`）——
-///   重力归属 Lib，且 1.21 的 Lib 里已经有它
-///   （`Confluence-Magic-Lib/.../mixin/client/ClientLivingEntityMixin.java:23 fall`），
-///   留着会对同一条注入点各命中一次；
-/// - **留** 化妆那两个成员（`terra_curio$setShowingCosmetic` / `isShowingCosmetic`，
-///   1.20 TC 的 `ClientLivingEntityMixin` 也在这一个类里实现 `ITCClientLivingEntity`）；
-/// - **留** `onStool` / `notSlowdown` / `neptunesShell`（台阶凳、漂浮、海王壳，TC 自己的功能），
-///   只把 `IEntity#terra_curio$isPlayer()` 换成 1.20 的 `instanceof Player` 写法
-///   —— `terra_curio$isPlayer` 是 1.21 的发明，1.20 **不存在**这个成员
-///   （1.20 `ClientLivingEntityMixin:35/44/53` 全是 `confluence$self() instanceof Player ...`）。
 @Mixin(LivingEntity.class)
 public abstract class ClientLivingEntityMixin implements ITCClientLivingEntity, SelfGetter<LivingEntity> {
     @Unique

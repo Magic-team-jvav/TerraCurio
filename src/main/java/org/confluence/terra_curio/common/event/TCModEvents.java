@@ -37,8 +37,6 @@ public final class TCModEvents {
     @SubscribeEvent
     public static void registerPayloadHandlers(RegisterPayloadHandlersEvent event) {
         event.registrar("1")
-                // WP6c 第二步：`GravitationPacketC2S` 与 `BroadcastGravitationRotPacketS2C` 两个包
-                // 已随重力整条特性搬到 Lib（1.20 归属），TC 侧不再注册它们的 handler。
                 .playToServer(StepStoolSteppingPacketC2S.TYPE, StepStoolSteppingPacketC2S.STREAM_CODEC, StepStoolSteppingPacketC2S::handle)
                 .playToServer(PlayerJumpPacketC2S.TYPE, PlayerJumpPacketC2S.STREAM_CODEC, PlayerJumpPacketC2S::handle)
                 .playToServer(SpeedBootsNBTPacketC2S.TYPE, SpeedBootsNBTPacketC2S.STREAM_CODEC, SpeedBootsNBTPacketC2S::handle)
