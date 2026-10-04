@@ -17,7 +17,7 @@ public class TooltipComponentsValue implements PrimitiveValue<List<TooltipCompon
     public static final Codec<TooltipComponentsValue> CODEC = Storage.CODEC.listOf().xmap(TooltipComponentsValue::new, TooltipComponentsValue::get);
     public static final CombineRule<List<Storage>, TooltipComponentsValue> EXPANSION = CombineRule.register((a, b) -> {
         ArrayList<Storage> list = new ArrayList<>(a);
-        a.addAll(b);
+        list.addAll(b);
         return list;
     }, "tooltip_components_expansion");
 
