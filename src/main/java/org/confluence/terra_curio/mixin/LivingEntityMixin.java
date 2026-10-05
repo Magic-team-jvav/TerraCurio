@@ -128,11 +128,12 @@ public abstract class LivingEntityMixin implements ITCLivingEntity, SelfGetter<L
         return original.call(instance, fluidState);
     }
 
-    @Inject(method = "canStandOnFluid", at = @At("RETURN"), cancellable = true)
-    private void standOnFluid(FluidState fluidState, CallbackInfoReturnable<Boolean> cir) {
-        if (!cir.getReturnValue() && TCUtils.isFluidWalkable(confluence$self(), fluidState)) {
-            cir.setReturnValue(true);
+    @ModifyReturnValue(method = "canStandOnFluid", at = @At("RETURN"))
+    private boolean standOnFluid(boolean original, FluidState fluidState) {
+        if (!original && TCUtils.isFluidWalkable(confluence$self(), fluidState)) {
+            return true;
         }
+        return original;
     }
 
     @Inject(method = "onChangedBlock", at = @At("TAIL"))
