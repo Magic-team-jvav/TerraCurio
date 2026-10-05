@@ -6,22 +6,22 @@
 				"identifier": "geometry.unknown",
 				"texture_width": 32,
 				"texture_height": 32,
-				"visible_bounds_width": 5,
+				"visible_bounds_width": 6,
 				"visible_bounds_height": 2.5,
 				"visible_bounds_offset": [0, 0.75, 0]
 			},
 			"bones": [
 				{
 					"name": "group",
-					"pivot": [4, 23, 0]
+					"pivot": [4, 23, 3]
 				},
 				{
 					"name": "wing_left",
 					"parent": "group",
-					"pivot": [3, 23, 0],
+					"pivot": [3, 23, 3],
 					"cubes": [
 						{
-							"origin": [2.875, 16, -1],
+							"origin": [2.875, 16, 2],
 							"size": [0.25, 8, 15],
 							"inflate": -0.032,
 							"uv": {
@@ -34,10 +34,10 @@
 				{
 					"name": "wing_left_1",
 					"parent": "wing_left",
-					"pivot": [3, 23, 6],
+					"pivot": [3, 23, 9],
 					"cubes": [
 						{
-							"origin": [2.875, 12, 4],
+							"origin": [2.875, 12, 7],
 							"size": [0.25, 12, 12],
 							"inflate": -0.016,
 							"uv": {
@@ -50,10 +50,10 @@
 				{
 					"name": "wing_left_2",
 					"parent": "wing_left_1",
-					"pivot": [3, 23, 16],
+					"pivot": [3, 23, 19],
 					"cubes": [
 						{
-							"origin": [2.875, 11, 11],
+							"origin": [2.875, 11, 14],
 							"size": [0.25, 13, 21],
 							"uv": {
 								"east": {"uv": [0, 0], "uv_size": [21, 13]},
@@ -65,10 +65,10 @@
 				{
 					"name": "wing_right",
 					"parent": "group",
-					"pivot": [-3, 23, 0],
+					"pivot": [-3, 23, 3],
 					"cubes": [
 						{
-							"origin": [-3.125, 16, -1],
+							"origin": [-3.125, 16, 2],
 							"size": [0.25, 8, 15],
 							"inflate": -0.032,
 							"uv": {
@@ -81,10 +81,10 @@
 				{
 					"name": "wing_right_1",
 					"parent": "wing_right",
-					"pivot": [-3, 23, 6],
+					"pivot": [-3, 23, 9],
 					"cubes": [
 						{
-							"origin": [-3.125, 12, 4],
+							"origin": [-3.125, 12, 7],
 							"size": [0.25, 12, 12],
 							"inflate": -0.016,
 							"uv": {
@@ -97,10 +97,10 @@
 				{
 					"name": "wing_right_2",
 					"parent": "wing_right_1",
-					"pivot": [-3, 23, 16],
+					"pivot": [-3, 23, 19],
 					"cubes": [
 						{
-							"origin": [-3.125, 11, 11],
+							"origin": [-3.125, 11, 14],
 							"size": [0.25, 13, 21],
 							"uv": {
 								"east": {"uv": [0, 0], "uv_size": [21, 13]},
