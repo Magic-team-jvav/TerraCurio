@@ -49,6 +49,17 @@
                     }
                 }
             },
+            "minecraft:particle_appearance_tinting": {
+                "color": {
+                    "interpolant": "v.particle_age / v.particle_lifetime",
+                    "gradient": {
+                        "0.0": "#00FFFFFF",
+                        "0.15": "#E6FFFFFF",
+                        "0.75": "#E6FFFFFF",
+                        "1.0": "#00FFFFFF"
+                    }
+                }
+            },
             "minecraft:particle_appearance_lighting": {},
             "minecraft:particle_motion_collision": {}
         }

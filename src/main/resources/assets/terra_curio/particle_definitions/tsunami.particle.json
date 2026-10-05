@@ -36,6 +36,17 @@
 					"uv": ["v.particle_random_3>0.5?0:8", "v.particle_random_4>0.5?0:8"],
 					"uv_size": [8, 8]
 				}
+			},
+			"minecraft:particle_appearance_tinting": {
+				"color": {
+					"interpolant": "v.particle_age / v.particle_lifetime",
+					"gradient": {
+						"0.0": "#00FFFFFF",
+						"0.15": "#E6FFFFFF",
+						"0.75": "#E6FFFFFF",
+						"1.0": "#00FFFFFF"
+					}
+				}
 			}
 		}
 	}
