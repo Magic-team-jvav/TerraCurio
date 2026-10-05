@@ -13,9 +13,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import java.util.function.Predicate;
 
 // todo 反转AI
-// ⚠️ 1.21 独有：1.20 侧没有对应物（1.20 `mixin/EntityMixin` 里只留了 `// todo 反转AI`）。
-// 本类**保留**，只把判据从 1.21 的 `IEntity`（`terra_curio$` 前缀的重力成员）改指到 Lib 的
-// `ILibEntity`（`confluence$` 前缀）—— 1.20 的重力成员宿主。
 @Mixin(LandRandomPos.class)
 public abstract class LandRandomPosMixin {
     @WrapOperation(method = "movePosUpOutOfSolid", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/ai/util/RandomPos;moveUpOutOfSolid(Lnet/minecraft/core/BlockPos;ILjava/util/function/Predicate;)Lnet/minecraft/core/BlockPos;"))

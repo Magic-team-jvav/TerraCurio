@@ -10,9 +10,6 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 
 // todo 反转AI
-// ⚠️ 1.21 独有：1.20 侧没有对应物（1.20 `mixin/EntityMixin` 里只留了 `// todo 反转AI`）。
-// 本类**保留**，只把判据从 1.21 的 `IEntity`（`terra_curio$` 前缀的重力成员，含维度高度）
-// 改指到 Lib 的 `ILibEntity`（`confluence$` 前缀）—— 1.20 的重力成员宿主。
 @Mixin(MoveControl.class)
 public abstract class MoveControlMixin {
     @Shadow

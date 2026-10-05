@@ -15,9 +15,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 // todo 反转AI
-// ⚠️ 1.21 独有：1.20 侧没有对应物（1.20 `mixin/EntityMixin` 里只留了 `// todo 反转AI`）。
-// 本类**保留**，只把判据从 1.21 的 `IEntity`（`terra_curio$` 前缀的重力成员）改指到 Lib 的
-// `ILibEntity`（`confluence$` 前缀）—— 1.20 的重力成员宿主。
 @Mixin(GroundPathNavigation.class)
 public abstract class GroundPathNavigationMixin extends PathNavigation {
     public GroundPathNavigationMixin(Mob mob, Level level) {

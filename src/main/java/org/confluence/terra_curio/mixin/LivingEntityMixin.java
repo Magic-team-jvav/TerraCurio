@@ -109,18 +109,6 @@ public abstract class LivingEntityMixin implements ITCLivingEntity, SelfGetter<L
         return TCUtils.applyFrozenImmune(confluence$self(), original);
     }
 
-    /// `travel` 的 `@ModifyVariable(HEAD, argsOnly)`：**只保留 `confused` 那半**。
-    ///
-    /// WP6c 第二步处置（逐 hook 比对）：
-    /// - 重力那半（`isShouldRot()` → `new Vec3(-vec3.x, vec3.y, vec3.z)`）**已删** ——
-    ///   1.20 归属 Lib，1.21 的 Lib 里已经有它
-    ///   （`Confluence-Magic-Lib/.../mixin/LivingEntityMixin.java:61 reversed`），留着会重复变换；
-    /// - `confused` 那半**保留**：1.21 的 Lib `LivingEntityMixin` 目前只有
-    ///   `armorPenetration` / `modifyParticlePosY` / `reversed` **三个** hook，
-    ///   **没有** 1.20 Lib 的 `confused`（1.20 Lib `LivingEntityMixin:39-45`）——
-    ///   删掉就会丢「迷乱效果反转移动」的行为，所以先留在 TC 侧。
-    ///   ⚠️ 若之后 Lib 按 1.20 补上 `confused`，这两处会对同一注入点各命中一次
-    ///   （`reverse()` 执行两遍 = 等于不反转），**届时必须删掉本 hook**（已回报）。
     @ModifyVariable(method = "travel", at = @At("HEAD"), argsOnly = true)
     private Vec3 confused(Vec3 vec3) {
         if (hasEffect(LibEffects.CONFUSED)) {

@@ -16,11 +16,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 // todo 反转AI
-// ⚠️ 1.21 独有：1.20 侧没有对应物（1.20 `mixin/EntityMixin` 里只留了 `// todo 反转AI`）。
-// 本类**保留**，只把判据从 1.21 的 `IEntity`（`terra_curio$` 前缀的重力成员）改指到 Lib 的
-// `ILibEntity`（`confluence$` 前缀）—— 1.20 的重力成员宿主。
-// 注：本类下面的 `@Unique terra_curio$getPathTypeStatic` 是 1.21 独有的私有辅助（不是接口成员），
-// 与重力成员的归属无关，按最小改动原则保持原样。
 @Mixin(WalkNodeEvaluator.class)
 public abstract class WalkNodeEvaluatorMixin extends NodeEvaluator {
     @ModifyExpressionValue(method = "getStart", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/Mth;floor(D)I"))
