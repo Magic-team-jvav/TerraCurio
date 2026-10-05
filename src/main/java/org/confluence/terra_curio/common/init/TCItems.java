@@ -25,6 +25,7 @@ import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.LibTags;
 import org.confluence.lib.common.component.ModRarity;
+import org.confluence.lib.common.item.CustomRarityItem;
 import org.confluence.terra_curio.TerraCurio;
 import org.confluence.terra_curio.api.primitive.*;
 import org.confluence.terra_curio.common.item.*;
@@ -152,8 +153,8 @@ public final class TCItems {
     public static final ValueType<List<Component>, ComponentsValue> COMPONENTS = ValueType.create("components", ComponentsValue.COMBINE_RULE, ComponentsValue.CODEC, List.of(), ComponentsValue::new);
 
 
-    public static final DeferredItem<MasterItem> STAR = OTHERS.register("star", MasterItem::new);
-    public static final DeferredItem<MasterItem> ICON = OTHERS.register("icon", MasterItem::new);
+    public static final DeferredItem<CustomRarityItem> STAR = OTHERS.register("star", () -> new CustomRarityItem(MASTER));
+    public static final DeferredItem<CustomRarityItem> ICON = OTHERS.register("icon", () -> new CustomRarityItem(MASTER));
     public static final DeferredItem<BasePoint> BASE_POINT = OTHERS.register("base_point", BasePoint::new);
     public static final DeferredItem<BaseCurioItem> EVERLASTING = OTHERS.register("everlasting", () -> BaseCurioItem.builder("everlasting").rarity(ModRarity.MASTER).build());
 
