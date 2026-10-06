@@ -1,9 +1,13 @@
 package org.confluence.terra_curio.client.event;
 
 import net.minecraft.client.RecipeBookCategories;
+import net.minecraftforge.client.event.EntityRenderersEvent;
+import net.minecraftforge.client.event.RegisterClientTooltipComponentFactoriesEvent;
+import net.minecraftforge.client.event.RegisterRecipeBookCategoriesEvent;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import org.confluence.terra_curio.TerraCurio;
 import org.confluence.terra_curio.api.primitive.TooltipComponentsValue;
 import org.confluence.terra_curio.client.CuriosClient;
@@ -23,8 +27,8 @@ import org.confluence.terra_curio.common.init.TCEntities;
 import org.confluence.terra_curio.common.init.TCMenus;
 import org.confluence.terra_curio.common.init.TCRecipes;
 import org.mesdag.portlib.event.PortEventHandler;
-import org.mesdag.portlib.event.client.*;
-import org.mesdag.portlib.event.lifecycle.PortFMLClientSetupEventPort;
+import org.mesdag.portlib.event.client.PortRegisterGuiLayersEvent;
+import org.mesdag.portlib.event.client.PortRegisterMenuScreensEvent;
 
 public final class TCModClientEvent {
     public static void init() {
@@ -39,7 +43,7 @@ public final class TCModClientEvent {
         PortEventHandler.addListener(TCModClientEvent::registerRecipeBookCategories);
     }
 
-    private static void clientSetup(PortFMLClientSetupEventPort event) {
+    private static void clientSetup(FMLClientSetupEvent event) {
         event.enqueueWork(CuriosClient::registerRenderers);
     }
 
@@ -55,14 +59,14 @@ public final class TCModClientEvent {
         }
     }
 
-    private static void registerEntityLayers(PortEntityRenderersEvent.RegisterLayerDefinitions event) {
+    private static void registerEntityLayers(EntityRenderersEvent.RegisterLayerDefinitions event) {
         CuriosClient.registerLayers(event::registerLayerDefinition);
         event.registerLayerDefinition(BeeProjectileModel.LAYER_LOCATION, BeeProjectileModel::createBodyLayer);
         event.registerLayerDefinition(XBoneProjectileModel.LAYER_LOCATION, XBoneProjectileModel::createBodyLayer);
         event.registerLayerDefinition(StepStoolModel.LAYER_LOCATION, StepStoolModel::createBodyLayer);
     }
 
-    private static void registerEntityRenderers(PortEntityRenderersEvent.RegisterRenderers event) {
+    private static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(TCEntities.BEE_PROJECTILE.get(), BeeProjectileRenderer::new);
         event.registerEntityRenderer(TCEntities.STEP_STOOL.get(), StepStoolRenderer::new);
         event.registerEntityRenderer(TCEntities.STAR_CLOAK.get(), StarCloakEntityRenderer::new);
@@ -78,11 +82,11 @@ public final class TCModClientEvent {
         event.register(TCMenus.WORKSHOP.get(), WorkshopScreen::new);
     }
 
-    private static void registerClientTooltipComponentFactories(PortRegisterClientTooltipComponentFactoriesEvent event) {
+    private static void registerClientTooltipComponentFactories(RegisterClientTooltipComponentFactoriesEvent event) {
         event.register(TooltipComponentsValue.Multi.class, multi -> new MultiFunctionTooltip(multi.storages()));
     }
 
-    private static void registerRecipeBookCategories(PortRegisterRecipeBookCategoriesEvent event) {
+    private static void registerRecipeBookCategories(RegisterRecipeBookCategoriesEvent event) {
         event.registerRecipeCategoryFinder(TCRecipes.WORKSHOP_TYPE.get(), recipeHolder -> RecipeBookCategories.UNKNOWN);
     }
 }
