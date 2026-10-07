@@ -111,7 +111,7 @@ public class TCDataMapProvider extends PortDataMapProvider {
             ResourceLocation id = helper.asId();
             helper.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.builder()
                     .add(Attributes.KNOCKBACK_RESISTANCE, id, 1.0, PortAttributeModifier.Operation.ADD_VALUE)
-                    .add(Attributes.ARMOR, id, 2.0, PortAttributeModifier.Operation.ADD_VALUE)
+                    .add(Attributes.ARMOR, id, 3.0, PortAttributeModifier.Operation.ADD_VALUE)
                     .build());
         }); // 十字章护盾
         add(TCItems.STAR_CLOAK, helper -> helper.of(TCItems.STAR$CLOCK, false)); // 星星斗篷

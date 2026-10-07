@@ -16,6 +16,10 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.ItemLike;
+import net.minecraftforge.common.crafting.ConditionalRecipe;
+import net.minecraftforge.common.crafting.conditions.ModLoadedCondition;
+import net.minecraftforge.common.crafting.conditions.NotCondition;
+import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.recipe.AmountIngredient;
 import org.confluence.lib.common.recipe.EnvironmentLevelAccess;
 import org.confluence.lib.common.recipe.SimpleFinishedRecipe;
@@ -35,21 +39,31 @@ public class TCRecipeProvider extends RecipeProvider {
 
     @Override
     protected void buildRecipes(Consumer<FinishedRecipe> writer) {
+        /// 单独安装时保留简化配方；加载汇流来世后使用本体的获取与合成路线。
+        Consumer<FinishedRecipe> conditional = recipe -> {
+            ConditionalRecipe.Builder builder = ConditionalRecipe.builder()
+                    .addCondition(new NotCondition(new ModLoadedCondition(ConfluenceMagicLib.CONFLUENCE_ID)))
+                    .addRecipe(recipe);
+            if (recipe.getAdvancementId() != null) {
+                builder.generateAdvancement(recipe.getAdvancementId());
+            }
+            builder.build(writer, recipe.getId());
+        };
         workshop(writer, TCItems.AMBER_HORSESHOE_BALLOON, Ingredient.of(TCItems.HONEY_BALLOON.get()), Ingredient.of(TCItems.LUCKY_HORSESHOE.get()));
         workshop(writer, "ambhipian_boots", TCItems.AMBHIPIAN_BOOTS, Ingredient.of(TCItems.SAILFISH_BOOTS.get()), Ingredient.of(TCItems.FROG_LEG.get()));
-        workshop(writer, "ankh_charm", TCItems.ANKH_CHARM,
+        workshop(conditional, "ankh_charm", TCItems.ANKH_CHARM,
                 Ingredient.of(TCItems.DETOXIFICATION_CAPSULE.get()),
                 Ingredient.of(TCItems.NUTRIENT_SOLUTION.get()),
                 Ingredient.of(TCItems.SEARCHLIGHT.get()),
                 Ingredient.of(TCItems.THE_PLAN.get()),
                 Ingredient.of(TCItems.EXPLORERS_EQUIPMENT.get()));
         workshop(writer, "ankh_shield", TCItems.ANKH_SHIELD, Ingredient.of(TCItems.ANKH_CHARM.get()), Ingredient.of(TCItems.OBSIDIAN_SHIELD.get()));
-        workshop(writer, "architect_gizmo_pack", TCItems.ARCHITECT_GIZMO_PACK,
+        workshop(conditional, "architect_gizmo_pack", TCItems.ARCHITECT_GIZMO_PACK,
                 Ingredient.of(TCItems.BRICK_LAYER.get()),
                 Ingredient.of(TCItems.EXTENDO_GRIP.get()),
                 Ingredient.of(TCItems.PORTABLE_CEMENT_MIXER.get()));
         workshop(writer, "arctic_diving_gear", TCItems.ARCTIC_DIVING_GEAR, Ingredient.of(TCItems.JELLYFISH_DIVING_GEAR.get()), Ingredient.of(TCItems.ICE_SKATES.get()));
-        workshop(writer, "avenger_emblem", TCItems.AVENGER_EMBLEM,
+        workshop(conditional, "avenger_emblem", TCItems.AVENGER_EMBLEM,
                 Ingredient.of(TCItems.WARRIOR_EMBLEM.get()),
                 Ingredient.of(TCItems.SORCERER_EMBLEM.get()),
                 Ingredient.of(TCItems.RANGER_EMBLEM.get()));
@@ -202,7 +216,7 @@ public class TCRecipeProvider extends RecipeProvider {
                 .define('#', Items.VINE)
                 .define('S', Items.SPORE_BLOSSOM)
                 .unlockedBy("has", has(TCItems.ANKLET_OF_THE_WIND.get()))
-                .save(writer, TerraCurio.asResource("anklet_of_the_wind"));
+                .save(conditional, TerraCurio.asResource("anklet_of_the_wind"));
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, TCItems.BLIZZARD_IN_A_BOTTLE.get())
                 .pattern(" # ")
                 .pattern("#S#")
@@ -210,7 +224,7 @@ public class TCRecipeProvider extends RecipeProvider {
                 .define('#', Items.BLUE_ICE)
                 .define('S', TCItems.CLOUD_IN_A_BOTTLE.get())
                 .unlockedBy("has", has(TCItems.BLIZZARD_IN_A_BOTTLE.get()))
-                .save(writer, TerraCurio.asResource("blizzard_in_a_bottle"));
+                .save(conditional, TerraCurio.asResource("blizzard_in_a_bottle"));
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, TCItems.COPPER_WATCH.get())
                 .pattern(" # ")
                 .pattern("cRc")
@@ -227,7 +241,7 @@ public class TCRecipeProvider extends RecipeProvider {
                 .define('i', Items.IRON_INGOT)
                 .define('t', Items.TARGET)
                 .unlockedBy("has", has(TCItems.DPS_METER.get()))
-                .save(writer, TerraCurio.asResource("dps_meter"));
+                .save(conditional, TerraCurio.asResource("dps_meter"));
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, TCItems.GOLD_WATCH.get())
                 .pattern(" # ")
                 .pattern("cRc")
@@ -244,7 +258,7 @@ public class TCRecipeProvider extends RecipeProvider {
                 .define('#', Items.BLUE_ICE)
                 .define('S', TCItems.HERMES_BOOTS.get())
                 .unlockedBy("has", has(TCItems.ICE_SKATES.get()))
-                .save(writer, TerraCurio.asResource("ice_skates"));
+                .save(conditional, TerraCurio.asResource("ice_skates"));
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, TCItems.MAGIC_MIRROR.get())
                 .pattern("gGg")
                 .pattern("GDG")
@@ -253,7 +267,7 @@ public class TCRecipeProvider extends RecipeProvider {
                 .define('G', Items.GLASS)
                 .define('D', Items.DIAMOND)
                 .unlockedBy("has", has(TCItems.MAGIC_MIRROR.get()))
-                .save(writer, TerraCurio.asResource("magic_mirror_from_gold_ingot"));
+                .save(conditional, TerraCurio.asResource("magic_mirror_from_gold_ingot"));
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, TCItems.MAGIC_MIRROR.get())
                 .pattern("gGg")
                 .pattern("GDG")
@@ -262,7 +276,7 @@ public class TCRecipeProvider extends RecipeProvider {
                 .define('G', Items.GLASS)
                 .define('D', Items.DIAMOND)
                 .unlockedBy("has", has(TCItems.MAGIC_MIRROR.get()))
-                .save(writer, TerraCurio.asResource("magic_mirror_from_platinum_ingot"));
+                .save(conditional, TerraCurio.asResource("magic_mirror_from_platinum_ingot"));
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, TCItems.OBSIDIAN_SKULL.get())
                 .pattern("###")
                 .pattern("#W#")
@@ -270,7 +284,7 @@ public class TCRecipeProvider extends RecipeProvider {
                 .define('#', Items.OBSIDIAN)
                 .define('W', Items.WITHER_SKELETON_SKULL)
                 .unlockedBy("has", has(TCItems.OBSIDIAN_SKULL.get()))
-                .save(writer, TerraCurio.asResource("obsidian_skull"));
+                .save(conditional, TerraCurio.asResource("obsidian_skull"));
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, TCItems.PLATINUM_WATCH.get())
                 .pattern(" # ")
                 .pattern("cRc")
@@ -287,7 +301,7 @@ public class TCRecipeProvider extends RecipeProvider {
                 .define('I', Items.IRON_BOOTS)
                 .define('i', Items.IRON_INGOT)
                 .unlockedBy("has", has(TCItems.ROCKET_BOOTS.get()))
-                .save(writer, TerraCurio.asResource("rocket_boots"));
+                .save(conditional, TerraCurio.asResource("rocket_boots"));
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, TCItems.SILVER_WATCH.get())
                 .pattern(" # ")
                 .pattern("cRc")
@@ -305,7 +319,7 @@ public class TCRecipeProvider extends RecipeProvider {
                 .define('r', Items.REDSTONE)
                 .define('i', Items.IRON_INGOT)
                 .unlockedBy("has", has(TCItems.STOPWATCH.get()))
-                .save(writer, TerraCurio.asResource("stopwatch"));
+                .save(conditional, TerraCurio.asResource("stopwatch"));
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, TCItems.TIN_WATCH.get())
                 .pattern(" # ")
                 .pattern("cRc")
@@ -333,7 +347,7 @@ public class TCRecipeProvider extends RecipeProvider {
                 .define('c', Items.STICK)
                 .define('d', Items.BOOKSHELF)
                 .unlockedBy("has", has(TCItems.WORKSHOP.get()))
-                .save(writer, TerraCurio.asResource("workshop"));
+                .save(conditional, TerraCurio.asResource("workshop"));
     }
 
     protected void workshop(Consumer<FinishedRecipe> writer, ItemLike result, Ingredient... ingredients) {
