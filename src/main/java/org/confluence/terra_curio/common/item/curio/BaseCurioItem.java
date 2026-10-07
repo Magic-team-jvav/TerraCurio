@@ -44,11 +44,7 @@ import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICurioItem;
 
 import javax.annotation.OverridingMethodsMustInvokeSuper;
-import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
@@ -143,7 +139,7 @@ public class BaseCurioItem extends Item implements ICurioItem {
         }
         boolean b = builder == null;
         if (b || builder.hasToolTip) {
-            tooltipComponents.add(Component.translatable("tooltip." + stack.getDescriptionId() + ".0"));
+            tooltipComponents.add(Component.translatable("tooltip." + stack.getDescriptionId() + ".0").withStyle(ChatFormatting.GRAY));
             if (!b) tooltipComponents.addAll(builder.additionTip);
         }
         appendInfo(stack, tooltipComponents);
@@ -292,7 +288,7 @@ public class BaseCurioItem extends Item implements ICurioItem {
         public Builder tooltip(String str) {
             if (!hasToolTip)
                 throw new IllegalArgumentException("Can not add tooltip when noTooltip() invoked!");
-            additionTip.add(Component.translatable(str));
+            additionTip.add(Component.translatable(str).withStyle(ChatFormatting.GRAY));
             return this;
         }
 

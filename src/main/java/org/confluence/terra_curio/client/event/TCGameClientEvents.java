@@ -11,7 +11,6 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.network.PacketDistributor;
-import org.confluence.lib.client.handler.GravitationHandler;
 import org.confluence.terra_curio.TerraCurio;
 import org.confluence.terra_curio.client.TCClientConfigs;
 import org.confluence.terra_curio.client.TCKeyBindings;
@@ -61,13 +60,6 @@ public final class TCGameClientEvents {
 
         if (TCClientPacketHandler.isHasTabi() /* confluence mixin here */) {
             PlayerSprintingHandler.handle(player, input);
-        }
-    }
-
-    @SubscribeEvent
-    public static void cameraSetup(ViewportEvent.ComputeCameraAngles event) {
-        if (GravitationHandler.isShouldRot()) {
-            event.setRoll(180.0F);
         }
     }
 

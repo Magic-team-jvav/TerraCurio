@@ -235,6 +235,7 @@ public final class PlayerJumpHandler {
         currentFlight = null;
         lastFlight = null;
         onFlight = false;
+        onGlide = false;
     }
 
     public static void multiJump(LocalPlayer localPlayer, float speed, byte jumpType) {

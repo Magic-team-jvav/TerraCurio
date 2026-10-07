@@ -10,12 +10,10 @@ import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.common.LibEffects;
 import org.confluence.lib.mixed.SelfGetter;
 import org.confluence.terra_curio.mixed.ITCLivingEntity;
 import org.confluence.terra_curio.util.JumpParticleState;
@@ -24,11 +22,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.mesdag.particlestorm.particle.ParticleEmitter;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
@@ -101,20 +97,9 @@ public abstract class LivingEntityMixin implements ITCLivingEntity, SelfGetter<L
         return terra_curio$jumpParticleState;
     }
 
-    @Shadow
-    public abstract boolean hasEffect(Holder<MobEffect> effect);
-
     @ModifyReturnValue(method = "canFreeze", at = @At(value = "RETURN", ordinal = 1))
     private boolean checkFreeze(boolean original) {
         return TCUtils.applyFrozenImmune(confluence$self(), original);
-    }
-
-    @ModifyVariable(method = "travel", at = @At("HEAD"), argsOnly = true)
-    private Vec3 confused(Vec3 vec3) {
-        if (hasEffect(LibEffects.CONFUSED)) {
-            return vec3.reverse();
-        }
-        return vec3;
     }
 
     @Inject(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;isInWater()Z", ordinal = 0))

@@ -141,7 +141,12 @@ public final class TCGameEvents {
 
     @SubscribeEvent
     public static void entityJoinLevel(EntityJoinLevelEvent event) {
-        if (event.loadedFromDisk() || event.getLevel().isClientSide) {
+        if (event.getLevel().isClientSide) return;
+        if (event.loadedFromDisk()) {
+            /// 读档后按当前饰品重新计算能力，避免继续使用存档里的过时缓存。
+            if (event.getEntity() instanceof LivingEntity living) {
+                AccessoriesAttachment.of(living).flushAbility(living);
+            }
             return;
         }
         if (event.getEntity() instanceof AbstractArrow arrow && arrow.getOwner() instanceof LivingEntity living) {

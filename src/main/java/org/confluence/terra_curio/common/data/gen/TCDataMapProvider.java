@@ -77,6 +77,10 @@ public class TCDataMapProvider extends DataMapProvider {
             helper.of(TCItems.INVULNERABLE$TICKS$MULTIPLIER, 2.0F);
             helper.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(LibAttributes.getDodgeChance(), helper.asId(), 0.1, AttributeModifier.Operation.ADD_VALUE));
         });
+
+        /// 同步已有基础能力，供本体的局部数据映射合并；属性继续使用各物品原有定义。
+        add(TCItems.CELESTIAL_SHELL, helper -> helper.unit(TCItems.NEPTUNES$SHELL));
+        add(TCItems.HAND_OF_CREATION, helper -> helper.of(TCItems.RIGHT$CLICK$DELAY$SUBSTRACTOR, (byte) 3));
     }
 
     protected void add(ItemLike item, Consumer<Helper> consumer) {

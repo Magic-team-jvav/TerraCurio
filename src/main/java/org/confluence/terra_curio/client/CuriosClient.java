@@ -37,6 +37,7 @@ public final class CuriosClient {
         CuriosRendererRegistry.register(TCItems.MOON_CHARM.get(), () -> new WerewolfRenderer(entityModels));
         CuriosRendererRegistry.register(TCItems.MOON_SHELL.get(), () -> new MoonShellRenderer(entityModels));
         CuriosRendererRegistry.register(TCItems.CELESTIAL_SHELL.get(), () -> new MoonShellRenderer(entityModels));
+        normalWings(TCItems.FLEDGLING_WINGS);
 
         if (LibUtils.isDev()) {
             normalBalloon(TCItems.BLIZZARD_IN_A_BALLOON);
@@ -58,8 +59,6 @@ public final class CuriosClient {
             // Pink and white have their own model
             CuriosRendererRegistry.register(TCItems.PINK_HORSESHOE_BALLOON.get(), () -> new NormalBalloonGeoRenderer(new AccessoryGeoModel(TCItems.PINK_HORSESHOE_BALLOON.getId())));
             CuriosRendererRegistry.register(TCItems.WHITE_HORSESHOE_BALLOON.get(), () -> new NormalBalloonGeoRenderer(new AccessoryGeoModel(TCItems.WHITE_HORSESHOE_BALLOON.getId())));
-
-            normalWings(TCItems.FLEDGLING_WINGS);
 
             LayeredGeoRenderer.registerAll();
             NormalBalloonGeoRenderer.registerAll();
