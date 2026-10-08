@@ -2,7 +2,6 @@ package org.confluence.terra_curio.common.item;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -18,7 +17,6 @@ import org.confluence.terra_curio.common.init.TCSoundEvents;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.Set;
 
 public class MagicMirror extends Item {
     public MagicMirror(ModRarity rarity) {
@@ -45,6 +43,7 @@ public class MagicMirror extends Item {
         if (level.isClientSide) {
             Minecraft.getInstance().gameRenderer.displayItemActivation(itemStack);
         } else if (living instanceof ServerPlayer player) {
+            player.getCooldowns().addCooldown(this, 10);
             recall(player);
         }
         living.playSound(TCSoundEvents.TRANSMISSION.get());
@@ -59,12 +58,7 @@ public class MagicMirror extends Item {
         if (serverLevel == null) {
             serverLevel = player.server.overworld();
         }
-        BlockPos pos = player.getRespawnPosition();
-        if (pos == null) {
-            pos = serverLevel.getSharedSpawnPos();
-        }
-        float angle = player.getRespawnAngle();
-        player.teleportTo(serverLevel, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, Set.of(), angle, 0);
+        player.changeDimension(serverLevel);
     }
 
     @Override
