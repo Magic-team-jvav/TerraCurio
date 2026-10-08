@@ -45,15 +45,19 @@ public class MagicMirror extends Item {
     public ItemStack finishUsingItem(ItemStack itemStack, Level level, LivingEntity living) {
         if (level.isClientSide) {
             Minecraft.getInstance().gameRenderer.displayItemActivation(itemStack);
-        } else if (living instanceof ServerPlayer serverPlayer) {
-            if (serverPlayer.getVehicle() != null) {
-                serverPlayer.removeVehicle();
-            }
-            serverPlayer.getCooldowns().addCooldown(this, 10);
-            serverPlayer.changeDimension(serverPlayer.findRespawnPositionAndUseSpawnBlock(true, DimensionTransition.DO_NOTHING));
+        } else if (living instanceof ServerPlayer player) {
+            player.getCooldowns().addCooldown(this, 10);
+            recall(player);
         }
         living.playSound(TCSoundEvents.TRANSMISSION.get());
         return itemStack;
+    }
+
+    public static void recall(ServerPlayer player) {
+        if (player.getVehicle() != null) {
+            player.removeVehicle();
+        }
+        player.changeDimension(player.findRespawnPositionAndUseSpawnBlock(true, DimensionTransition.DO_NOTHING));
     }
 
     @Override
