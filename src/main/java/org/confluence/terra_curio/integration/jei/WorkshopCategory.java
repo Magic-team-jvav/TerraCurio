@@ -94,7 +94,7 @@ public class WorkshopCategory implements IRecipeCategory<RecipeHolder<WorkshopRe
             }
         }
         // output
-        builder.addSlot(RecipeIngredientRole.OUTPUT, 96, 24).addItemStack(recipe.value().getResultItem(null));
+        builder.addSlot(RecipeIngredientRole.OUTPUT, 96, 24).addItemStack(recipe.value().getResult());
     }
 
     @Override
@@ -109,6 +109,6 @@ public class WorkshopCategory implements IRecipeCategory<RecipeHolder<WorkshopRe
 
     @Override
     public @Nullable ResourceLocation getRegistryName(RecipeHolder<WorkshopRecipe> recipe) {
-        return TerraCurio.asResource(recipe.value().getGroup() + "/" + BuiltInRegistries.ITEM.getKey(recipe.value().getResultItem(null).getItem()).getPath());
+        return TerraCurio.asResource(recipe.value().getGroup() + "/" + BuiltInRegistries.ITEM.getKey(recipe.value().getResult().getItem()).getPath());
     }
 }
