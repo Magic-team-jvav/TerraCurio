@@ -16,7 +16,7 @@ public final class TCArmorMaterials {
 
     public static final PortArmorMaterialRegistration MATERIALS = PortRegisterHandler.armorMaterial(TerraCurio.MODID);
 
-    public static final PortRegistryEntry<ArmorMaterial, PortArmorMaterial> DIVING = MATERIALS.register(
+    public static final PortRegistryEntry<ArmorMaterial, PortArmorMaterial> DIVING = MATERIALS.register("diving", () -> new PortArmorMaterial(
             PortArmorMaterial.Settings.create()
                     .name("diving")
                     .defense(2, 5, 6, 2)
@@ -26,5 +26,5 @@ public final class TCArmorMaterials {
                     .layer(new PortArmorMaterial.Layer(TerraCurio.asResource("diving")))
                     .toughness(0)
                     .knockbackResistance(0)
-    );
+    ).setName(TerraCurio.asResource("diving").toString()));
 }
