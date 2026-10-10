@@ -61,9 +61,7 @@ public class MagicMirror extends Item {
     }
 
     public static void recall(ServerPlayer player) {
-        if (player.getVehicle() != null) {
-            player.removeVehicle();
-        }
+        player.unRide();
         ServerLevel serverLevel = player.server.getLevel(player.getRespawnDimension());
         BlockPos respawnPosition = player.getRespawnPosition();
         Optional<Vec3> destination = serverLevel != null && respawnPosition != null
@@ -77,6 +75,7 @@ public class MagicMirror extends Item {
             yaw = serverLevel.getSharedSpawnAngle();
         }
         Vec3 position = destination.orElseThrow();
+        player.lastSentExp = -1;
         player.teleportTo(serverLevel, position.x, position.y, position.z, Set.of(), yaw, 0.0F);
     }
 
