@@ -28,12 +28,14 @@ import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.CustomRarityItem;
 import org.confluence.terra_curio.TerraCurio;
 import org.confluence.terra_curio.api.primitive.*;
-import org.confluence.terra_curio.common.item.*;
+import org.confluence.terra_curio.common.item.CellPhone;
+import org.confluence.terra_curio.common.item.DemonHeart;
+import org.confluence.terra_curio.common.item.DivingHelmet;
+import org.confluence.terra_curio.common.item.MagicMirror;
 import org.confluence.terra_curio.common.item.curio.BaseCurioItem;
 import org.confluence.terra_curio.common.item.curio.NightBonusCurioItem;
 import org.confluence.terra_curio.common.item.curio.ParticlePlacements;
 import org.confluence.terra_curio.common.item.curio.ParticleTriggers;
-import org.confluence.terra_curio.common.item.curio.RequiresModLoadedCurioItem;
 import org.confluence.terra_curio.common.item.curio.combat.*;
 import org.confluence.terra_curio.common.item.curio.expert.GravityGlobe;
 import org.confluence.terra_curio.common.item.curio.expert.ShieldOfCthulhu;
@@ -42,7 +44,9 @@ import org.confluence.terra_curio.common.item.curio.health.BandOfRegeneration;
 import org.confluence.terra_curio.common.item.curio.information.MetalDetector;
 import org.confluence.terra_curio.common.item.curio.information.MultiInfoCurioItem;
 import org.confluence.terra_curio.common.item.curio.master.BasePoint;
-import org.confluence.terra_curio.common.item.curio.movement.*;
+import org.confluence.terra_curio.common.item.curio.movement.BaseSpeedBoots;
+import org.confluence.terra_curio.common.item.curio.movement.DuneriderBoots;
+import org.confluence.terra_curio.common.item.curio.movement.StepStool;
 
 import java.util.List;
 import java.util.Map;
@@ -171,8 +175,8 @@ public final class TCItems {
             ENERGY_BAR = registerCurio("energy_bar", builder -> builder.rarity(LIGHT_RED).accessories(of(EFFECT$IMMUNITIES, Set.of(MobEffects.HUNGER)))), // 能量棒 饥饿
             NUTRIENT_SOLUTION = registerCurio("nutrient_solution", builder -> builder.rarity(PINK).infos(0).accessories(of(EFFECT$IMMUNITIES, Set.of(MobEffects.WEAKNESS, MobEffects.HUNGER)))), // 营养液
             BLINDFOLD = registerCurio("blindfold", builder -> builder.rarity(LIGHT_RED).accessories(of(EFFECT$IMMUNITIES, Set.of(MobEffects.BLINDNESS)))), // 蒙眼布 失明
-            FLASHLIGHT = registerCurio("flashlight", builder -> builder.rarity(ORANGE).accessories(of(EFFECT$IMMUNITIES, Set.of(MobEffects.DARKNESS)))), // 手电筒 黑暗
-            SEARCHLIGHT = registerCurio("searchlight", builder -> builder.rarity(PINK).infos(0).accessories(of(EFFECT$IMMUNITIES, Set.of(MobEffects.BLINDNESS, MobEffects.DARKNESS)))), // 探照灯
+            FLASHLIGHT = registerCurio("flashlight", builder -> builder.rarity(ORANGE).accessories(of(LUMINANCE, 14), of(EFFECT$IMMUNITIES, Set.of(MobEffects.DARKNESS)))), // 手电筒 黑暗
+            SEARCHLIGHT = registerCurio("searchlight", builder -> builder.rarity(PINK).infos(0).accessories(of(LUMINANCE, 15), of(EFFECT$IMMUNITIES, Set.of(MobEffects.BLINDNESS, MobEffects.DARKNESS)))), // 探照灯
             FAST_CLOCK = registerCurio("fast_clock", builder -> builder.rarity(LIGHT_RED).accessories(of(EFFECT$IMMUNITIES, Set.of(MobEffects.MOVEMENT_SLOWDOWN)))), // 快走时钟 缓慢
             TRIFOLD_MAP = registerCurio("trifold_map", builder -> builder.rarity(LIGHT_RED).accessories(of(EFFECT$IMMUNITIES, Set.of(MobEffects.CONFUSION)))), // 三折地图 反胃
             THE_PLAN = registerCurio("the_plan", builder -> builder.rarity(PINK).infos(0).accessories(of(EFFECT$IMMUNITIES, Set.of(MobEffects.MOVEMENT_SLOWDOWN, MobEffects.CONFUSION)))), // 计划书
@@ -382,9 +386,9 @@ public final class TCItems {
             FLYING_CARPET = registerCurio("flying_carpet", builder -> builder.rarity(GREEN).particle(TerraCurio.asResource("carpet_dust"), ParticleTriggers.CARPET_FLYING).accessories(of(MAY$FLY, MayFlyAbilityValue.of("flying_carpet", 1200, 0.5625F, 100, false, true)))), // 飞毯
             AGLET = registerCurio("aglet", builder -> builder.noTooltip().attribute(Attributes.MOVEMENT_SPEED, 0.05, ADD_MULTIPLIED_TOTAL)), // 金属带扣
             ANKLET_OF_THE_WIND = registerCurio("anklet_of_the_wind", builder -> builder.infos(0).noTooltip().attribute(Attributes.MOVEMENT_SPEED, 0.1, ADD_MULTIPLIED_TOTAL)), // 疾风脚镯
-            MAGILUMINESCENCE = registerDirectly("magiluminescence", name -> new RequiresModLoadedCurioItem(BaseCurioItem.builder(name).tooltips(1)
+            MAGILUMINESCENCE = registerDirectly("magiluminescence", name -> new BaseCurioItem(BaseCurioItem.builder(name).tooltips(1)
                     .accessories(units($MAGILUMINESCENCE), of(LUMINANCE, 14))
-                    .attribute(Attributes.MOVEMENT_SPEED, 0.15, ADD_MULTIPLIED_TOTAL), "sodiumdynamiclights")), // 魔光护符
+                    .attribute(Attributes.MOVEMENT_SPEED, 0.15, ADD_MULTIPLIED_TOTAL))), // 魔光护符
             LAVA_CHARM = registerCurio("lava_charm", builder -> builder.rarity(ORANGE).accessories(of(LAVA$IMMUNE$TICKS, 140))), // 熔岩护身符
             MAGMA_SKULL = registerCurio("magma_skull", builder -> builder.infos(0).tooltips(1).rarity(PINK).particle(TerraCurio.asResource("magma_ember"), ParticleTriggers.ALWAYS).accessories(
                     units(FIRE$IMMUNE),
@@ -581,15 +585,15 @@ public final class TCItems {
             INNER_TUBE = registerCurio("inner_tube", builder -> builder.rarity(WHITE).particle(TerraCurio.asResource("water_ripple"), ParticleTriggers.FLOATING_ON_WATER, ParticlePlacements.WATER_SURFACE).accessories(units(FLOAT$ON$LIQUID$SURFACE))),
             FLIPPER = registerCurio("flipper", builder -> builder.noTooltip().particle(TerraCurio.asResource("swim_foam"), ParticleTriggers.SWIMMING).attribute(NeoForgeMod.SWIM_SPEED, 0.5, ADD_VALUE)), // 脚蹼
             DIVING_GEAR = registerCurio("diving_gear", builder -> builder.infos(0).rarity(LIGHT_RED).equipable(EquipmentSlot.HEAD).particle(TerraCurio.asResource("bubble"), ParticleTriggers.UNDERWATER, ParticlePlacements.MOUTH).accessories(units(DIVING)).attribute(NeoForgeMod.SWIM_SPEED, 0.5, ADD_VALUE)), // 潜水装备
-            JELLYFISH_NECKLACE = registerDirectly("jellyfish_necklace", name -> new RequiresModLoadedCurioItem(BaseCurioItem.builder(name).rarity(GREEN).particle(TerraCurio.asResource("bubble"), ParticleTriggers.UNDERWATER, ParticlePlacements.MOUTH).accessories(of(LUMINANCE, -12)), "sodiumdynamiclights")), // 水母项链
-            JELLYFISH_DIVING_GEAR = registerDirectly("jellyfish_diving_gear", name -> new RequiresModLoadedCurioItem(BaseCurioItem.builder(name).rarity(PINK).tooltips(1).infos(0)
+            JELLYFISH_NECKLACE = registerDirectly("jellyfish_necklace", name -> new BaseCurioItem(BaseCurioItem.builder(name).rarity(GREEN).particle(TerraCurio.asResource("bubble"), ParticleTriggers.UNDERWATER, ParticlePlacements.MOUTH).accessories(of(LUMINANCE, -12)))), // 水母项链
+            JELLYFISH_DIVING_GEAR = registerDirectly("jellyfish_diving_gear", name -> new BaseCurioItem(BaseCurioItem.builder(name).rarity(PINK).tooltips(1).infos(0)
                     .particle(TerraCurio.asResource("bubble"), ParticleTriggers.UNDERWATER, ParticlePlacements.MOUTH)
                     .accessories(units(DIVING), of(LUMINANCE, -12), of(EFFECT$IMMUNITIES, Set.of()))
-                    .attribute(NeoForgeMod.SWIM_SPEED, 0.5, ADD_VALUE), "sodiumdynamiclights")), // 水母潜水装备
-            ARCTIC_DIVING_GEAR = registerDirectly("arctic_diving_gear", name -> new RequiresModLoadedCurioItem(BaseCurioItem.builder(name).rarity(LIGHT_PURPLE).tooltips(2)
+                    .attribute(NeoForgeMod.SWIM_SPEED, 0.5, ADD_VALUE))), // 水母潜水装备
+            ARCTIC_DIVING_GEAR = registerDirectly("arctic_diving_gear", name -> new BaseCurioItem(BaseCurioItem.builder(name).rarity(LIGHT_PURPLE).tooltips(2)
                     .particle(TerraCurio.asResource("bubble"), ParticleTriggers.UNDERWATER, ParticlePlacements.MOUTH)
                     .accessories(units(DIVING, ICE$SPEED, FROZEN$IMMUNE), of(LUMINANCE, -12))
-                    .attribute(NeoForgeMod.SWIM_SPEED, 0.5, ADD_VALUE), "sodiumdynamiclights")), // 北极潜水装备
+                    .attribute(NeoForgeMod.SWIM_SPEED, 0.5, ADD_VALUE))), // 北极潜水装备
             FROG_LEG = registerCurio("frog_leg", builder -> builder
                     .tooltips(1)
                     .attribute(Attributes.SAFE_FALL_DISTANCE, 7.0, ADD_VALUE)

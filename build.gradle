@@ -165,8 +165,6 @@ dependencies {
     compileOnly "mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}"
     runtimeOnly "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
 
-    compileOnly "curse.maven:dynamiclights-reforged-551736:5807536"
-    //runtimeOnly "curse.maven:dynamiclights-reforged-551736:5807536"
 
     compileOnly "curse.maven:air-hop-323071:5736739"
 //    runtimeOnly "curse.maven:air-hop-323071:5736739"

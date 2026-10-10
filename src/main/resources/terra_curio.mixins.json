@@ -17,16 +17,15 @@
         "accessor.SmithingTransformRecipeAccessor"
     ],
     "client": [
+        "client.ClientLivingEntityMixin",
         "client.ClientPacketListenerMixin",
         "client.KeyboardInputMixin",
-        "client.ClientLivingEntityMixin",
         "client.LivingEntityRendererMixin",
         "client.LocalPlayerMixin",
         "client.MouseHandlerMixin",
         "client.accessor.MinecraftAccessor",
         "client.accessor.ModelPartAccessor",
-        "integration.curios.CuriosClientPacketsMixin",
-        "integration.sodiumdynamiclights.DynamicLightHandlersMixin"
+        "integration.curios.CuriosClientPacketsMixin"
     ],
     "injectors": {
         "defaultRequire": 1

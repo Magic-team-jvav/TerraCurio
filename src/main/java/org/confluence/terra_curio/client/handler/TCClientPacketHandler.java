@@ -31,8 +31,8 @@ import org.confluence.terra_curio.client.TCClientConfigs;
 import org.confluence.terra_curio.integration.bettercombat.BetterCombatHelper;
 import org.confluence.terra_curio.mixin.client.accessor.MinecraftAccessor;
 
-import static org.confluence.terra_curio.network.s2c.BroadcastRenderPacketS2C.LUMINANCE_MASK;
 import static org.confluence.terra_curio.network.s2c.BroadcastRenderPacketS2C.NEPTUNES_SHELL;
+import static org.confluence.terra_curio.network.s2c.BroadcastRenderPacketS2C.decodeLuminance;
 import static org.confluence.terra_curio.network.s2c.CurioExistsPacketS2C.*;
 
 public final class TCClientPacketHandler {
@@ -196,10 +196,10 @@ public final class TCClientPacketHandler {
     public static void handleRender(int playerId, short render, Player localPlayer) {
         if (localPlayer.level().getEntity(playerId) instanceof AbstractClientPlayer clientPlayer) {
             if (localPlayer == clientPlayer) {
-                luminance = render & LUMINANCE_MASK;
+                luminance = decodeLuminance(render);
                 hasNeptunesShell = (render & NEPTUNES_SHELL) == NEPTUNES_SHELL;
             } else {
-                remoteLuminance.put(playerId, render & LUMINANCE_MASK);
+                remoteLuminance.put(playerId, decodeLuminance(render));
                 remoteNeptuneShell.put(playerId, (render & NEPTUNES_SHELL) == NEPTUNES_SHELL);
             }
         }
