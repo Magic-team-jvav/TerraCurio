@@ -15,6 +15,7 @@ import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
 public record BroadcastRenderPacketS2C(int playerId, short render) implements IPortPacket.S2C {
+    public static final short LUMINANCE_NEGATIVE = 0b1000000;
     public static final short LUMINANCE_MASK = 0b001111;
     public static final short NEPTUNES_SHELL = 0b010000;
     public static final short MOON_CHARM = 0b100000;
@@ -35,9 +36,18 @@ public record BroadcastRenderPacketS2C(int playerId, short render) implements IP
         TCClientPacketHandler.handleRender(playerId, render, player);
     }
 
+    public static short encodeLuminance(int value) {
+        return (short) (Math.min(15L, Math.abs((long) value)) | (value < 0 ? LUMINANCE_NEGATIVE : 0));
+    }
+
+    public static int decodeLuminance(short render) {
+        int value = render & LUMINANCE_MASK;
+        return (render & LUMINANCE_NEGATIVE) != 0 ? -value : value;
+    }
+
     public static void sendToPlayersTrackingTarget(ServerPlayer target) {
         if (ServerLifecycleHooks.getCurrentServer() != null) {
-            short luminance = (short) (TCUtils.getValue(target, TCItems.LUMINANCE) & LUMINANCE_MASK);
+            short luminance = encodeLuminance(TCUtils.getValue(target, TCItems.LUMINANCE));
             short neptunesShell = TCUtils.hasType(target, TCItems.NEPTUNES$SHELL) ? NEPTUNES_SHELL : 0;
             PortPacketDistributor.sendToPlayersTrackingEntityAndSelf(target, new BroadcastRenderPacketS2C(target.getId(), (short) (luminance | neptunesShell)));
         }

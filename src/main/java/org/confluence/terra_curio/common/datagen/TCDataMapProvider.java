@@ -91,8 +91,14 @@ public class TCDataMapProvider extends PortDataMapProvider {
         add(TCItems.ENERGY_BAR, helper -> helper.of(TCItems.EFFECT$IMMUNITIES, Set.of(MobEffects.HUNGER))); // 能量棒 饥饿
         add(TCItems.NUTRIENT_SOLUTION, helper -> helper.of(TCItems.EFFECT$IMMUNITIES, Set.of(MobEffects.WEAKNESS, MobEffects.HUNGER))); // 营养液
         add(TCItems.BLINDFOLD, helper -> helper.of(TCItems.EFFECT$IMMUNITIES, Set.of(MobEffects.BLINDNESS))); // 蒙眼布 失明
-        add(TCItems.FLASHLIGHT, helper -> helper.of(TCItems.EFFECT$IMMUNITIES, Set.of(MobEffects.DARKNESS))); // 手电筒 黑暗
-        add(TCItems.SEARCHLIGHT, helper -> helper.of(TCItems.EFFECT$IMMUNITIES, Set.of(MobEffects.BLINDNESS, MobEffects.DARKNESS))); // 探照灯
+        add(TCItems.FLASHLIGHT, helper -> {
+            helper.of(TCItems.EFFECT$IMMUNITIES, Set.of(MobEffects.DARKNESS));
+            helper.of(TCItems.LUMINANCE, 14);
+        }); // 手电筒 黑暗
+        add(TCItems.SEARCHLIGHT, helper -> {
+            helper.of(TCItems.EFFECT$IMMUNITIES, Set.of(MobEffects.BLINDNESS, MobEffects.DARKNESS));
+            helper.of(TCItems.LUMINANCE, 15);
+        }); // 探照灯
         add(TCItems.FAST_CLOCK, helper -> helper.of(TCItems.EFFECT$IMMUNITIES, Set.of(MobEffects.MOVEMENT_SLOWDOWN))); // 快走时钟 缓慢
         add(TCItems.TRIFOLD_MAP, helper -> helper.of(TCItems.EFFECT$IMMUNITIES, Set.of(MobEffects.CONFUSION))); // 三折地图 反胃
         add(TCItems.THE_PLAN, helper -> helper.of(TCItems.EFFECT$IMMUNITIES, Set.of(MobEffects.MOVEMENT_SLOWDOWN, MobEffects.CONFUSION))); // 计划书

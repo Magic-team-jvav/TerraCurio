@@ -23,7 +23,10 @@ import org.confluence.terra_curio.common.item.CellPhone;
 import org.confluence.terra_curio.common.item.DemonHeart;
 import org.confluence.terra_curio.common.item.DivingHelmet;
 import org.confluence.terra_curio.common.item.MagicMirror;
-import org.confluence.terra_curio.common.item.curio.*;
+import org.confluence.terra_curio.common.item.curio.BaseCurioItem;
+import org.confluence.terra_curio.common.item.curio.NightBonusCurioItem;
+import org.confluence.terra_curio.common.item.curio.ParticlePlacements;
+import org.confluence.terra_curio.common.item.curio.ParticleTriggers;
 import org.confluence.terra_curio.common.item.curio.combat.*;
 import org.confluence.terra_curio.common.item.curio.expert.GravityGlobe;
 import org.confluence.terra_curio.common.item.curio.expert.ShieldOfCthulhu;
@@ -264,7 +267,7 @@ public final class TCItems {
             FLYING_CARPET = registerCurio("flying_carpet", builder -> builder.rarity(GREEN).particle(TerraCurio.asResource("carpet_dust"), ParticleTriggers.CARPET_FLYING)), // 飞毯
             AGLET = registerCurio("aglet", builder -> builder.noTooltip()), // 金属带扣
             ANKLET_OF_THE_WIND = registerCurio("anklet_of_the_wind", builder -> builder.infos(0).noTooltip()), // 疾风脚镯
-            MAGILUMINESCENCE = registerDirectly("magiluminescence", name -> new RequiresModLoadedCurioItem(BaseCurioItem.builder(name).tooltips(1), "sodiumdynamiclights")), // 魔光护符
+            MAGILUMINESCENCE = registerDirectly("magiluminescence", name -> new BaseCurioItem(BaseCurioItem.builder(name).tooltips(1))), // 魔光护符
             LAVA_CHARM = registerCurio("lava_charm", builder -> builder.rarity(ORANGE)), // 熔岩护身符
             MAGMA_SKULL = registerCurio("magma_skull", builder -> builder.infos(0).tooltips(1).rarity(PINK).particle(TerraCurio.asResource("magma_ember"), ParticleTriggers.ALWAYS)), // 岩浆骷髅头
             MOLTEN_CHARM = registerCurio("molten_charm", builder -> builder.tooltips(1).infos(0).rarity(PINK).particle(TerraCurio.asResource("magma_ember"), ParticleTriggers.ALWAYS)), // 熔火护身符
@@ -319,9 +322,9 @@ public final class TCItems {
             INNER_TUBE = registerCurio("inner_tube", builder -> builder.rarity(WHITE).particle(TerraCurio.asResource("water_ripple"), ParticleTriggers.FLOATING_ON_WATER, ParticlePlacements.WATER_SURFACE)), // 游泳圈
             FLIPPER = registerCurio("flipper", builder -> builder.noTooltip().particle(TerraCurio.asResource("swim_foam"), ParticleTriggers.SWIMMING)), // 脚蹼
             DIVING_GEAR = registerCurio("diving_gear", builder -> builder.infos(0).rarity(LIGHT_RED).equipable(EquipmentSlot.HEAD).particle(TerraCurio.asResource("bubble"), ParticleTriggers.UNDERWATER, ParticlePlacements.MOUTH)), // 潜水装备
-            JELLYFISH_NECKLACE = registerDirectly("jellyfish_necklace", name -> new RequiresModLoadedCurioItem(BaseCurioItem.builder(name).rarity(GREEN).particle(TerraCurio.asResource("bubble"), ParticleTriggers.UNDERWATER, ParticlePlacements.MOUTH), "sodiumdynamiclights")), // 水母项链
-            JELLYFISH_DIVING_GEAR = registerDirectly("jellyfish_diving_gear", name -> new RequiresModLoadedCurioItem(BaseCurioItem.builder(name).rarity(PINK).tooltips(1).infos(0).particle(TerraCurio.asResource("bubble"), ParticleTriggers.UNDERWATER, ParticlePlacements.MOUTH), "sodiumdynamiclights")), // 水母潜水装备
-            ARCTIC_DIVING_GEAR = registerDirectly("arctic_diving_gear", name -> new RequiresModLoadedCurioItem(BaseCurioItem.builder(name).rarity(LIGHT_PURPLE).tooltips(2).particle(TerraCurio.asResource("bubble"), ParticleTriggers.UNDERWATER, ParticlePlacements.MOUTH), "sodiumdynamiclights")), // 北极潜水装备
+            JELLYFISH_NECKLACE = registerDirectly("jellyfish_necklace", name -> new BaseCurioItem(BaseCurioItem.builder(name).rarity(GREEN).particle(TerraCurio.asResource("bubble"), ParticleTriggers.UNDERWATER, ParticlePlacements.MOUTH))), // 水母项链
+            JELLYFISH_DIVING_GEAR = registerDirectly("jellyfish_diving_gear", name -> new BaseCurioItem(BaseCurioItem.builder(name).rarity(PINK).tooltips(1).infos(0).particle(TerraCurio.asResource("bubble"), ParticleTriggers.UNDERWATER, ParticlePlacements.MOUTH))), // 水母潜水装备
+            ARCTIC_DIVING_GEAR = registerDirectly("arctic_diving_gear", name -> new BaseCurioItem(BaseCurioItem.builder(name).rarity(LIGHT_PURPLE).tooltips(2).particle(TerraCurio.asResource("bubble"), ParticleTriggers.UNDERWATER, ParticlePlacements.MOUTH))), // 北极潜水装备
             FROG_LEG = registerCurio("frog_leg", builder -> builder.tooltips(1)), // 蛙腿
             FROG_FLIPPER = registerCurio("frog_flipper", builder -> builder.tooltips(1).infos(0).particle(TerraCurio.asResource("swim_foam"), ParticleTriggers.SWIMMING)), // 青蛙脚蹼
             FROG_WEBBING = registerCurio("frog_webbing", builder -> builder.rarity(PINK).tooltips(2).infos(0).particle(TerraCurio.asResource("wall_dust"), ParticleTriggers.WALL_CLIMBING)), // 青蛙蹼
