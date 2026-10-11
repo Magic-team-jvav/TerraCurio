@@ -18,6 +18,7 @@ import org.confluence.lib.util.LibUtils;
 import org.confluence.terra_curio.common.init.TCEntities;
 
 public class StarCloakEntity extends Projectile {
+    public static final LibEntityUtils.WeaponTargeting TARGETING = new LibEntityUtils.WeaponTargeting(LibEntityUtils.TargetPolicy.ENEMY_ONLY);
     private static final EntityDataAccessor<Boolean> DATA_MANA = SynchedEntityData.defineId(StarCloakEntity.class, EntityDataSerializers.BOOLEAN);
     private final boolean hasMana;
     private int age;
