@@ -54,9 +54,7 @@ public class MagicMirror extends Item {
     }
 
     public static void recall(ServerPlayer player) {
-        if (player.getVehicle() != null) {
-            player.removeVehicle();
-        }
+        player.unRide();
         player.changeDimension(player.findRespawnPositionAndUseSpawnBlock(true, DimensionTransition.DO_NOTHING));
     }
 
