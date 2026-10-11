@@ -7,7 +7,6 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.Level;
@@ -17,6 +16,8 @@ import org.confluence.terra_curio.common.init.TCEntities;
 import org.jetbrains.annotations.Nullable;
 
 public class BeeProjectile extends Projectile {
+    private static final LibEntityUtils.WeaponTargeting TARGETING = new LibEntityUtils.WeaponTargeting(LibEntityUtils.TargetPolicy.ENEMY_ONLY);
+
     protected static final EntityDataAccessor<Boolean> DATA_IS_GIANT = SynchedEntityData.defineId(BeeProjectile.class, EntityDataSerializers.BOOLEAN);
     protected static final EntityDimensions SMALL = TCEntities.BEE_PROJECTILE.get().getDimensions().scale(0.5f);
     protected static final EntityDimensions GIANT = TCEntities.BEE_PROJECTILE.get().getDimensions();
@@ -95,7 +96,7 @@ public class BeeProjectile extends Projectile {
             double d0 = -1.0;
             Entity enemy = null;
             for (Entity entity : level().getEntities(this, new AABB(blockPosition()).inflate(8))) {
-                if (entity instanceof Enemy) {
+                if (canAcquireTarget(entity)) {
                     double d1 = entity.distanceToSqr(getX(), getY(), getZ());
                     if (d0 == -1.0 || d1 < d0) {
                         d0 = d1;
@@ -108,11 +109,19 @@ public class BeeProjectile extends Projectile {
         if (target != null) {
             if (target.isSpectator() || (target instanceof LivingEntity living && living.isDeadOrDying()))
                 this.target = null;
-            if (target != null) {
+            if (target != null && canKeepTarget(target)) {
                 Vec3 vec3 = target.getEyePosition().subtract(position()).normalize();
                 addDeltaMovement(vec3.scale(0.95).scale(isGiant() ? 0.15 : 0.05));
             }
         }
+    }
+
+    protected boolean canAcquireTarget(Entity candidate) {
+        return TARGETING.canAcquire(getOwner(), candidate);
+    }
+
+    protected boolean canKeepTarget(Entity candidate) {
+        return TARGETING.canKeep(getOwner(), candidate);
     }
 
     @Override

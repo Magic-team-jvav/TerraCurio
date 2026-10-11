@@ -113,7 +113,7 @@ public final class TCUtils {
         boolean starClock = attachment.contains(TCItems.STAR$CLOCK);
         if (starClock) {
             Level level = living.level();
-            List<Entity> list = level.getEntities(living, new AABB(living.blockPosition()).inflate(4.0, 3.0, 4.0), entity -> entity instanceof Enemy);
+            List<Entity> list = level.getEntities(living, new AABB(living.blockPosition()).inflate(4.0, 3.0, 4.0), entity -> StarCloakEntity.TARGETING.canAcquire(living, entity));
             for (int i = 0; i < 3; i++) {
                 Entity target;
                 if (list.isEmpty()) {
