@@ -65,6 +65,16 @@ public class TCLanguageProvider extends LanguageProvider {
     @Override
     protected void addTranslations() {
         add("creativetab.terra_curio", "Terra Curio", "泰拉饰品");
+        // 饰品页签的分类，与泰拉瑞亚 Wiki 的饰品分类一致
+        add("itemGroup.terra_curio.movement", "Movement", "移动");
+        add("itemGroup.terra_curio.information", "Informational", "信息");
+        add("itemGroup.terra_curio.health_and_mana", "Health and Mana", "生命和魔力");
+        add("itemGroup.terra_curio.combat", "Combat", "战斗");
+        add("itemGroup.terra_curio.debuff_immunity", "Debuff Immunity", "减益免疫");
+        add("itemGroup.terra_curio.construction", "Construction", "建筑");
+        add("itemGroup.terra_curio.yoyo", "Yoyos", "悠悠球");
+        add("itemGroup.terra_curio.other", "Other", "其他");
+        add("itemGroup.terra_curio.expert", "Expert Mode Exclusive", "专家模式独有");
 
         add("tooltip.terra_curio.requires_mod_loaded", "This item requires any of the following mods: %s", "该物品需要以下任意模组：%s");
         add("tooltip.terra_curio.hold_and_scroll", "Hold [Left Shift] and scroll the mouse wheel", "按住[左Shift]并滚动鼠标滚轮");
