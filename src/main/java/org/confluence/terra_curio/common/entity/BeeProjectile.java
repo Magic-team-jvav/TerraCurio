@@ -114,7 +114,7 @@ public class BeeProjectile extends Projectile {
             if (target.isSpectator() || (target instanceof LivingEntity living && living.isDeadOrDying()))
                 this.target = null;
             if (target != null && canKeepTarget(target)) {
-                Vec3 vec3 = target.getEyePosition().subtract(position()).normalize();
+                Vec3 vec3 = target.getBoundingBox().getCenter().subtract(position()).normalize();
                 addDeltaMovement(vec3.scale(0.95).scale(isGiant() ? 0.15 : 0.05));
             }
         }
