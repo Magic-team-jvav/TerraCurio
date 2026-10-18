@@ -10,8 +10,10 @@
         "EntityMixin",
         "InventoryChangeTriggerMixin",
         "LivingEntityMixin",
+        "PlayerMixin",
         "SlimeBlockMixin",
         "TargetingConditionsMixin",
+        "WardenMixin",
         "accessor.ItemEntityAccessor",
         "accessor.LivingEntityAccessor",
         "accessor.SmithingTransformRecipeAccessor"

@@ -277,6 +277,8 @@ public final class TCItems {
             TABI = registerCurio("tabi", builder -> builder.rarity(LIME).particle(TerraCurio.asResource("sprint_dash"), ParticleTriggers.SPRINT_DASH)), // 分趾厚底袜
             MASTER_NINJA_GEAR = registerCurio("master_ninja_gear", builder -> builder.tooltips(2).infos(0).rarity(YELLOW).particle(TerraCurio.asResource("wall_dust"), ParticleTriggers.WALL_CLIMBING).particle(TerraCurio.asResource("sprint_dash"), ParticleTriggers.SPRINT_DASH)), // 忍者大师装备
             ICE_SKATES = registerCurio("ice_skates", builder -> builder.rarity(BLUE).particle(TerraCurio.asResource("ice_shards"), ParticleTriggers.ON_ICE)), // 溜冰鞋
+            WOOL_SHOES = registerCurio("wool_shoes", builder -> builder.rarity(WHITE).infos(0)), // 羊毛鞋
+            DEODORIZER = registerCurio("deodorizer", builder -> builder.rarity(GREEN).infos(0)), // 除味剂
             HERMES_BOOTS = registerDirectly("hermes_boots", name -> new BaseSpeedBoots(1, 40, BaseCurioItem.builder(name).stepHeight())), // 赫尔墨斯靴
             FLURRY_BOOTS = registerDirectly("flurry_boots", name -> new BaseSpeedBoots(1, 40, BaseCurioItem.builder(name).infos(1).stepHeight())), // 疾风雪靴
             SAILFISH_BOOTS = registerDirectly("sailfish_boots", name -> new BaseSpeedBoots(1, 40, BaseCurioItem.builder(name).stepHeight())), // 旗鱼靴

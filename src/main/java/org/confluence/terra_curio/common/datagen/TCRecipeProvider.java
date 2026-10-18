@@ -294,6 +294,12 @@ public class TCRecipeProvider extends RecipeProvider {
                 .define('R', Items.REDSTONE)
                 .unlockedBy("has", has(TCItems.PLATINUM_WATCH.get()))
                 .save(writer, TerraCurio.asResource("platinum_watch"));
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, TCItems.WOOL_SHOES.get())
+                .pattern("a a")
+                .pattern("a a")
+                .define('a', ItemTags.WOOL)
+                .unlockedBy("has", has(TCItems.WOOL_SHOES.get()))
+                .save(writer, TerraCurio.asResource("wool_shoes"));
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, TCItems.ROCKET_BOOTS.get())
                 .pattern("#I#")
                 .pattern("i#i")

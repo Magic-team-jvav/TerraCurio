@@ -160,10 +160,17 @@ public class TCLootTableProvider extends LootTableProvider {
                         .when(LootItemRandomChanceCondition.randomChance(0.4f))
                 );
 
+        LootPool.Builder pool3 = LootPool.lootPool()
+                .setRolls(ConstantValue.exactly(1f))
+                .add(LootItem.lootTableItem(TCItems.DEODORIZER.get())
+                        .when(LootItemRandomChanceCondition.randomChance(0.4f))
+                );
+
         LootTable.Builder table = LootTable.lootTable();
         table = table.withPool(pool0);
         table = table.withPool(pool1);
         table = table.withPool(pool2);
+        table = table.withPool(pool3);
         return table;
     }
 
