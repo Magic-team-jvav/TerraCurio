@@ -404,6 +404,8 @@ public final class TCItems {
                     .accessories(units(SPRINTING), of(WALL$CLIMB, (byte) 2))
                     .attribute(LibAttributes.getDodgeChance(), 0.1, ADD_VALUE)), // 忍者大师装备
             ICE_SKATES = registerCurio("ice_skates", builder -> builder.rarity(BLUE).particle(TerraCurio.asResource("ice_shards"), ParticleTriggers.ON_ICE)), // 溜冰鞋
+            WOOL_SHOES = registerCurio("wool_shoes", builder -> builder.rarity(WHITE).infos(0)), // 羊毛鞋
+            DEODORIZER = registerCurio("deodorizer", builder -> builder.rarity(GREEN).infos(0)), // 除味剂
             HERMES_BOOTS = registerDirectly("hermes_boots", name -> new BaseSpeedBoots(1, 40, BaseCurioItem.builder(name).stepHeight())), // 赫尔墨斯靴
             FLURRY_BOOTS = registerDirectly("flurry_boots", name -> new BaseSpeedBoots(1, 40, BaseCurioItem.builder(name).infos(1).stepHeight())), // 疾风雪靴
             SAILFISH_BOOTS = registerDirectly("sailfish_boots", name -> new BaseSpeedBoots(1, 40, BaseCurioItem.builder(name).stepHeight())), // 旗鱼靴

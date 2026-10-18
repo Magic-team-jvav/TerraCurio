@@ -735,6 +735,8 @@ public class TCLanguageProvider extends LanguageProvider {
                 "它有几率从末影人身上掉落。"
         );
         onlyTooltip(TCItems.ROCKET_BOOTS, "火箭靴", "Allows flight", "可飞行");
+        onlyTooltip(TCItems.WOOL_SHOES, "羊毛鞋", "Muffles the wearer's footsteps", "使佩戴者走路不再发出声音");
+        onlyTooltip(TCItems.DEODORIZER, "除味剂", "The Warden can no longer sniff out the wearer", "监守者无法嗅到佩戴者的位置");
         tooltipAndInfo(TCItems.ROYAL_GEL, "皇家凝胶", "Slimes become friendly", "史莱姆将变成友好生物", "It has a Chance to be dropped from Slime.", "有几率从史莱姆身上掉落。");
         tooltipAndInfo(TCItems.SAILFISH_BOOTS, "旗鱼靴", "The wearer can run super fast", "穿戴者可飞速奔跑", "It can be found in Shipwreck Chests.", "它可以在沉船宝箱中找到。");
         onlyTooltips(TCItems.SANDSTORM_IN_A_BALLOON, "沙暴气球",

@@ -8,10 +8,12 @@
         "CrossbowItemMixin",
         "EntityMixin",
         "LivingEntityMixin",
+        "PlayerMixin",
         "ProjectileWeaponItemMixin",
         "ServerPlayer$ContainerListenerMixin",
         "SlimeBlockMixin",
         "TargetingConditionsMixin",
+        "WardenMixin",
         "accessor.ItemEntityAccessor",
         "accessor.LivingEntityAccessor",
         "accessor.SmithingTransformRecipeAccessor"

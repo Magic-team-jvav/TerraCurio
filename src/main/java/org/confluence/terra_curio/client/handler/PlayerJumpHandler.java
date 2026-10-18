@@ -98,6 +98,70 @@ public final class PlayerJumpHandler {
                 return;
             }
 
+            // 优先级：多段跳 -> 火箭靴 -> 翅膀
+            // 1. 多段跳：一次按键只触发一次，并且必须优先于所有飞行饰品
+            if (!jumpKeyDown) {
+                if (!fartFinished && fartSpeed > 0.0) {
+                    fartFinished = true;
+                    ITCLivingEntity.of(localPlayer).terra_curio$getJumpParticleState().fartPending = true;
+                    jumpKeyDown = true;
+                    multiJump(localPlayer, fartSpeed, PlayerJumpPacketC2S.JUMP_FART);
+                    localPlayer.playSound(TCSoundEvents.FART_SOUND.get());
+                    return;
+                } else if (!sandstormFinished && sandstormSpeed > 0.0) {
+                    JumpParticleState jumpState = ITCLivingEntity.of(localPlayer).terra_curio$getJumpParticleState();
+                    if (remainSandstormTicks-- > 0) {
+                        oneTimeJump(localPlayer, sandstormSpeed, PlayerJumpPacketC2S.JUMP_SANDSTORM);
+                        jumpState.sandstormTicks = 1;
+                    } else {
+                        jumpKeyDown = true;
+                        jumpState.sandstormTicks = 0;
+                    }
+                    return;
+                } else if (!blizzardFinished && blizzardSpeed > 0.0) {
+                    JumpParticleState jumpState = ITCLivingEntity.of(localPlayer).terra_curio$getJumpParticleState();
+                    if (remainBlizzardTicks-- > 0) {
+                        oneTimeJump(localPlayer, blizzardSpeed, PlayerJumpPacketC2S.JUMP_BLIZZARD);
+                        jumpState.blizzardTicks = 1;
+                    } else {
+                        jumpKeyDown = true;
+                        jumpState.blizzardTicks = 0;
+                    }
+                    return;
+                } else if (!tsunamiFinished && tsunamiSpeed > 0.0) {
+                    tsunamiFinished = true;
+                    ITCLivingEntity.of(localPlayer).terra_curio$getJumpParticleState().tsunamiPending = true;
+                    jumpKeyDown = true;
+                    multiJump(localPlayer, tsunamiSpeed, PlayerJumpPacketC2S.JUMP_TSUNAMI);
+                    localPlayer.playSound(TCSoundEvents.DOUBLE_JUMP.get());
+                    return;
+                } else if (!cloudFinished && cloudSpeed > 0.0) {
+                    cloudFinished = true;
+                    ITCLivingEntity.of(localPlayer).terra_curio$getJumpParticleState().cloudPending = true;
+                    jumpKeyDown = true;
+                    multiJump(localPlayer, cloudSpeed, PlayerJumpPacketC2S.JUMP_CLOUD);
+                    localPlayer.playSound(TCSoundEvents.DOUBLE_JUMP.get());
+                    return;
+                }
+            }
+            // 多段跳还没用完时，火箭靴与翅膀都不生效
+            if (hasMultiJump()) return;
+
+            // 2. 火箭靴及其它无滑翔能力的飞行饰品
+            for (Map.Entry<ResourceKey<Item>, ObjectIntPair<MayFlyAbilityValue.FlyStack>> entry : otherFlyStacks.entrySet()) {
+                ObjectIntPair<MayFlyAbilityValue.FlyStack> pair = entry.getValue();
+                int i = pair.rightInt();
+                if (infiniteFlight || i > 0) {
+                    float flySpeed = infiniteFlight ? infiniteFlightSpeed : pair.key().flySpeed();
+                    fly(pair.left().horizontalFlight(), localPlayer, flySpeed);
+                    if (!infiniteFlight) currentFlight = entry.getKey();
+                    pair.right(--i);
+                    if (infiniteFlight || i > 0) return;
+                }
+            }
+            currentFlight = null;
+
+            // 3. 翅膀：飞行时间用尽后才会进入滑翔
             for (Map.Entry<ResourceKey<Item>, ObjectIntPair<MayFlyAbilityValue.FlyStack>> entry : wingsFlyStacks.entrySet()) {
                 ObjectIntPair<MayFlyAbilityValue.FlyStack> pair = entry.getValue();
                 int i = pair.rightInt();
@@ -119,59 +183,7 @@ public final class PlayerJumpHandler {
                 }
             }
             currentFlight = null;
-            if (jumpKeyDown) return;
-
-            if (!fartFinished && fartSpeed > 0.0) {
-                fartFinished = true;
-                ITCLivingEntity.of(localPlayer).terra_curio$getJumpParticleState().fartPending = true;
-                jumpKeyDown = true;
-                multiJump(localPlayer, fartSpeed, PlayerJumpPacketC2S.JUMP_FART);
-                localPlayer.playSound(TCSoundEvents.FART_SOUND.get());
-            } else if (!sandstormFinished && sandstormSpeed > 0.0) {
-                JumpParticleState jumpState = ITCLivingEntity.of(localPlayer).terra_curio$getJumpParticleState();
-                if (remainSandstormTicks-- > 0) {
-                    oneTimeJump(localPlayer, sandstormSpeed, PlayerJumpPacketC2S.JUMP_SANDSTORM);
-                    jumpState.sandstormTicks = 1;
-                } else {
-                    jumpKeyDown = true;
-                    jumpState.sandstormTicks = 0;
-                }
-            } else if (!blizzardFinished && blizzardSpeed > 0.0) {
-                JumpParticleState jumpState = ITCLivingEntity.of(localPlayer).terra_curio$getJumpParticleState();
-                if (remainBlizzardTicks-- > 0) {
-                    oneTimeJump(localPlayer, blizzardSpeed, PlayerJumpPacketC2S.JUMP_BLIZZARD);
-                    jumpState.blizzardTicks = 1;
-                } else {
-                    jumpKeyDown = true;
-                    jumpState.blizzardTicks = 0;
-                }
-            } else if (!tsunamiFinished && tsunamiSpeed > 0.0) {
-                tsunamiFinished = true;
-                ITCLivingEntity.of(localPlayer).terra_curio$getJumpParticleState().tsunamiPending = true;
-                jumpKeyDown = true;
-                multiJump(localPlayer, tsunamiSpeed, PlayerJumpPacketC2S.JUMP_TSUNAMI);
-                localPlayer.playSound(TCSoundEvents.DOUBLE_JUMP.get());
-            } else if (!cloudFinished && cloudSpeed > 0.0) {
-                cloudFinished = true;
-                ITCLivingEntity.of(localPlayer).terra_curio$getJumpParticleState().cloudPending = true;
-                jumpKeyDown = true;
-                multiJump(localPlayer, cloudSpeed, PlayerJumpPacketC2S.JUMP_CLOUD);
-                localPlayer.playSound(TCSoundEvents.DOUBLE_JUMP.get());
-            } else if (!onFlight) {
-                for (Map.Entry<ResourceKey<Item>, ObjectIntPair<MayFlyAbilityValue.FlyStack>> entry : otherFlyStacks.entrySet()) {
-                    ObjectIntPair<MayFlyAbilityValue.FlyStack> pair = entry.getValue();
-                    int i = pair.rightInt();
-                    if (infiniteFlight || i > 0) {
-                        float flySpeed = infiniteFlight ? infiniteFlightSpeed : pair.key().flySpeed();
-                        fly(pair.left().horizontalFlight(), localPlayer, flySpeed);
-                        if (!infiniteFlight) currentFlight = entry.getKey();
-                        pair.right(--i);
-                        if (infiniteFlight || i > 0) return;
-                    }
-                }
-                currentFlight = null;
-                jumpKeyDown = true;
-            }
+            jumpKeyDown = true;
         } else {
             jumpKeyDown = false;
             sandstormFinished = remainSandstormTicks < maxSandstormTicks;
@@ -341,6 +353,15 @@ public final class PlayerJumpHandler {
         otherFlyStacks = other;
         horizontalFlight = b2.isTrue();
         infiniteFlightSpeed = f1.floatValue();
+    }
+
+    /// 是否还有未用完的多段跳（多段跳优先于火箭靴与翅膀）。
+    private static boolean hasMultiJump() {
+        return (!fartFinished && fartSpeed > 0.0F)
+                || (!sandstormFinished && sandstormSpeed > 0.0F)
+                || (!blizzardFinished && blizzardSpeed > 0.0F)
+                || (!tsunamiFinished && tsunamiSpeed > 0.0F)
+                || (!cloudFinished && cloudSpeed > 0.0F);
     }
 
     private static void setupRemainFlyTicks() {

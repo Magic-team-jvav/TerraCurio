@@ -45,7 +45,7 @@ public final class TCTabs {
                                 TCItems.BUNDLE_OF_HORSESHOE_BALLOONS,
                                 // 攀爬与冲刺
                                 TCItems.CLIMBING_CLAWS, TCItems.SHOE_SPIKES, TCItems.TIGER_CLIMBING_GEAR, TCItems.TABI,
-                                TCItems.MASTER_NINJA_GEAR, TCItems.ICE_SKATES,
+                                TCItems.MASTER_NINJA_GEAR, TCItems.ICE_SKATES, TCItems.WOOL_SHOES,
                                 // 靴子
                                 TCItems.HERMES_BOOTS, TCItems.FLURRY_BOOTS, TCItems.SAILFISH_BOOTS, TCItems.DUNERIDER_BOOTS,
                                 TCItems.ROCKET_BOOTS, TCItems.SPECTRE_BOOTS, TCItems.FAIRY_BOOTS, TCItems.LIGHTNING_BOOTS,
@@ -111,7 +111,7 @@ public final class TCTabs {
                         // 其他
                         acceptGroup(output, "other",
                                 TCItems.WORKSHOP, TCItems.MAGIC_MIRROR, TCItems.TREASURE_MAGNET, TCItems.FLOWER_BOOTS,
-                                TCItems.ANGLER_EARRING);
+                                TCItems.ANGLER_EARRING, TCItems.DEODORIZER);
                         // 专家模式独有
                         acceptGroup(output, "expert",
                                 TCItems.DEMON_HEART, TCItems.ROYAL_GEL, TCItems.SHIELD_OF_CTHULHU, TCItems.WORM_SCARF,

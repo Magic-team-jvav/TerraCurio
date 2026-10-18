@@ -11,6 +11,7 @@ import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
@@ -239,6 +240,12 @@ public class TCRecipeProvider extends RecipeProvider {
                 .define('R', Items.REDSTONE)
                 .unlockedBy("has", has(TCItems.PLATINUM_WATCH.get()))
                 .save(output, key("platinum_watch"));
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, TCItems.WOOL_SHOES.get())
+                .pattern("a a")
+                .pattern("a a")
+                .define('a', ItemTags.WOOL)
+                .unlockedBy("has", has(TCItems.WOOL_SHOES.get()))
+                .save(output, key("wool_shoes"));
 
         // conditional
         RecipeOutput conditional = new RecipeOutput() {
