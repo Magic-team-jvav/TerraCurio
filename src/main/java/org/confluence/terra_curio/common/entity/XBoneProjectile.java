@@ -12,7 +12,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.entitiy.IAxisZRotate;
-import org.confluence.lib.util.LibEntityUtils;
+import org.confluence.lib.util.ProjectileHitRules;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -64,8 +64,8 @@ public class XBoneProjectile extends Projectile implements IAxisZRotate {
             );
             if (result != null) {
                 Entity entity = result.getEntity();
-                entity.hurt(damageSources().mobProjectile(this, owner), 5);
-                if (passThrough.add(entity) && passThrough.size() >= 3) {
+                ProjectileHitRules.hurt(entity, damageSources().mobProjectile(this, owner), 5);
+                if (passThrough.add(ProjectileHitRules.dedupeIdentity(entity)) && passThrough.size() >= 3) {
                     discard();
                 }
             }
@@ -81,7 +81,7 @@ public class XBoneProjectile extends Projectile implements IAxisZRotate {
 
     @Override
     protected boolean canHitEntity(Entity target) {
-        return LibEntityUtils.canHitEntity(target, getOwner());
+        return !passThrough.contains(ProjectileHitRules.dedupeIdentity(target)) && ProjectileHitRules.canHit(getOwner(), target);
     }
 
     @Override
