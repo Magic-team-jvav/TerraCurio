@@ -11,8 +11,8 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.*;
+
 import org.confluence.lib.util.LibEntityUtils;
-import org.confluence.lib.util.ProjectileHitRules;
 import org.confluence.terra_curio.common.init.TCEntities;
 import org.jetbrains.annotations.Nullable;
 
@@ -134,8 +134,11 @@ public class BeeProjectile extends Projectile {
         Entity entity = entityHitResult.getEntity();
         if (!level().isClientSide && getOwner() != null) {
             float damage = baseDamage + (isGiant() ? random.nextInt(1, 4) : (random.nextBoolean() ? 1 : 0));
-            if (ProjectileHitRules.hurt(entity, getDamageSource(), damage) && isGiant()) {
-                LibEntityUtils.knockBackA2B(this, ProjectileHitRules.encounterOwner(entity), 0.5, 0);
+            entity.hurt(getDamageSource(), damage);
+            if (isGiant()) {
+                Entity target = LibEntityUtils.encounterOwner(entity);
+                Vec3 motion = target.position().subtract(position()).normalize().scale(0.5);
+                target.push(motion.x, motion.y, motion.z);
             }
         }
     }
@@ -160,7 +163,7 @@ public class BeeProjectile extends Projectile {
 
     @Override
     protected boolean canHitEntity(Entity target) {
-        return ProjectileHitRules.canHit(getOwner(), target);
+        return LibEntityUtils.canHit(getOwner(), target);
     }
 
     @Override
