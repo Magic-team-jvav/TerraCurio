@@ -11,6 +11,7 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.*;
+
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.terra_curio.common.init.TCEntities;
 import org.jetbrains.annotations.Nullable;
@@ -107,7 +108,7 @@ public class BeeProjectile extends Projectile {
             this.target = enemy;
         }
         if (target != null) {
-            if (target.isSpectator() || (target instanceof LivingEntity living && living.isDeadOrDying()))
+            if (!canKeepTarget(target))
                 this.target = null;
             if (target != null && canKeepTarget(target)) {
                 Vec3 vec3 = target.getEyePosition().subtract(position()).normalize();
@@ -127,12 +128,13 @@ public class BeeProjectile extends Projectile {
     @Override
     protected void onHitEntity(EntityHitResult entityHitResult) {
         Entity entity = entityHitResult.getEntity();
-        if (getOwner() != null) {
+        if (!level().isClientSide && getOwner() != null) {
             float damage = baseDamage + (isGiant() ? random.nextInt(1, 4) : (random.nextBoolean() ? 1 : 0));
             entity.hurt(getDamageSource(), damage);
             if (isGiant()) {
-                Vec3 motion = entity.position().subtract(position()).normalize().scale(0.5);
-                entity.push(motion.x, motion.y, motion.z);
+                Entity target = LibEntityUtils.encounterOwner(entity);
+                Vec3 motion = target.position().subtract(position()).normalize().scale(0.5);
+                target.push(motion.x, motion.y, motion.z);
             }
         }
     }
@@ -157,7 +159,7 @@ public class BeeProjectile extends Projectile {
 
     @Override
     protected boolean canHitEntity(Entity target) {
-        return LibEntityUtils.canHitEntity(target, getOwner());
+        return LibEntityUtils.canHit(getOwner(), target);
     }
 
     @Override

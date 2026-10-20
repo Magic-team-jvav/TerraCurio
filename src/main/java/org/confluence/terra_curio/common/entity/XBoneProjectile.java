@@ -12,6 +12,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+
 import org.confluence.lib.common.entitiy.IAxisZRotate;
 import org.confluence.lib.util.LibEntityUtils;
 
@@ -60,7 +61,7 @@ public class XBoneProjectile extends Projectile implements IAxisZRotate {
             if (ProjectileUtil.getEntityHitResult(level(), this, boundingBox.getMinPosition(), boundingBox.getMaxPosition(), boundingBox, this::canHitEntity, 0.5F) instanceof EntityHitResult entityHitResult) {
                 Entity entity = entityHitResult.getEntity();
                 entity.hurt(damageSources().mobProjectile(this, owner), 5);
-                if (passThrough.add(entity) && passThrough.size() >= 3) {
+                if (passThrough.add(LibEntityUtils.dedupeIdentity(entity)) && passThrough.size() >= 3) {
                     discard();
                 }
             }
@@ -76,7 +77,7 @@ public class XBoneProjectile extends Projectile implements IAxisZRotate {
 
     @Override
     protected boolean canHitEntity(Entity target) {
-        return LibEntityUtils.canHitEntity(target, getOwner());
+        return LibEntityUtils.canHit(getOwner(), target);
     }
 
     @Override
