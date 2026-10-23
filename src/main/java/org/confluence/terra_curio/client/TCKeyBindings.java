@@ -11,7 +11,7 @@ import net.minecraftforge.fml.common.Mod;
 import org.confluence.terra_curio.TerraCurio;
 import org.lwjgl.glfw.GLFW;
 
-@Mod.EventBusSubscriber(modid = TerraCurio.MODID, value = Dist.CLIENT)
+@Mod.EventBusSubscriber(modid = TerraCurio.MODID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
 public final class TCKeyBindings {
     @SubscribeEvent
     public static void keyBinding(RegisterKeyMappingsEvent event) {
