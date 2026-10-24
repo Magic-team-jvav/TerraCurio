@@ -182,11 +182,11 @@ public class TCDataMapProvider extends PortDataMapProvider {
         add(TCItems.RANGER_EMBLEM, helper -> helper.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(LibAttributes.getRangedDamage().value(), helper.asId(), 0.15, PortAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL))); // 游侠徽章
         add(TCItems.WARRIOR_EMBLEM, helper -> helper.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(LibAttributes.getAttackDamage().value(), helper.asId(), 0.15, PortAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL))); // 战士徽章
         add(TCItems.SORCERER_EMBLEM, helper -> helper.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(LibAttributes.getMagicDamage().value(), helper.asId(), 0.15, PortAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL))); // 巫士徽章
-        add(TCItems.AVENGER_EMBLEM, helper -> helper.entry(TCItems.ATTRIBUTES, fourClasses(helper.asId(), 0.12))); // 复仇者勋章
+        add(TCItems.AVENGER_EMBLEM, helper -> helper.entry(TCItems.ATTRIBUTES, fiveClasses(helper.asId(), 0.12))); // 复仇者勋章
         add(TCItems.EYE_OF_THE_GOLEM, helper -> helper.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(LibAttributes.getCriticalChance().value(), helper.asId(), 0.1, PortAttributeModifier.Operation.ADD_VALUE))); // 石巨人之眼
         add(TCItems.DESTROYER_EMBLEM, helper -> {
             ResourceLocation id = helper.asId();
-            helper.entry(TCItems.ATTRIBUTES, fourClassesBuilder(id, 0.1)
+            helper.entry(TCItems.ATTRIBUTES, fiveClassesBuilder(id, 0.1)
                     .add(LibAttributes.getCriticalChance().value(), id, 0.08, PortAttributeModifier.Operation.ADD_VALUE)
                     .build());
         }); // 毁灭者勋章
@@ -690,15 +690,18 @@ public class TCDataMapProvider extends PortDataMapProvider {
                 .build();
     }
 
-    private static AttributeModifiersValue fourClasses(ResourceLocation id, double amount) {
-        return fourClassesBuilder(id, amount).build();
+    /// 五职业增伤：近战 / 远程 / 魔法 / 召唤 / 灵魂（1.20.1 与 1.21.1 口径对齐）。
+    private static AttributeModifiersValue fiveClasses(ResourceLocation id, double amount) {
+        return fiveClassesBuilder(id, amount).build();
     }
 
-    private static AttributeModifiersValue.Builder fourClassesBuilder(ResourceLocation id, double amount) {
+    private static AttributeModifiersValue.Builder fiveClassesBuilder(ResourceLocation id, double amount) {
         return AttributeModifiersValue.builder()
                 .add(LibAttributes.getAttackDamage().value(), id, amount, PortAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                 .add(LibAttributes.getRangedDamage().value(), id, amount, PortAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                .add(LibAttributes.getMagicDamage().value(), id, amount, PortAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+                .add(LibAttributes.getMagicDamage().value(), id, amount, PortAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                .add(LibAttributes.getSummonDamage().value(), id, amount, PortAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                .add(LibAttributes.getSoulDamage().value(), id, amount, PortAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
     }
 
     private static AttributeModifiersValue balloonAttributes(ResourceLocation id, double safeFallDistance) {
