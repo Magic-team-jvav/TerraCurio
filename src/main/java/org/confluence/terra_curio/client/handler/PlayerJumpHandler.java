@@ -57,6 +57,9 @@ public final class PlayerJumpHandler {
 
     private static Map<ResourceKey<Item>, ObjectIntPair<MayFlyAbilityValue.FlyStack>> wingsFlyStacks = Map.of();
     private static Map<ResourceKey<Item>, ObjectIntPair<MayFlyAbilityValue.FlyStack>> otherFlyStacks = Map.of();
+    /// 本次按键是否已经启动过"火箭靴及其它无滑翔能力的飞行饰品"。
+    /// 这类饰品只能由一次按键启动，启动后按住持续生效；不能在离地瞬间自动接管。
+    private static boolean otherFlightEngaged = false;
     private static boolean onFlight = false;
     private static boolean horizontalFlight = false;
     private static boolean infiniteFlight = false;
@@ -91,9 +94,12 @@ public final class PlayerJumpHandler {
                 jumpKeyDown = true;
                 return;
             }
+            // 本次按键是否是"新按下"：飞行饰品只认这个信号，悬空一直按住不算
+            boolean freshPress = !jumpKeyDown;
+
             // 优先级：多段跳 -> 火箭靴 -> 翅膀
             // 1. 多段跳：一次按键只触发一次，并且必须优先于所有飞行饰品
-            if (!jumpKeyDown) {
+            if (freshPress) {
                 if (!fartFinished && fartSpeed > 0.0) {
                     fartFinished = true;
                     ITCLivingEntity.of(localPlayer).terra_curio$getJumpParticleState().fartPending = true;
@@ -107,6 +113,8 @@ public final class PlayerJumpHandler {
                         oneTimeJump(localPlayer, sandstormSpeed, PlayerJumpPacketC2S.JUMP_SANDSTORM);
                         jumpState.sandstormTicks = 1;
                     } else {
+                        // 跳跃次数已用尽：立刻标记完成，否则残留的多段跳会在整段按住期间拦住火箭靴与翅膀
+                        sandstormFinished = true;
                         jumpKeyDown = true;
                         jumpState.sandstormTicks = 0;
                     }
@@ -117,6 +125,8 @@ public final class PlayerJumpHandler {
                         oneTimeJump(localPlayer, blizzardSpeed, PlayerJumpPacketC2S.JUMP_BLIZZARD);
                         jumpState.blizzardTicks = 1;
                     } else {
+                        // 同沙暴瓶：用尽后立刻放行飞行饰品
+                        blizzardFinished = true;
                         jumpKeyDown = true;
                         jumpState.blizzardTicks = 0;
                     }
@@ -140,18 +150,25 @@ public final class PlayerJumpHandler {
             // 多段跳还没用完时，火箭靴与翅膀都不生效
             if (hasMultiJump()) return;
 
-            // 2. 火箭靴及其它无滑翔能力的飞行饰品
+            // 2. 火箭靴及其它无滑翔能力的飞行饰品：由一次按键启动，启动后按住持续生效。
+            //    必须保留"只能由按键启动"这个条件：这类饰品的飞行会把竖直速度直接改写（飞毯是置 0），
+            //    一旦在离地瞬间就自动接管，就会把起跳的上升速度清零——飞毯从"起跳数秒/一定高度后悬浮"
+            //    退化成"起跳一小段就悬停"；同时它排在上面会把翅膀整个顶掉，翅膀永远进不了飞行态，
+            //    于是动画（NormalWingsGeoModel 依赖 onFlight/onGlide）看起来"丢失"了。
             for (Map.Entry<ResourceKey<Item>, ObjectIntPair<MayFlyAbilityValue.FlyStack>> entry : otherFlyStacks.entrySet()) {
                 ObjectIntPair<MayFlyAbilityValue.FlyStack> pair = entry.getValue();
                 int i = pair.rightInt();
-                if (infiniteFlight || i > 0) {
+                if ((infiniteFlight || i > 0) && (otherFlightEngaged || freshPress)) {
                     float flySpeed = infiniteFlight ? infiniteFlightSpeed : pair.key().flySpeed();
                     fly(pair.left().horizontalFlight(), localPlayer, flySpeed);
+                    otherFlightEngaged = true;
                     if (!infiniteFlight) currentFlight = entry.getKey();
                     pair.right(--i);
                     if (infiniteFlight || i > 0) return;
                 }
             }
+            // 燃料耗尽：本次按键不再重启，交给翅膀/滑翔
+            otherFlightEngaged = false;
             currentFlight = null;
 
             // 3. 翅膀：飞行时间用尽后才会进入滑翔
@@ -184,6 +201,7 @@ public final class PlayerJumpHandler {
             JumpParticleState jumpState = ITCLivingEntity.of(localPlayer).terra_curio$getJumpParticleState();
             jumpState.sandstormTicks = 0;
             jumpState.blizzardTicks = 0;
+            otherFlightEngaged = false;
             onFlight = false;
             onGlide = false;
             currentFlight = null;
@@ -237,6 +255,7 @@ public final class PlayerJumpHandler {
         tsunamiFinished = false;
         cloudFinished = false;
         setupRemainFlyTicks();
+        otherFlightEngaged = false;
         currentFlight = null;
         lastFlight = null;
         onFlight = false;
