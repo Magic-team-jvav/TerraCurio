@@ -13,6 +13,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
 import net.neoforged.neoforge.common.data.DataMapProvider;
+import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.terra_curio.api.primitive.*;
 import org.confluence.terra_curio.common.component.PrimitiveValueComponent;
@@ -37,7 +38,7 @@ public class TCDataMapProvider extends DataMapProvider {
     protected void gather(HolderLookup.Provider provider) {
         add(TCItems.ICE_SKATES, helper -> helper.unit(TCItems.ICE$SPEED));
         add(TCItems.ANGLER_EARRING, helper -> {
-            helper.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(Attributes.LUCK, helper.asId(), 10, AttributeModifier.Operation.ADD_VALUE));
+            helper.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(ConfluenceMagicLib.FISHING_POWER, helper.asId(), 10, AttributeModifier.Operation.ADD_VALUE));
             helper.of(TCItems.COMPONENTS, List.of());
         });
         add(TCItems.MAGMA_STONE, helper -> helper.unit(TCItems.FIRE$ATTACK));
