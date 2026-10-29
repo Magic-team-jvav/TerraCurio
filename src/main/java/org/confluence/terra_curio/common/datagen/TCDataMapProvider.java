@@ -42,7 +42,7 @@ public class TCDataMapProvider extends PortDataMapProvider {
         // 已迁移
         add(TCItems.ICE_SKATES, helper -> helper.unit(TCItems.ICE$SPEED));
         add(TCItems.ANGLER_EARRING, helper -> {
-            helper.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(Attributes.LUCK, helper.asId(), 10, PortAttributeModifier.Operation.ADD_VALUE));
+            helper.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(ConfluenceMagicLib.FISHING_POWER, helper.asId(), 10, PortAttributeModifier.Operation.ADD_VALUE));
             helper.of(TCItems.COMPONENTS, List.of());
         });
         add(TCItems.MAGMA_STONE, helper -> helper.unit(TCItems.FIRE$ATTACK));
