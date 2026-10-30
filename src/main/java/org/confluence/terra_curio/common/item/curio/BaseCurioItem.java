@@ -98,7 +98,7 @@ public class BaseCurioItem extends Item implements ICurioItem {
                 emitter = new ParticleEmitter(living.level(), living.position(), particle);
                 emitter.attachEntity(living);
                 emitter.hideOutline = true;
-                MolangParticleEngine.INSTANCE._addEmitter(emitter);
+                MolangParticleEngine.INSTANCE.addEmitter(emitter);
                 emitters.put(particle, emitter);
             }
             boolean active = data.trigger().shouldActivate(living);
