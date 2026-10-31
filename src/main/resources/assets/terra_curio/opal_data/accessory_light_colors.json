@@ -1,21 +1,5 @@
 {
     "items": {
-        "terra_curio:flashlight": {
-            "color": [
-                1.0,
-                0.94901961,
-                0.75294118
-            ],
-            "light_level": 14
-        },
-        "terra_curio:searchlight": {
-            "color": [
-                1.0,
-                0.94901961,
-                0.75294118
-            ],
-            "light_level": 15
-        },
         "terra_curio:magiluminescence": {
             "color": [
                 1.0,
