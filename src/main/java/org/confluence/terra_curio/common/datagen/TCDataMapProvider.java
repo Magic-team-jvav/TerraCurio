@@ -93,8 +93,7 @@ public class TCDataMapProvider extends PortDataMapProvider {
         add(TCItems.BLINDFOLD, helper -> helper.of(TCItems.EFFECT$IMMUNITIES, Set.of(MobEffects.BLINDNESS))); // 蒙眼布 失明
         add(TCItems.FLASHLIGHT, helper -> {
             helper.of(TCItems.EFFECT$IMMUNITIES, Set.of(MobEffects.DARKNESS));
-            helper.of(TCItems.LUMINANCE, 14);
-        }); // 手电筒 黑暗
+        }); // 手电筒 黑暗（不再提供动态光源）
         add(TCItems.SEARCHLIGHT, helper -> {
             helper.of(TCItems.EFFECT$IMMUNITIES, Set.of(MobEffects.BLINDNESS, MobEffects.DARKNESS));
             helper.of(TCItems.LUMINANCE, 15);
