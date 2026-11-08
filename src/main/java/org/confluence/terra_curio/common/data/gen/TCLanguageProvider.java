@@ -242,12 +242,12 @@ public class TCLanguageProvider extends LanguageProvider {
         tooltipsAndInfo(TCItems.BRAIN_OF_CONFUSION, "混乱之脑",
                 new String[]{
                         "Has a chance to create illusions and dodge an attack",
-                        "Temporarily increase critical chance for 4% after dodge",
+                        "Temporarily increase critical chance by 10% after dodge",
                         "May confuse nearby enemies after being struck"
                 },
                 new String[]{
                         "有几率制造幻觉并躲避攻击",
-                        "闪避后暂时增加4%暴击几率",
+                        "闪避后暂时增加10%暴击几率",
                         "被击中后可能会迷惑附近的敌人"
                 },
                 "It has a Chance to be dropped from Zombie Villager.",
