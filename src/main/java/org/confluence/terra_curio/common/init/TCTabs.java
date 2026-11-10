@@ -117,6 +117,8 @@ public final class TCTabs {
                                 TCItems.DEMON_HEART, TCItems.ROYAL_GEL, TCItems.SHIELD_OF_CTHULHU, TCItems.WORM_SCARF,
                                 TCItems.BRAIN_OF_CONFUSION, TCItems.HIVE_PACK, TCItems.BONE_GLOVE, TCItems.SHINY_STONE,
                                 TCItems.SOARING_INSIGNIA, TCItems.GRAVITY_GLOBE, TCItems.CELESTIAL_STARBOARD);
+                        // 工匠作坊：饰品合成站本身也放在饰品页
+                        acceptGroup(output, "workshop", TCItems.WORKSHOP);
                     })
                     .withTabsAfter(ResourceKey.create(Registries.CREATIVE_MODE_TAB, ResourceLocation.fromNamespaceAndPath(ConfluenceMagicLib.CONFLUENCE_ID, "armors")))
                     .withTabsBefore(

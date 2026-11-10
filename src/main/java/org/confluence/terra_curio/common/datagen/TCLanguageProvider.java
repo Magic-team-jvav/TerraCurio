@@ -75,6 +75,7 @@ public class TCLanguageProvider extends LanguageProvider {
         add("itemGroup.terra_curio.yoyo", "Yoyos", "悠悠球");
         add("itemGroup.terra_curio.other", "Other", "其他");
         add("itemGroup.terra_curio.expert", "Expert Mode Exclusive", "专家模式独有");
+        add("itemGroup.terra_curio.workshop", "Workshop", "工匠作坊");
 
         add("tooltip.terra_curio.requires_mod_loaded", "This item requires any of the following mods: %s", "该物品需要以下任意模组：%s");
         add("tooltip.terra_curio.hold_and_scroll", "Hold [Left Shift] and scroll the mouse wheel", "按住[左Shift]并滚动鼠标滚轮");
