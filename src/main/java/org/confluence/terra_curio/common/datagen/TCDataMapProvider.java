@@ -96,7 +96,6 @@ public class TCDataMapProvider extends PortDataMapProvider {
         }); // 手电筒 黑暗（不再提供动态光源）
         add(TCItems.SEARCHLIGHT, helper -> {
             helper.of(TCItems.EFFECT$IMMUNITIES, Set.of(MobEffects.BLINDNESS, MobEffects.DARKNESS));
-            helper.of(TCItems.LUMINANCE, 15);
         }); // 探照灯
         add(TCItems.FAST_CLOCK, helper -> helper.of(TCItems.EFFECT$IMMUNITIES, Set.of(MobEffects.MOVEMENT_SLOWDOWN))); // 快走时钟 缓慢
         add(TCItems.TRIFOLD_MAP, helper -> helper.of(TCItems.EFFECT$IMMUNITIES, Set.of(MobEffects.CONFUSION))); // 三折地图 反胃
