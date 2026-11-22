@@ -23,7 +23,7 @@ public class MultiInfoCurioItem extends BaseCurioItem implements IMultiFunctionC
 
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        if (ConfluenceMagicLib.IS_CONFLUENCE_LOAD || !tooltipFlag.hasShiftDown()) {
+        if (ConfluenceMagicLib.CONFLUENCE_LOADED || !tooltipFlag.hasShiftDown()) {
             super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
         }
     }

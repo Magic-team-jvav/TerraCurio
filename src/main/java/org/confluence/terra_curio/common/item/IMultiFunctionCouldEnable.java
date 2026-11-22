@@ -13,7 +13,7 @@ import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.util.TCUtils;
 import org.jetbrains.annotations.Nullable;
 
-import static org.confluence.lib.ConfluenceMagicLib.IS_CONFLUENCE_LOAD;
+import static org.confluence.lib.ConfluenceMagicLib.CONFLUENCE_LOADED;
 
 public interface IMultiFunctionCouldEnable extends IFunctionCouldEnable {
     Object2IntMap<TooltipComponentsValue.Storage> INDEX_MAP = Util.make(new Object2IntArrayMap<>(), map -> {
@@ -48,7 +48,7 @@ public interface IMultiFunctionCouldEnable extends IFunctionCouldEnable {
 
     @Override
     default @Nullable TooltipComponent getTooltipComponent(ItemStack itemStack) {
-        if (IS_CONFLUENCE_LOAD) return null;
+        if (CONFLUENCE_LOADED) return null;
         PrimitiveValueComponent component = TCUtils.getAccessoriesComponent(itemStack);
         if (component == null) return null;
         TooltipComponentsValue value = component.get(TCItems.INFORMATION);
