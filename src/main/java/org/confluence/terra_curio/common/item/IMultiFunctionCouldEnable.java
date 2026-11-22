@@ -47,7 +47,7 @@ public interface IMultiFunctionCouldEnable extends IFunctionCouldEnable {
 
     @Override
     default @Nullable TooltipComponent getTooltipComponent(ItemStack itemStack) {
-        if (ConfluenceMagicLib.IS_CONFLUENCE_LOAD) return null;
+        if (ConfluenceMagicLib.CONFLUENCE_LOADED) return null;
         PrimitiveValueComponent component = TCUtils.getAccessoriesComponent(itemStack);
         if (component == null) return null;
         TooltipComponentsValue value = component.get(TCItems.INFORMATION);

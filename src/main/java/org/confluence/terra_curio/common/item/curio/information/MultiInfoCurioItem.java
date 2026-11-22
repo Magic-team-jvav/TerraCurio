@@ -27,7 +27,7 @@ public class MultiInfoCurioItem extends BaseCurioItem implements IMultiFunctionC
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        if (LibUtils.isPhysicalClient() && (ConfluenceMagicLib.IS_CONFLUENCE_LOAD || !Screen.hasShiftDown())) {
+        if (LibUtils.isPhysicalClient() && (ConfluenceMagicLib.CONFLUENCE_LOADED || !Screen.hasShiftDown())) {
             super.appendHoverText(stack, level, tooltipComponents, tooltipFlag);
         }
     }
