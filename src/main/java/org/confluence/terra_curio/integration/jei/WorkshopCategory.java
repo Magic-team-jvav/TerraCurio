@@ -29,7 +29,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public class WorkshopCategory implements IRecipeCategory<RecipeHolder<WorkshopRecipe>> {
-    public static final ResourceLocation ARROW_RIGHT = TerraCurio.asResource("textures/gui/arrow_right.png");
+    public static final ResourceLocation ARROW_RIGHT = TerraCurio.asResource("textures/gui/jei/arrow_right.png");
     public static final RecipeType<RecipeHolder<WorkshopRecipe>> TYPE = RecipeType.createRecipeHolderType(TerraCurio.asResource("workshop"));
     private final IDrawable icon;
 
