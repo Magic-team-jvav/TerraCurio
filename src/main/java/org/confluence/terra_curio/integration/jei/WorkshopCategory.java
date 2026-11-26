@@ -24,7 +24,7 @@ import org.confluence.terra_curio.common.recipe.WorkshopRecipe;
 import java.util.Arrays;
 
 public record WorkshopCategory(IDrawable getIcon) implements IRecipeCategory<WorkshopRecipe> {
-    public static final ResourceLocation ARROW_RIGHT = TerraCurio.asResource("textures/gui/arrow_right.png");
+    public static final ResourceLocation ARROW_RIGHT = TerraCurio.asResource("textures/gui/jei/arrow_right.png");
     public static final RecipeType<WorkshopRecipe> TYPE = new RecipeType<>(TerraCurio.asResource("workshop"), WorkshopRecipe.class);
 
     public WorkshopCategory(IJeiHelpers icon) {

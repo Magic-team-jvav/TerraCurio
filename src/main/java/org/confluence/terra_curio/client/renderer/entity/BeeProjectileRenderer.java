@@ -13,7 +13,7 @@ import org.confluence.terra_curio.client.model.entity.BeeProjectileModel;
 import org.confluence.terra_curio.common.entity.BeeProjectile;
 
 public class BeeProjectileRenderer extends EntityRenderer<BeeProjectile> {
-    private static final ResourceLocation TEXTURE = TerraCurio.asResource("textures/entity/bee_projectile.png");
+    private static final ResourceLocation TEXTURE = TerraCurio.asResource("textures/entity/projectile/bee_projectile.png");
     private final BeeProjectileModel model;
 
     public BeeProjectileRenderer(EntityRendererProvider.Context context) {

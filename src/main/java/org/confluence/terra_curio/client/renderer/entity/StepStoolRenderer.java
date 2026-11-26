@@ -13,7 +13,7 @@ import org.confluence.terra_curio.client.model.entity.StepStoolModel;
 import org.confluence.terra_curio.common.entity.StepStoolEntity;
 
 public class StepStoolRenderer extends EntityRenderer<StepStoolEntity> {
-    private static final ResourceLocation TEXTURE = TerraCurio.asResource("textures/entity/step_stool.png");
+    private static final ResourceLocation TEXTURE = TerraCurio.asResource("textures/entity/model/step_stool.png");
 
     private final StepStoolModel model;
 
